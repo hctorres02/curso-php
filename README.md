@@ -13,3 +13,12 @@ Focando no modelo colaborativo, algumas tarefas serão realizadas com apoio da c
 > Os códigos serão divulgados por meio deste repositório.
 
 > Os materiais de aula serão enviados ao grupo no Telegram supracitado.
+
+## Roadmap
+#### Documentação de software
+- [x] Versionamento
+- [ ] Modelo entidade relacionamento
+- [ ] Casos de uso
+- [ ] Diagrama de classes
+- [ ] Wireframe
+- [ ] Mock-up
