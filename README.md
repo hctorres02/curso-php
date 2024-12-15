@@ -17,7 +17,7 @@ Focando no modelo colaborativo, algumas tarefas serão realizadas com apoio da c
 ## Roadmap
 #### Documentação de software
 - [x] Versionamento
-- [ ] Modelo entidade relacionamento
+- [x] Modelo entidade relacionamento
 - [ ] Casos de uso
 - [ ] Diagrama de classes
 - [ ] Wireframe
