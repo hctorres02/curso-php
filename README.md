@@ -7,7 +7,7 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 
 ## Roadmap
 #### Documentação de software
-- [ ] Modelo entidade relacionamento
+- [x] Modelo entidade relacionamento
 - [ ] Casos de uso
 - [ ] Diagrama de classes
 - [ ] Wireframe
