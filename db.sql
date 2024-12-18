@@ -1,36 +1,31 @@
-CREATE TABLE `periodos` (
-  `id` integer PRIMARY KEY,
-  `ano` varchar(255),
-  `semestre` varchar(255)
+CREATE TABLE periodos (
+  id INTEGER PRIMARY KEY,
+  ano TEXT,
+  semestre TEXT,
+  UNIQUE(ano, semestre)
 );
 
-CREATE TABLE `disciplinas` (
-  `id` integer PRIMARY KEY,
-  `nome` varchar(255),
-  `cor` varchar(255),
-  `periodo_id` integer
+CREATE TABLE disciplinas (
+  id INTEGER PRIMARY KEY,
+  nome TEXT,
+  cor TEXT,
+  periodo_id INTEGER,
+  UNIQUE(nome, periodo_id),
+  FOREIGN KEY(periodo_id) REFERENCES periodos(id)
 );
 
-CREATE TABLE `atividades` (
-  `id` integer PRIMARY KEY,
-  `nome` varchar(255) UNIQUE,
-  `cor` varchar(255)
+CREATE TABLE atividades (
+  id INTEGER PRIMARY KEY,
+  nome TEXT UNIQUE,
+  cor TEXT
 );
 
-CREATE TABLE `agendamentos` (
-  `id` integer PRIMARY KEY,
-  `data` date,
-  `disciplina_id` integer,
-  `atividade_id` integer,
-  `conteudo` text
+CREATE TABLE agendamentos (
+  id INTEGER PRIMARY KEY,
+  data DATE,
+  disciplina_id INTEGER,
+  atividade_id INTEGER,
+  conteudo TEXT,
+  FOREIGN KEY(disciplina_id) REFERENCES disciplinas(id),
+  FOREIGN KEY(atividade_id) REFERENCES atividades(id)
 );
-
-ALTER TABLE `disciplinas` ADD FOREIGN KEY (`periodo_id`) REFERENCES `periodos` (`id`);
-
-ALTER TABLE `agendamentos` ADD FOREIGN KEY (`disciplina_id`) REFERENCES `disciplinas` (`id`);
-
-ALTER TABLE `agendamentos` ADD FOREIGN KEY (`atividade_id`) REFERENCES `atividades` (`id`);
-
-ALTER TABLE `periodos` ADD UNIQUE (`ano`, `semestre`);
-
-ALTER TABLE `disciplinas` ADD UNIQUE (`nome`, `periodo_id`);
