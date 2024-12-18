@@ -29,4 +29,8 @@ ALTER TABLE `disciplinas` ADD FOREIGN KEY (`periodo_id`) REFERENCES `periodos` (
 
 ALTER TABLE `agendamentos` ADD FOREIGN KEY (`disciplina_id`) REFERENCES `disciplinas` (`id`);
 
-ALTER TABLE `agendamentos` ADD FOREIGN KEY (`atividade_id`) REFERENCES `atividades` (`id`); 
+ALTER TABLE `agendamentos` ADD FOREIGN KEY (`atividade_id`) REFERENCES `atividades` (`id`);
+
+ALTER TABLE `periodos` ADD UNIQUE (`ano`, `semestre`);
+
+ALTER TABLE `disciplinas` ADD UNIQUE (`nome`, `periodo_id`);
