@@ -25,8 +25,8 @@ CREATE TABLE `agendamentos` (
   `conteudo` text
 );
 
-ALTER TABLE `periodos` ADD FOREIGN KEY (`id`) REFERENCES `disciplinas` (`periodo_id`);
+ALTER TABLE `disciplinas` ADD FOREIGN KEY (`periodo_id`) REFERENCES `periodos` (`id`);
 
-ALTER TABLE `disciplinas` ADD FOREIGN KEY (`id`) REFERENCES `agendamentos` (`disciplina_id`);
+ALTER TABLE `agendamentos` ADD FOREIGN KEY (`disciplina_id`) REFERENCES `disciplinas` (`id`);
 
-ALTER TABLE `atividades` ADD FOREIGN KEY (`id`) REFERENCES `agendamentos` (`atividade_id`);
+ALTER TABLE `agendamentos` ADD FOREIGN KEY (`atividade_id`) REFERENCES `atividades` (`id`); 
