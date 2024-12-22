@@ -9,7 +9,7 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 #### Documentação de software
 - [x] Modelo entidade relacionamento
 - [x] Casos de uso
-- [ ] Diagrama de classes
+- [x] Diagrama de classes
 - [ ] Wireframe
 - [ ] Mock-up
 - [ ] Versionamento
