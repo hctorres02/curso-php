@@ -18,7 +18,7 @@ Focando no modelo colaborativo, algumas tarefas serão realizadas com apoio da c
 #### Documentação de software
 - [x] Versionamento
 - [x] Modelo entidade relacionamento
-- [ ] Casos de uso
+- [x] Casos de uso
 - [ ] Diagrama de classes
 - [ ] Wireframe
 - [ ] Mock-up
