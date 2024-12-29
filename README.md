@@ -10,6 +10,6 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Modelo entidade relacionamento
 - [x] Casos de uso
 - [x] Diagrama de classes
-- [ ] Wireframe
+- [x] Wireframe
 - [ ] Mock-up
 - [ ] Versionamento
