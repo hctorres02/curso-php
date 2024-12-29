@@ -21,4 +21,4 @@ Focando no modelo colaborativo, algumas tarefas serão realizadas com apoio da c
 - [x] Casos de uso
 - [x] Diagrama de classes
 - [x] Wireframe
-- [ ] Mock-up
+- [x] Mock-up
