@@ -11,5 +11,5 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Casos de uso
 - [x] Diagrama de classes
 - [x] Wireframe
-- [ ] Mock-up
+- [x] Mock-up
 - [ ] Versionamento
