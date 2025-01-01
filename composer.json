@@ -1,0 +1,8 @@
+{
+    "require": {
+        "php": ">=8.2"
+    },
+    "autoload": {
+        "files": ["src/helpers.php"]
+    }
+}
