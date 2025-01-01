@@ -24,7 +24,7 @@ Focando no modelo colaborativo, algumas tarefas serão realizadas com apoio da c
 - [x] Mock-up
 
 #### Ambiente de desenvolvimento
-- [ ] PHP Built-in server
+- [x] PHP Built-in server
 - [ ] Gerenciador de dependências
 - [ ] PHP Standards Recommendations
 - [ ] Suíte de testes
