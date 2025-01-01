@@ -26,6 +26,6 @@ Focando no modelo colaborativo, algumas tarefas serão realizadas com apoio da c
 #### Ambiente de desenvolvimento
 - [x] PHP Built-in server
 - [x] Gerenciador de dependências
-- [ ] PHP Standards Recommendations
+- [x] PHP Standards Recommendations
 - [ ] Suíte de testes
 - [ ] Depuração
