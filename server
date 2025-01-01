@@ -1,0 +1,17 @@
+<?php
+
+/**
+ * Endereço do aplicativo
+ * 
+ * @var string
+ * @see https://php.net/features.commandline.webserver
+ */
+$host = $argv[1] ?? 'localhost:8000';
+
+/**
+ * Execução do comando
+ * A raíz web será o diretório `public`
+ * 
+ * @see https://php.net/function.shell-exec
+ */
+shell_exec("php -c 99-custom.ini -S {$host} -t public/");
