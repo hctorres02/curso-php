@@ -27,5 +27,5 @@ Focando no modelo colaborativo, algumas tarefas serão realizadas com apoio da c
 - [x] PHP Built-in server
 - [x] Gerenciador de dependências
 - [x] PHP Standards Recommendations
-- [ ] Suíte de testes
+- [x] Suíte de testes
 - [ ] Depuração
