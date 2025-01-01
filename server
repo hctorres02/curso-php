@@ -14,4 +14,4 @@ $host = $argv[1] ?? 'localhost:8000';
  * 
  * @see https://php.net/function.shell-exec
  */
-shell_exec("php -S {$host} -t public/");
+shell_exec("php -c 99-custom.ini -S {$host} -t public/");

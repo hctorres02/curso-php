@@ -28,4 +28,4 @@ Focando no modelo colaborativo, algumas tarefas serão realizadas com apoio da c
 - [x] Gerenciador de dependências
 - [x] PHP Standards Recommendations
 - [x] Suíte de testes
-- [ ] Depuração
+- [x] Depuração
