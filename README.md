@@ -22,3 +22,10 @@ Focando no modelo colaborativo, algumas tarefas serão realizadas com apoio da c
 - [x] Diagrama de classes
 - [x] Wireframe
 - [x] Mock-up
+
+#### Ambiente de desenvolvimento
+- [ ] PHP Built-in server
+- [ ] Gerenciador de dependências
+- [ ] PHP Standards Recommendations
+- [ ] Suíte de testes
+- [ ] Depuração
