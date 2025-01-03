@@ -29,3 +29,9 @@ Focando no modelo colaborativo, algumas tarefas serão realizadas com apoio da c
 - [x] PHP Standards Recommendations
 - [x] Suíte de testes
 - [x] Depuração
+
+#### Banco de dados
+- [ ] Sistema gerenciador de banco de dados
+- [ ] Database migrations
+- [ ] PHP Data Object
+- [ ] Object Relational Mapper
