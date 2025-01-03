@@ -7,7 +7,8 @@
         "psr-4": {}
     },
     "require-dev": {
-        "pestphp/pest": "^3.7"
+        "pestphp/pest": "^3.7",
+        "byjg/migration-cli": "^5.0"
     },
     "config": {
         "allow-plugins": {
@@ -15,6 +16,11 @@
         }
     },
     "scripts": {
-        "test": "./vendor/bin/pest"
+        "test": "./vendor/bin/pest",
+        "migrate": [
+            "@putenv MIGRATE_PATH=./database",
+            "@putenv MIGRATE_CONNECTION=sqlite://./database/database.sqlite",
+            "./vendor/bin/migrate"
+        ]
     }
 }

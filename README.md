@@ -32,6 +32,6 @@ Focando no modelo colaborativo, algumas tarefas serão realizadas com apoio da c
 
 #### Banco de dados
 - [x] Sistema gerenciador de banco de dados
-- [ ] Database migrations
+- [x] Database migrations
 - [ ] PHP Data Object
 - [ ] Object Relational Mapper
