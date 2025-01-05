@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * Endereço do aplicativo
+ *
+ * @var string
+ * @link https://php.net/features.commandline.webserver
+ */
+$host = $argv[1] ?? 'localhost:8000';
+
+/**
+ * Define diretório raíz
+ *
+ * @var string
+ */
+$webroot = realpath(__DIR__ . '/../public');
+
+/**
+ * Execução do comando
+ *
+ * @link https://php.net/function.shell-exec
+ */
+shell_exec("php -S {$host} -t {$webroot}");
