@@ -10,15 +10,15 @@
 $host = $argv[1] ?? 'localhost:8000';
 
 /**
- * Define diretório raíz
+ * Define diretório raíz do projeto
  *
  * @var string
  */
-$webroot = realpath(__DIR__ . '/../public');
+$root = realpath(__DIR__ . '/..');
 
 /**
  * Execução do comando
  *
  * @link https://php.net/function.shell-exec
  */
-shell_exec("php -S {$host} -t {$webroot}");
+shell_exec("php -c {$root}/99-custom.ini -S {$host} -t {$root}/public");
