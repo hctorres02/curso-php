@@ -17,7 +17,7 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 #### Ambiente de desenvolvimento
 - [x] PHP built-in server
 - [x] Gerenciador de dependências
-- [ ] PHP Standards Recommendations
+- [x] PHP Standards Recommendations
 - [ ] Variáveis de ambiente
 - [ ] Suíte de testes
 - [ ] Depuração
