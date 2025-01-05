@@ -1,0 +1,13 @@
+{
+    "require": {
+        "php": "^8.2"
+    },
+    "scripts": {
+        "server": "./bin/server"
+    },
+    "autoload": {
+        "files": [
+            "src/helpers.php"
+        ]
+    }
+}
