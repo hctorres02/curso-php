@@ -19,5 +19,5 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Gerenciador de dependências
 - [x] PHP Standards Recommendations
 - [x] Variáveis de ambiente
-- [ ] Suíte de testes
+- [x] Suíte de testes
 - [ ] Depuração
