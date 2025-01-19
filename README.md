@@ -20,4 +20,4 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] PHP Standards Recommendations
 - [x] Variáveis de ambiente
 - [x] Suíte de testes
-- [ ] Depuração
+- [x] Depuração
