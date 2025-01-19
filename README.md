@@ -13,3 +13,11 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Wireframe
 - [x] Mock-up
 - [x] Versionamento
+
+#### Ambiente de desenvolvimento
+- [x] PHP built-in server
+- [x] Gerenciador de dependências
+- [x] PHP Standards Recommendations
+- [x] Variáveis de ambiente
+- [x] Suíte de testes
+- [x] Depuração

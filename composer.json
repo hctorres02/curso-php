@@ -1,0 +1,29 @@
+{
+    "require": {
+        "php": "^8.2",
+        "vlucas/phpdotenv": "^5.6"
+    },
+    "require-dev": {
+        "pestphp/pest": "^3.7",
+        "filp/whoops": "^2.16"
+    },
+    "scripts": {
+        "server": [
+            "Composer\\Config::disableProcessTimeout",
+            "@putenv PHP_CLI_SERVER_WORKERS=4",
+            "./bin/server"
+        ],
+        "test": "./vendor/bin/pest"
+    },
+    "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
+        "psr-4": {}
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    }
+}

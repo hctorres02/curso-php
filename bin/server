@@ -1,0 +1,24 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * Endereço do aplicativo
+ *
+ * @var string
+ * @link https://php.net/features.commandline.webserver
+ */
+$host = $argv[1] ?? 'localhost:8000';
+
+/**
+ * Define diretório raíz do projeto
+ *
+ * @var string
+ */
+$root = realpath(__DIR__ . '/..');
+
+/**
+ * Execução do comando
+ *
+ * @link https://php.net/function.shell-exec
+ */
+shell_exec("php -c {$root}/99-custom.ini -S {$host} -t {$root}/public");
