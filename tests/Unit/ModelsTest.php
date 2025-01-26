@@ -1,11 +1,29 @@
 <?php
 
+use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Agendamento;
 use App\Models\Atividade;
 use App\Models\Disciplina;
 use App\Models\Periodo;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use Tests\TestCase;
+
+uses(TestCase::class);
+beforeAll(fn() => refreshDatabase());
 
 describe('model', function () {
+    test('possui migration', function (string $className) {
+        /** @var Model */
+        $model = new $className;
+        $table = $model->getTable();
+        $migration = glob(PROJECT_ROOT . "/database/migrations/*_create_{$table}_table.php");
+        $hasTable = DB::schema()->hasTable($table);
+
+        expect($migration)->toHaveCount(1);
+        expect($hasTable)->toBeTrue();
+    });
+
     test('possui propriedades correspondentes', function (string $className, array $properties) {
         /** @var Model */
         $model = new $className;

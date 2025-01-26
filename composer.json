@@ -11,6 +11,14 @@
         "filp/whoops": "^2.16"
     },
     "scripts": {
+        "db:alter-table": "./bin/alter-table",
+        "db:create-table": "./bin/create-table",
+        "db:migrate": "./bin/migrate",
+        "db:refresh": [
+            "@db:rollback silent",
+            "@db:migrate"
+        ],
+        "db:rollback": "./bin/rollback",
         "server": [
             "Composer\\Config::disableProcessTimeout",
             "@putenv PHP_CLI_SERVER_WORKERS=4",

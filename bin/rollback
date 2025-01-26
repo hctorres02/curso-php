@@ -1,0 +1,91 @@
+#!/usr/bin/env php
+<?php
+
+use Illuminate\Database\Capsule\Manager as DB;
+
+require __DIR__ . '/../src/bootstrap.php';
+
+/**
+ * Verifica opções de execução
+ *
+ * @var bool
+ */
+$silent = ($argv[1] ?? null) == 'silent';
+
+/**
+ * Verifica base de dados local (SQLite)
+ */
+createLocalDatabase();
+
+/**
+ * Verifica se as migrations já foram executadas
+ */
+if (! DB::schema()->hasTable('migrations')) {
+    if ($silent) {
+        exit;
+    }
+
+    echo "ERRO: não existem migrations executadas\n";
+    echo "composer db:migrate\n";
+    exit(1);
+}
+
+/**
+ * Migrations já executadas
+ *
+ * @var array
+ */
+$migrationsExistentes = DB::table('migrations')->pluck('filename')->reverse()->toArray();
+
+foreach ($migrationsExistentes as $filename) {
+    if (! $silent) {
+        /**
+         * Exibe pergunta
+         */
+        echo "Desfazer {$filename}? [s/N]:";
+
+        /**
+         * Obtém resposta
+         *
+         * @var string
+         */
+        $resposta = strtolower(trim(fgets(STDIN))) ?: 'n';
+
+        /**
+         * Interrompe o processo se for uma resposta negativa
+         */
+        if ($resposta == 'n') {
+            break;
+        }
+    }
+
+    try {
+        /**
+         * Observa o processo de rollback
+         */
+        DB::connection()->beginTransaction();
+
+        /**
+         * Executa rollback
+         */
+        rollback($filename);
+
+        /**
+         * Confirma execução do rollback
+         */
+        DB::connection()->commit();
+
+        echo "OK: {$filename}\n";
+    } catch (Exception $e) {
+        /**
+         * Reverte processo de rollback
+         */
+        DB::connection()->rollBack();
+
+        echo "ERROR: {$filename}\n";
+        echo "{$e->getMessage()}\n";
+        exit(1);
+    }
+}
+
+echo "Rollback finalizado\n";
