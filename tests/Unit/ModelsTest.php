@@ -33,6 +33,19 @@ describe('model', function () {
 
         expect($properties)->toEqualCanonicalizing($intersect);
     });
+
+    test('possui factory', function (string $className) {
+        /** @var Model */
+        $model = new $className;
+        $table = $model->getTable();
+        $exists = class_exists(Factory::resolveFactoryName($className));
+        $countEmpty = DB::table($table)->count();
+        $countOne = $model->factory()->create()->count();
+
+        expect($exists)->toBeTrue();
+        expect($countEmpty)->toEqual(0);
+        expect($countOne)->toEqual(1);
+    });
 })->with([
     [Periodo::class, ['id', 'ano', 'semestre']],
     [Disciplina::class, ['id', 'periodo_id', 'nome', 'cor']],

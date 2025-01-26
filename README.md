@@ -26,5 +26,5 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] PHP Data Object
 - [x] Object-Relational Mapping
 - [x] Migrations
-- [ ] Factories
+- [x] Factories
 - [ ] Seed

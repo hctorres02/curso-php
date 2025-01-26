@@ -1,0 +1,62 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../src/bootstrap.php';
+
+/**
+ * Verifica se o modelo foi fornecido
+ */
+if (empty($model = $argv[1] ?? null)) {
+    echo "ERRO: você deve informar um model\n";
+    echo "composer db:factory <model>\n";
+    exit(1);
+}
+
+/**
+ * Capitaliza nome do model
+ */
+$model = ucfirst($model);
+
+/**
+ * Gera namespace do model
+ */
+$className = "\\App\\Models\\{$model}";
+
+/**
+ * Verifica se o model existe
+ */
+if (! class_exists($className)) {
+    echo "ERRO: o model {$className} não existe\n";
+    exit(1);
+}
+
+/**
+ * Nome do arquivo
+ */
+$filename = PROJECT_ROOT . "/database/factories/{$model}Factory.php";
+
+/**
+ * Verifica se já existe factory para model
+ */
+if (file_exists($filename)) {
+    echo "ERRO: já existe factory para o model informado\n";
+    echo "$filename\n";
+    exit(1);
+}
+
+/**
+ * Obtém stub de criação de factory
+ */
+$data = file_get_contents(PROJECT_ROOT . '/database/stubs/factory.stub');
+$data = str_replace('{{ className }}', $className, $data);
+$data = str_replace('{{ model }}', $model, $data);
+
+/**
+ * Escreve factory no diretório
+ */
+if (file_put_contents($filename, "$data\n") === false) {
+    echo "ERROR: verifique permissões de escrita no diretório\n";
+    exit(1);
+}
+
+echo "OK: {$filename}\n";

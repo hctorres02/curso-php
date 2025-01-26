@@ -1,5 +1,6 @@
 <?php
 
+use Faker\Factory;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Support\Carbon;
 
@@ -19,6 +20,13 @@ if (! function_exists('createLocalDatabase')) {
 
         // cria banco de dados local
         file_put_contents($database, null);
+    }
+}
+
+if (! function_exists('faker')) {
+    function faker(): Faker\Generator
+    {
+        return Factory::create(env('APP_LOCALE', 'en'));
     }
 }
 
