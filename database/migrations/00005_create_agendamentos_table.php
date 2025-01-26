@@ -15,10 +15,10 @@ return new class extends Migration
     {
         DB::schema()->create('agendamentos', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Disciplina::class);
             $table->foreignIdFor(Atividade::class);
-            $table->date('data');
+            $table->foreignIdFor(Disciplina::class);
             $table->text('conteudo');
+            $table->date('data');
             $table->timestamps();
         });
     }

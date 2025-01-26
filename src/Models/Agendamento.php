@@ -4,16 +4,26 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Agendamento extends Model
 {
     use HasFactory;
 
-    /** @var array */
     protected $fillable = [
-        'disciplina_id',
         'atividade_id',
-        'data',
+        'disciplina_id',
         'conteudo',
+        'data',
     ];
+
+    public function atividade(): BelongsTo
+    {
+        return $this->belongsTo(Atividade::class);
+    }
+
+    public function disciplina(): BelongsTo
+    {
+        return $this->belongsTo(Disciplina::class);
+    }
 }

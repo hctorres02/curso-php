@@ -28,3 +28,4 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Migrations
 - [x] Factories
 - [x] Seed
+- [x] Relacionamentos
