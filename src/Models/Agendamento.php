@@ -1,21 +1,16 @@
 <?php
 
-namespace Models;
+namespace App\Models;
 
-class Agendamento
+use Illuminate\Database\Eloquent\Model;
+
+class Agendamento extends Model
 {
-    /** @var int */
-    public $id;
-
-    /** @var int */
-    public $disciplina_id;
-
-    /** @var int */
-    public $atividade_id;
-
-    /** @var string */
-    public $data;
-
-    /** @var string */
-    public $conteudo;
+    /** @var array */
+    protected $fillable = [
+        'disciplina_id',
+        'atividade_id',
+        'data',
+        'conteudo',
+    ];
 }

@@ -1,15 +1,14 @@
 <?php
 
-namespace Models;
+namespace App\Models;
 
-class Periodo
+use Illuminate\Database\Eloquent\Model;
+
+class Periodo extends Model
 {
-    /** @var int */
-    public $id;
-
-    /** @var string */
-    public $ano;
-
-    /** @var string */
-    public $semestre;
+    /** @var array */
+    protected $fillable = [
+        'ano',
+        'semestre',
+    ];
 }

@@ -1,15 +1,14 @@
 <?php
 
-namespace Models;
+namespace App\Models;
 
-class Atividade
+use Illuminate\Database\Eloquent\Model;
+
+class Atividade extends Model
 {
-    /** @var int */
-    public $id;
-
-    /** @var string */
-    public $nome;
-
-    /** @var string */
-    public $cor;
+    /** @var array */
+    protected $fillable = [
+        'nome',
+        'cor',
+    ];
 }

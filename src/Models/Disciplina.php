@@ -1,18 +1,15 @@
 <?php
 
-namespace Models;
+namespace App\Models;
 
-class Disciplina
+use Illuminate\Database\Eloquent\Model;
+
+class Disciplina extends Model
 {
-    /** @var int */
-    public $id;
-
-    /** @var int */
-    public $periodo_id;
-
-    /** @var string */
-    public $nome;
-
-    /** @var string */
-    public $cor;
+    /** @var array */
+    protected $fillable = [
+        'periodo_id',
+        'nome',
+        'cor',
+    ];
 }

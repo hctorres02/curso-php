@@ -14,3 +14,9 @@ Dotenv\Dotenv::createImmutable(PROJECT_ROOT)->load();
 
 // coletor de erros
 (new Whoops\Run)->prependHandler(new Whoops\Handler\PrettyPageHandler)->register();
+
+// banco de dados
+$dbManager = new \Illuminate\Database\Capsule\Manager;
+$dbManager->addConnection(require PROJECT_ROOT . '/config/database.php');
+$dbManager->setAsGlobal();
+$dbManager->bootEloquent();

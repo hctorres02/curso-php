@@ -24,7 +24,7 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 
 #### Banco de dados
 - [x] PHP Data Object
-- [ ] Object-Relational Mapping
+- [x] Object-Relational Mapping
 - [ ] Migrations
 - [ ] Factories
 - [ ] Seed
