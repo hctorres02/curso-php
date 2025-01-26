@@ -23,7 +23,7 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Depuração
 
 #### Banco de dados
-- [ ] PHP Data Object
+- [x] PHP Data Object
 - [ ] Object-Relational Mapping
 - [ ] Migrations
 - [ ] Factories

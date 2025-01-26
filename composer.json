@@ -1,6 +1,8 @@
 {
     "require": {
         "php": "^8.2",
+        "ext-pdo": "*",
+        "ext-sqlite3": "*",
         "vlucas/phpdotenv": "^5.6"
     },
     "require-dev": {
@@ -19,7 +21,9 @@
         "files": [
             "src/helpers.php"
         ],
-        "psr-4": {}
+        "psr-4": {
+            "": "src/"
+        }
     },
     "config": {
         "allow-plugins": {
