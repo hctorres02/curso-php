@@ -1,0 +1,146 @@
+#!/usr/bin/env php
+<?php
+
+use App\Models\Agendamento;
+use App\Models\Atividade;
+use App\Models\Disciplina;
+use App\Models\Periodo;
+
+require __DIR__ . '/../src/bootstrap.php';
+
+/**
+ * Questiona usuário
+ *
+ * @param string $question
+ * @param mixed $placeholders
+ * @return string
+ */
+function ask(string $question, ...$placeholders)
+{
+    if (! defined('STDIN')) {
+        return '';
+    }
+
+    printf("{$question} ", ...$placeholders);
+
+    return strtolower(trim(fgets(STDIN)));
+}
+
+/**
+ * Preenche entidade a partir de um questionamento
+ * Os valores são únicos
+ *
+ * @param string $entity
+ * @param array $values
+ * @return array
+ */
+function fillEntity(string $entity, array $values)
+{
+    do {
+        $value = ask("Escreva mais um valor para %s [%s]:", $entity, join(', ', $values));
+
+        if (in_array($value, $values)) {
+            echo "{$value} já existe\n";
+            continue;
+        }
+
+        $values = array_filter([...$values, $value]);
+
+        sort($values);
+    } while (! empty($value));
+
+    return $values;
+}
+
+try {
+    /**
+     * Gera base de dados limpa
+     */
+    refreshDatabase();
+
+    /**
+     * Lista de atividades
+     *
+     * @var array<int, \App\Models\Atividade>
+     */
+    $atividades = Atividade::factory()->createMany(
+        array_map(fn(string $nome) => [
+            'nome' => ucwords($nome),
+        ], fillEntity('atividades', ['debate', 'prova', 'seminário']))
+    );
+
+    /**
+     * Lista de períodos
+     *
+     * @var array<int, \App\Models\Periodo>
+     */
+    $periodos = Periodo::factory()->createMany(
+        array_map(fn(string $periodo) => array_combine([
+            'ano',
+            'semestre',
+        ], explode('.', $periodo)), fillEntity('períodos', ['2023.2', '2024.1', '2024.2', '2025.1']))
+    );
+
+    /**
+     * Lista de disciplinas
+     *
+     * @var array<int, \App\Models\Disciplina>
+     */
+    $disciplinas = Disciplina::factory()->createMany(
+        array_reduce($periodos->all(), fn(array $disciplinas, Periodo $periodo) => [
+            ...$disciplinas,
+            ...array_map(fn(string $disciplina) => [
+                'periodo_id' => $periodo,
+                'nome' => ucwords($disciplina),
+            ], fillEntity("disciplinas de {$periodo->ano}.{$periodo->semestre}", []) ?: faker()->unique()->words(rand(1, 5)))
+        ], [])
+    );
+
+    /**
+     * Quantidade máxima de agendamentos por período
+     *
+     * @var string
+     */
+    $agendamentosAnswer = ask("Até quantos agendamentos por período (30)?");
+
+    /**
+     * Lista de agendamentos
+     *
+     * @var array<int, \App\Models\Agendamento>
+     */
+    $agendamentos = Agendamento::factory()->createMany(
+        array_reduce($periodos->all(), fn(array $agendamentos, Periodo $periodo) => [
+            ...$agendamentos,
+            ...array_map(fn() => [
+                'atividade_id' => $atividades->random(),
+                'disciplina_id' => $disciplinas->where('periodo_id', $periodo->id)->random(),
+                'data' => faker()->dateTimeBetween(...match ((int) $periodo->semestre) {
+                    1 => ["{$periodo->ano}-01-01", "{$periodo->ano}-06-30"],
+                    2 => ["{$periodo->ano}-07-01", "{$periodo->ano}-12-31"],
+                }),
+            ], range(1, rand(1, (int) ($agendamentosAnswer ?: 30)))),
+        ], [])
+    );
+
+    /**
+     * Quantidade de atividades cadastradas
+     */
+    echo "Atividades: {$atividades->count()}\n";
+
+    /**
+     * Quantidade de períodos cadastrados
+     */
+    echo "Períodos: {$periodos->count()}\n";
+
+    /**
+     * Quantidade de disciplinas cadastradas
+     */
+    echo "Disciplinas: {$disciplinas->count()}\n";
+
+    /**
+     * Quantidade dde agendamentos cadastrados
+     */
+    echo "Agendamentos: {$agendamentos->count()}\n";
+} catch (Exception $e) {
+    echo $e->getMessage();
+}

@@ -1,13 +1,27 @@
 {
     "require": {
         "php": "^8.2",
-        "vlucas/phpdotenv": "^5.6"
+        "ext-pdo": "*",
+        "ext-sqlite3": "*",
+        "vlucas/phpdotenv": "^5.6",
+        "illuminate/database": "^11.39"
     },
     "require-dev": {
         "pestphp/pest": "^3.7",
-        "filp/whoops": "^2.16"
+        "filp/whoops": "^2.16",
+        "fakerphp/faker": "^1.24"
     },
     "scripts": {
+        "db:alter-table": "./bin/alter-table",
+        "db:create-table": "./bin/create-table",
+        "db:factory": "./bin/factory",
+        "db:migrate": "./bin/migrate",
+        "db:refresh": [
+            "@db:rollback silent",
+            "@db:migrate"
+        ],
+        "db:rollback": "./bin/rollback",
+        "db:seed": "./bin/seed",
         "server": [
             "Composer\\Config::disableProcessTimeout",
             "@putenv PHP_CLI_SERVER_WORKERS=4",
@@ -19,7 +33,11 @@
         "files": [
             "src/helpers.php"
         ],
-        "psr-4": {}
+        "psr-4": {
+            "App\\": "src/",
+            "Database\\Factories\\": "database/factories/",
+            "Tests\\": "tests/"
+        }
     },
     "config": {
         "allow-plugins": {

@@ -1,0 +1,70 @@
+#!/usr/bin/env php
+<?php
+
+use Illuminate\Database\Capsule\Manager as DB;
+
+require __DIR__ . '/../src/bootstrap.php';
+
+/**
+ * Verifica base de dados local (SQLite)
+ */
+createLocalDatabase();
+
+/**
+ * Lista todas as migrations
+ *
+ * @var array
+ */
+$migrations = glob(PROJECT_ROOT . '/database/migrations/*.php');
+
+/**
+ * Migrations já executadas
+ *
+ * @var array
+ */
+$migrationsExistentes = DB::schema()->hasTable('migrations') ? DB::table('migrations')->pluck('filename')->toArray() : [];
+
+foreach ($migrations as $migration) {
+    /**
+     * Identificação da migration
+     *
+     * @var string
+     */
+    $filename = pathinfo($migration, PATHINFO_FILENAME);
+
+    /**
+     * Verifica se está na lista de migrations executadas
+     */
+    if (in_array($filename, $migrationsExistentes)) {
+        echo "SKIP: {$filename}\n";
+        continue;
+    }
+
+    try {
+        /**
+         * Observa o processo de migração
+         */
+        DB::connection()->beginTransaction();
+
+        /**
+         * Executa migration
+         */
+        migrate($migration);
+
+        /**
+         * Confirma execução da migration
+         */
+        DB::connection()->commit();
+
+        echo "OK: {$filename}\n";
+    } catch (Exception $e) {
+        /**
+         * Reverte processo de migração
+         */
+        DB::connection()->rollBack();
+
+        echo "ERROR: {$filename}\n";
+        echo "{$e->getMessage()}\n";
+        exit(1);
+    }
+}

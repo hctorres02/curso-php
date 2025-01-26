@@ -1,0 +1,58 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../src/bootstrap.php';
+
+/**
+ * Verifica se o nome da tabela foi fornecido
+ */
+if (empty($table = $argv[1] ?? null)) {
+    echo "Uso: composer db:alter-table <table>\n";
+    exit(1);
+}
+
+/**
+ * Nome do arquivo
+ *
+ * @var string
+ */
+$filename = PROJECT_ROOT . "/database/migrations/*_create_{$table}_table.php";
+
+/**
+ * Verifica se existe para criação da tabela
+ */
+if (empty(glob($filename))) {
+    echo "ERRO: você deve criar a tabela antes de tentar altera-la\n";
+    echo "composer create-table {$table}\n";
+    exit(1);
+}
+
+/**
+ * Obtém índice de arquivos
+ *
+ * @var string
+ */
+$index = str_pad(count(glob(PROJECT_ROOT . '/database/migrations/*.php')) + 1, 5, '0', STR_PAD_LEFT);
+
+/**
+ * Aplica modificações ao nome do arquivo
+ */
+$filename = str_replace('*_create', "{$index}_alter", $filename);
+
+/**
+ * Obtém stub de criação de tabela
+ *
+ * @var string
+ */
+$data = file_get_contents(PROJECT_ROOT . '/database/stubs/alter-table.stub');
+$data = str_replace('{{ table }}', $table, $data);
+
+/**
+ * Escreve migration no diretório
+ */
+if (file_put_contents($filename, "$data\n") === false) {
+    echo "ERROR: verifique permissões de escrita no diretório\n";
+    exit(1);
+}
+
+echo "OK: {$filename}\n";

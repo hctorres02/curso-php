@@ -5,6 +5,9 @@
          colors="true"
          stopOnFailure="true"
 >
+    <php>
+        <env name="DB_DATABASE" value="database/tests.sqlite"/>
+    </php>
     <testsuites>
         <testsuite name="Test Suite">
             <directory suffix="Test.php">./tests</directory>
