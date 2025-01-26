@@ -27,4 +27,4 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Object-Relational Mapping
 - [x] Migrations
 - [x] Factories
-- [ ] Seed
+- [x] Seed

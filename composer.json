@@ -21,6 +21,7 @@
             "@db:migrate"
         ],
         "db:rollback": "./bin/rollback",
+        "db:seed": "./bin/seed",
         "server": [
             "Composer\\Config::disableProcessTimeout",
             "@putenv PHP_CLI_SERVER_WORKERS=4",
