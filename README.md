@@ -21,3 +21,10 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Variáveis de ambiente
 - [x] Suíte de testes
 - [x] Depuração
+
+#### Banco de dados
+- [ ] PHP Data Object
+- [ ] Object-Relational Mapping
+- [ ] Migrations
+- [ ] Factories
+- [ ] Seed
