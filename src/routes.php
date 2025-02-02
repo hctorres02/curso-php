@@ -7,4 +7,5 @@ use App\Http\Router;
 Router::redirect('/', '/agendamentos');
 
 // agendamentos
-Router::get('/agendamentos', AgendamentoController::class);
+Router::get('/agendamentos', [AgendamentoController::class, 'index']);
+Router::get('/agendamentos/{agendamento}', [AgendamentoController::class, 'ver']);

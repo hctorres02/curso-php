@@ -3,10 +3,13 @@
 namespace App\Http;
 
 use App\Traits\IsSingleton;
-use Exception;
+use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Exception;
+use ReflectionClass;
+use ReflectionFunction;
 
 /**
  * Classe Router que gerencia o roteamento de requisições HTTP.
@@ -141,12 +144,76 @@ class Router
     private function resolveCallback(mixed $action, array $params, string $uri): mixed
     {
         if (is_callable($action)) {
-            return call_user_func_array($action, $params);
+            $reflectionFunction = new ReflectionFunction($action);
+            $params = $this->resolveParams($reflectionFunction->getParameters(), $params);
+
+            return $reflectionFunction->invokeArgs($params);
         }
 
         [$controller, $method] = is_array($action) ? $action : [$action, '__invoke'];
+        $reflectionClass = new ReflectionClass($controller);
 
-        return call_user_func_array([new $controller, $method], $params);
+        if (! $reflectionClass->hasMethod($method)) {
+            throw new Exception(
+                "`{$uri}`: o método `{$method}` não existe no controlador `{$controller}`",
+                Response::HTTP_NOT_IMPLEMENTED
+            );
+        }
+
+        $dependencies = $this->resolveParams($reflectionClass->getConstructor()?->getParameters() ?: []);
+        $controllerInstance = $reflectionClass->newInstanceArgs($dependencies);
+        $reflectionMethod = $reflectionClass->getMethod($method);
+        $params = $this->resolveParams($reflectionMethod->getParameters(), $params);
+
+        return $reflectionMethod->invokeArgs($controllerInstance, $params);
+    }
+
+    /**
+     * Resolve uma dependência através do nome da classe.
+     *
+     * @param string $className O nome completo da classe a ser resolvida.
+     *
+     * @return object A instância da dependência.
+     */
+    private function resolveDependency(string $className, mixed $value): object
+    {
+        return match (true) {
+            $className === Request::class => $this->request,
+            $className === Response::class => $this->response,
+            is_subclass_of($className, Model::class) => $className::findOrFail($value),
+            default => new $className
+        };
+    }
+
+    /**
+     * Resolve os parâmetros necessários para a execução de um método, incluindo a injeção de dependências.
+     *
+     * Este método usa reflexão para analisar os parâmetros do construtor ou do método de um controlador e resolve
+     * as dependências necessárias através de um container de dependências ou usa valores de parâmetros de rota
+     * para preenchê-los quando apropriado.
+     *
+     * O método pode resolver tanto parâmetros de dependências (como objetos que precisam ser injetados) quanto
+     * parâmetros extraídos da URL, como os parâmetros de rota que são passados para o controlador.
+     *
+     * @param \ReflectionParameter[] $reflectionParams Parâmetros obtidos via reflexão do método ou do construtor.
+     * @param array $routeParams Parâmetros extraídos da URL ou parâmetros adicionais que precisam ser passados ao método.
+     *
+     * @return array Retorna um array de valores resolvidos para os parâmetros do método ou do construtor.
+     */
+    private function resolveParams(array $reflectionParams, array $routeParams = [])
+    {
+        return array_reduce($reflectionParams, function ($resolvedParams, $param) use ($routeParams) {
+            $paramType = $param->getType();
+            $paramName = $paramType->getName();
+
+            if ($paramType && ! $param->isOptional()) {
+                $resolvedParams[] = $this->resolveDependency($paramName, array_shift($routeParams));
+            } else {
+                $resolvedParams[] = array_shift($routeParams);
+            }
+
+            return $resolvedParams;
+        }, []);
     }
 
     /**
@@ -158,8 +225,9 @@ class Router
     {
         foreach ($this->getRoutes($this->request->getMethod()) as $uri => $action) {
             $pattern = '#^'.preg_replace('/\{([\w]+)\}/', '(?P<\1>[^/]+)', $uri).'$#';
+            $path = rtrim($this->request->getPathInfo(), '/') ?: '/';
 
-            if (! preg_match($pattern, $this->request->getPathInfo(), $params)) {
+            if (! preg_match($pattern, $path, $params)) {
                 continue;
             }
 
