@@ -29,3 +29,8 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Factories
 - [x] Seed
 - [x] Relacionamentos
+
+#### Model View Controller
+- [ ] Router
+- [ ] Controllers
+- [ ] Template engine
