@@ -137,8 +137,6 @@ class Router
      * @param string $uri Nome da rota que está sendo resolvida.
      *
      * @return mixed O conteúdo gerado pela execução do callback.
-     *
-     * @throws Exception Caso o callback não seja válido ou não possa ser executado.
      */
     private function resolveCallback(mixed $action, array $params, string $uri): mixed
     {
@@ -146,7 +144,9 @@ class Router
             return call_user_func_array($action, $params);
         }
 
-        throw new Exception("A rota `{$uri}` não pode ser executada!", Response::HTTP_INTERNAL_SERVER_ERROR);
+        [$controller, $method] = is_array($action) ? $action : [$action, '__invoke'];
+
+        return call_user_func_array([new $controller, $method], $params);
     }
 
     /**
