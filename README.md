@@ -34,4 +34,4 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Router
 - [x] Controllers
 - [x] Injeção de dependências
-- [ ] Template engine
+- [x] Template engine
