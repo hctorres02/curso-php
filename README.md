@@ -31,6 +31,6 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Relacionamentos
 
 #### Model View Controller
-- [ ] Router
+- [x] Router
 - [ ] Controllers
 - [ ] Template engine

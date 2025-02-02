@@ -20,3 +20,6 @@ $dbManager = new \Illuminate\Database\Capsule\Manager;
 $dbManager->addConnection(require PROJECT_ROOT . '/config/database.php');
 $dbManager->setAsGlobal();
 $dbManager->bootEloquent();
+
+// rotas
+require PROJECT_ROOT.'/src/routes.php';

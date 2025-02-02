@@ -1,20 +1,27 @@
 #!/usr/bin/env php
 <?php
 
+require __DIR__.'/../src/bootstrap.php';
+
 /**
  * Endereço do aplicativo
  *
  * @var string
  * @link https://php.net/features.commandline.webserver
  */
-$host = $argv[1] ?? 'localhost:8000';
+$host = env('APP_URL');
+
+if (! $host) {
+    echo "Você precisa definir um valor para APP_URL no seu `.env`\n";
+    exit(1);
+}
 
 /**
  * Define diretório raíz do projeto
  *
  * @var string
  */
-$root = realpath(__DIR__ . '/..');
+$root = PROJECT_ROOT;
 
 /**
  * Execução do comando
