@@ -20,3 +20,12 @@ $dbManager = new \Illuminate\Database\Capsule\Manager;
 $dbManager->addConnection(require PROJECT_ROOT . '/config/database.php');
 $dbManager->setAsGlobal();
 $dbManager->bootEloquent();
+
+// rotas
+require PROJECT_ROOT.'/src/routes.php';
+
+// template engine
+App\Http\View::boot(new Twig\Environment(
+    new Twig\Loader\FilesystemLoader(PROJECT_ROOT.'/src/Views'),
+    require PROJECT_ROOT.'/config/twig.php'
+));
