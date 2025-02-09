@@ -1,8 +1,12 @@
+{% extends "base.twig" %}
+
+{% block main %}
 <h1>Agendamentos</h1>
 <ul>
-	{% for agendamento in agendamentos %}
-		<li>
-			<a href="/agendamentos/{{ agendamento.id }}">#{{ agendamento.id }}</a>: {{ agendamento.data }}
-		</li>
-	{% endfor %}
+    {% for agendamento in agendamentos %}
+    <li>
+        <a href="/agendamentos/{{ agendamento.id }}">#{{ agendamento.id }}</a>: {{ agendamento.data }}
+    </li>
+    {% endfor %}
 </ul>
+{% endblock %}

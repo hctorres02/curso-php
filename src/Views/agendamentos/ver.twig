@@ -1,6 +1,12 @@
+{% extends "base.twig" %}
+
+{% block main %}
 <h1>Agendamento #{{ agendamento.id }}</h1>
-<h3><a href="/agendamentos">&lsaquo; Voltar</a></h3>
+<h3>
+    <a href="/agendamentos">&lsaquo; Voltar</a>
+</h3>
 <p>
-    <strong>Agendamento #{{ agendamento.id }}</strong><br>
+    <strong>Agendamento #{{ agendamento.id }}</strong><br />
     Data: {{ agendamento.data|date('d/m/Y') }}
 </p>
+{% endblock %}

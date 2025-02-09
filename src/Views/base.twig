@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="{{ APP_LOCALE }}">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="color-scheme" content="light dark">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+        <title>Plano de aulas</title>
+    </head>
+
+    <body>
+        <header>
+            <nav class="container">
+                <ul>
+                    <li>
+                        <hgroup>
+                            <h1>Plano de aulas</h1>
+                            <p>Período: --</p>
+                        </hgroup>
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <a href="/agendamentos">Agendamentos</a>
+                    </li>
+                    <li>
+                        <a href="/periodos">Períodos</a>
+                    </li>
+                    <li>
+                        <a href="/disciplinas">Disciplinas</a>
+                    </li>
+                    <li>
+                        <a href="/atividades">Atividades</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            <div class="container">
+                {% block main %}{% endblock %}
+            </div>
+        </main>
+        <footer>
+            <div class="container">
+                <p>&copy; 2025</p>
+            </div>
+        </footer>
+    </body>
+
+</html>

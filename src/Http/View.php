@@ -24,4 +24,11 @@ class View
 
         return static::getInstance()->twig->render($name, $data);
     }
+
+    public static function addGlobals(array $data): void
+    {
+        foreach ($data as $name => $value) {
+            static::getInstance()->twig->addGlobal($name, $value);
+        }
+    }
 }
