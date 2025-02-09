@@ -74,3 +74,10 @@ if (! function_exists('rollback')) {
         (require_once PROJECT_ROOT . "/database/migrations/{$filename}.php")->down();
     }
 }
+
+if (! function_exists('today')) {
+    function today(): string
+    {
+        return Carbon::today();
+    }
+}

@@ -1,12 +1,38 @@
 {% extends "base.twig" %}
 
 {% block main %}
-<h1>Agendamentos</h1>
-<ul>
-    {% for agendamento in agendamentos %}
-    <li>
-        <a href="/agendamentos/{{ agendamento.id }}">#{{ agendamento.id }}</a>: {{ agendamento.data }}
-    </li>
-    {% endfor %}
-</ul>
+<nav>
+    <ul>
+        <li>
+            <hgroup role="heading">
+                <h3>Agendamentos</h3>
+                <p>Existem {{ agendamentos|length }} agendamentos previstos</p>
+            </hgroup>
+        </li>
+    </ul>
+</nav>
+<table class="striped">
+    <thead>
+        <tr>
+            <th width="200px" scope="col">Atividade</th>
+            <th width="auto" scope="col">Conteúdo</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for agendamento in agendamentos %}
+        <tr style="vertical-align: top">
+            <td>
+                {{ agendamento.data|date('d/m') }}<br />
+                <strong>{{ agendamento.disciplina.nome|upper }}</strong><br />
+                <small>{{ agendamento.atividade.nome }}</small>
+            </td>
+            <td>{{ agendamento.conteudo }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="2">Não há agendamentos previstos</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% endblock %}

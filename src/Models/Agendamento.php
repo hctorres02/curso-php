@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,5 +26,10 @@ class Agendamento extends Model
     public function disciplina(): BelongsTo
     {
         return $this->belongsTo(Disciplina::class);
+    }
+
+    public function scopePrevistos(Builder $query): void
+    {
+        $query->whereDate('data', '>=', today());
     }
 }

@@ -9,8 +9,14 @@ class AgendamentoController
 {
     public function index()
     {
+        $agendamentos = Agendamento::query()
+            ->previstos()
+            ->oldest('data')
+            ->with('atividade', 'disciplina')
+            ->get();
+
         return View::render('agendamentos/index', [
-            'agendamentos' => Agendamento::query()->get(),
+            'agendamentos' => $agendamentos,
         ]);
     }
 
