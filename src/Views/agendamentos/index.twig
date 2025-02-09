@@ -6,7 +6,7 @@
         <li>
             <hgroup role="heading">
                 <h3>Agendamentos</h3>
-                <p>Existem {{ agendamentos|length }} agendamentos previstos</p>
+                <p>Existem {{ total }} agendamentos previstos</p>
             </hgroup>
         </li>
     </ul>
@@ -19,7 +19,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for agendamento in agendamentos %}
+        {% for agendamento in data %}
         <tr style="vertical-align: top">
             <td>
                 {{ agendamento.data|date('d/m') }}<br />
@@ -35,4 +35,19 @@
         {% endfor %}
     </tbody>
 </table>
+<nav>
+    <ul>
+        {% for link in links %}
+        {% set label = loop.first ? 'Anterior' : (loop.last ? 'Próxima' : link.label) %}
+        {% set isCurrent = link.active ? 'true' : 'false' %}
+        <li>
+            {% if link.url %}
+            <a href="{{ link.url }}" aria-current="{{ isCurrent }}">{{ label }}</a>
+            {% else %}
+            <span>{{ label }}</span>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</nav>
 {% endblock %}

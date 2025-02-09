@@ -15,6 +15,16 @@ View::addGlobals([
     'CURRENT_URI' => $request->getPathInfo(),
 ]);
 
+// paginação
+Illuminate\Pagination\Paginator::currentPageResolver(
+    fn ($pageName) => $request->get($pageName)
+);
+
+// paginação
+Illuminate\Pagination\Paginator::currentPathResolver(
+    fn () => $request->getPathInfo()
+);
+
 // despacha rota e captura resposta
 $response = Router::dispatch($request);
 

@@ -40,7 +40,7 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Layout base
 - [x] Páginas de erro
 - [x] Listagem
-- [ ] Paginação
+- [x] Paginação
 - [ ] Pesquisa
 - [ ] Criação, edição
 - [ ] Menu dinâmico
