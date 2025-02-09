@@ -6,7 +6,8 @@
         "vlucas/phpdotenv": "^5.6",
         "illuminate/database": "^11.39",
         "symfony/http-foundation": "^7.2",
-        "twig/twig": "^3.19"
+        "twig/twig": "^3.19",
+        "illuminate/pagination": "^11.41"
     },
     "require-dev": {
         "pestphp/pest": "^3.7",

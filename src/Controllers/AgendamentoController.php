@@ -4,14 +4,18 @@ namespace App\Controllers;
 
 use App\Http\View;
 use App\Models\Agendamento;
+use Symfony\Component\HttpFoundation\Request;
 
 class AgendamentoController
 {
-    public function index()
+    public function index(Request $request)
     {
-        return View::render('agendamentos/index', [
-            'agendamentos' => Agendamento::query()->get(),
+        $data = Agendamento::toSearch([
+            'atividade_id' => $request->get('atividade_id'),
+            'disciplina_id' => $request->get('disciplina_id'),
         ]);
+
+        return View::render('agendamentos/index', $data);
     }
 
     public function ver(Agendamento $agendamento)
