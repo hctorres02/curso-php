@@ -35,3 +35,12 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Controllers
 - [x] Injeção de dependências
 - [x] Template engine
+
+#### Design
+- [ ] Layout base
+- [ ] Páginas de erro
+- [ ] Listagem
+- [ ] Paginação
+- [ ] Pesquisa
+- [ ] Criação, edição
+- [ ] Menu dinâmico
