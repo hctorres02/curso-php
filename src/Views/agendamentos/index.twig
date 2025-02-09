@@ -10,6 +10,27 @@
             </hgroup>
         </li>
     </ul>
+    <ul>
+        <li>
+            <form role="group">
+                <select name="atividade_id">
+                    <option value="" {{ atividade_id ? '' : 'selected' }}>Atividade</option>
+                    <option disabled>------</option>
+                    {% for id, nome in atividades %}
+                    <option value="{{ id }}" {{ id == atividade_id ? 'selected': '' }}>{{ nome }}</option>
+                    {% endfor %}
+                </select>
+                <select name="disciplina_id">
+                    <option value="" {{ disciplina_id ? '' : 'selected' }}>Disciplina</option>
+                    <option disabled>------</option>
+                    {% for id, nome in disciplinas %}
+                    <option value="{{ id }}" {{ id == disciplina_id ? 'selected': '' }}>{{ nome }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Filtrar" />
+            </form>
+        </li>
+    </ul>
 </nav>
 <table class="striped">
     <thead>
