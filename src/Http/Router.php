@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Exception;
 use ReflectionClass;
 use ReflectionFunction;
 
@@ -141,7 +140,7 @@ class Router
      *
      * @return mixed O conteúdo gerado pela execução do callback.
      */
-    private function resolveCallback(mixed $action, array $params, string $uri): mixed
+    private function resolveCallback(mixed $action, array $params): mixed
     {
         if (is_callable($action)) {
             $reflectionFunction = new ReflectionFunction($action);
@@ -154,10 +153,12 @@ class Router
         $reflectionClass = new ReflectionClass($controller);
 
         if (! $reflectionClass->hasMethod($method)) {
-            throw new Exception(
-                "`{$uri}`: o método `{$method}` não existe no controlador `{$controller}`",
-                Response::HTTP_NOT_IMPLEMENTED
-            );
+            $this->response->setStatusCode(Response::HTTP_NOT_IMPLEMENTED);
+
+            return View::render('erro_501', [
+                'controller' => $controller,
+                'method' => $method,
+            ]);
         }
 
         $dependencies = $this->resolveParams($reflectionClass->getConstructor()?->getParameters() ?: []);
@@ -243,6 +244,9 @@ class Router
             return $this->response;
         }
 
-        throw new Exception('Não encontrado', Response::HTTP_NOT_FOUND);
+        $this->response->setContent(View::render('erro_404'));
+        $this->response->setStatusCode(Response::HTTP_NOT_FOUND);
+
+        return $this->response;
     }
 }

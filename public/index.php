@@ -12,6 +12,7 @@ $request = Request::createFromGlobals();;
 // adiciona variáveis globais ao contexto da view
 View::addGlobals([
     'APP_LOCALE' => str_replace('_', '-', env('APP_LOCALE')),
+    'CURRENT_URI' => $request->getPathInfo(),
 ]);
 
 // despacha rota e captura resposta
