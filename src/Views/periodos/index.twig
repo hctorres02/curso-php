@@ -1,0 +1,67 @@
+{% extends "base.twig" %}
+
+{% block main %}
+<nav>
+    <ul>
+        <li>
+            <hgroup role="heading">
+                <h3>Períodos</h3>
+                <p>Total: {{ total }} períodos</p>
+            </hgroup>
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <form role="search">
+                <input type="search" name="q" value="{{ q }}" placeholder="Ano ou semestre">
+                <input type="submit" value="Buscar">
+            </form>
+        </li>
+    </ul>
+</nav>
+{% for periodos in data|batch(3, '') %}
+<div class="grid">
+    {% for periodo in periodos %}
+    {% if periodo %}
+    <article>
+        <header>
+            <strong>{{ periodo.ano }}.{{ periodo.semestre }}</strong>
+        </header>
+        <ul>
+            <li>
+                <a href="{{ url('/agendamentos', {periodo_id: periodo.id}) }}" title="Ver agendamentos do período">
+                    {{ periodo.agendamentos_count }} agendamentos
+                </a>
+            </li>
+            <li>
+                {{ periodo.disciplinas_count }} disciplinas:
+                <ul>
+                    {% for disciplina in periodo.disciplinas %}
+                    <li>{{ disciplina.nome }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        </ul>
+    </article>
+    {% else %}
+    <span aria-hidden="true"><!-- placeholder --></span>
+    {% endif %}
+    {% endfor %}
+</div>
+{% endfor %}
+<nav>
+    <ul>
+        {% for link in links %}
+        {% set label = loop.first ? 'Anterior' : (loop.last ? 'Próxima' : link.label) %}
+        {% set isCurrent = link.active ? 'true' : 'false' %}
+        <li>
+            {% if link.url %}
+            <a href="{{ link.url }}" aria-current="{{ isCurrent }}">{{ label }}</a>
+            {% else %}
+            <span>{{ label }}</span>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</nav>
+{% endblock %}
