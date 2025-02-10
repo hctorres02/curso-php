@@ -1,0 +1,72 @@
+{% extends "base.twig" %}
+
+{% block main %}
+<nav>
+    <ul>
+        <li>
+            <hgroup role="heading">
+                <h3>Disciplinas</h3>
+                <p>Total: {{ total }} disciplinas</p>
+            </hgroup>
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <form role="search">
+                <input type="search" name="nome" value="{{ nome }}" placeholder="Nome">
+                <select name="periodo_id">
+                    <option value="" {{ periodo_id ? '' : 'selected' }}>Período</option>
+                    <option disabled>------</option>
+                    {% for id, nome in periodos %}
+                    <option value="{{ id }}" {{ id == periodo_id ? 'selected': '' }}>{{ nome }}</option>
+                    {% endfor %}
+                </select>
+                <input type="submit" value="Buscar">
+            </form>
+        </li>
+    </ul>
+</nav>
+{% for grupo in data|batch(3, '') %}
+<div class="grid">
+    {% for inicial, disciplinas in grupo %}
+    {% if disciplinas %}
+    <div>
+        <h4>{{ inicial }}</h4>
+        <hr />
+        <ul>
+            {% for disciplina in disciplinas %}
+            <li>
+                <strong>{{ disciplina.nome }}</strong><br />
+                {% if periodo_id %}
+                <small>{{ disciplina.periodo.ano }}.{{ disciplina.periodo.semestre }}</small>
+                {% else %}
+                <a href="{{ url('/disciplinas', {periodo_id: disciplina.periodo_id}) }}">
+                    <small>{{ disciplina.periodo.ano }}.{{ disciplina.periodo.semestre }}</small>
+                </a>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% else %}
+    <span aria-hidden="true"><!-- placeholder --></span>
+    {% endif %}
+    {% endfor %}
+</div>
+{% endfor %}
+<nav>
+    <ul>
+        {% for link in links %}
+        {% set label = loop.first ? 'Anterior' : (loop.last ? 'Próxima' : link.label) %}
+        {% set isCurrent = link.active ? 'true' : 'false' %}
+        <li>
+            {% if link.url %}
+            <a href="{{ link.url }}" aria-current="{{ isCurrent }}">{{ label }}</a>
+            {% else %}
+            <span>{{ label }}</span>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</nav>
+{% endblock %}
