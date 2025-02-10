@@ -11,6 +11,7 @@ class AgendamentoController
     public function index(Request $request)
     {
         $data = Agendamento::toSearch([
+            'periodo_id' => $request->get('periodo_id'),
             'atividade_id' => $request->get('atividade_id'),
             'disciplina_id' => $request->get('disciplina_id'),
         ]);

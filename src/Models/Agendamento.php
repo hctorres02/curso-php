@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Models\Atividade;
+use App\Models\Disciplina;
+use App\Models\Periodo;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Agendamento extends Model
 {
@@ -36,7 +39,7 @@ class Agendamento extends Model
     public static function toSearch(array $params): array
     {
         // Cria a consulta base para agendamentos, aplicando o filtro 'previstos'
-        $baseQuery = static::query()->previstos();
+        $baseQuery = Periodo::find($params['periodo_id'])?->agendamentos() ?: static::query()->previstos();
 
         // Realiza a consulta de agendamentos com filtros e ordenação, além de paginar os resultados
         $data = $baseQuery
@@ -57,6 +60,17 @@ class Agendamento extends Model
             // Converte o resultado da consulta para um array
             ->toArray();
 
+        // Consulta períodos
+        $data['periodos'] = Periodo::query()
+            // Seleciona coluna ID
+            ->select('id')
+            // Concatena ano e semestre como coluna nome
+            ->selectRaw("(ano||'.'||semestre) AS nome")
+            // Extrai nome e IDs dos períodos, retornando array associativo
+            ->pluck('nome', 'id')
+            // Ordena os resultados pela chave (ID do período)
+            ->sortDesc();
+
         // Consulta os nomes das atividades associadas aos agendamentos
         $data['atividades'] = $baseQuery
             // Clona a consulta base novamente
@@ -73,7 +87,12 @@ class Agendamento extends Model
             // Clona a consulta base novamente
             ->clone()
             // Faz um right join com a tabela 'disciplinas' para obter os nomes das disciplinas
-            ->rightJoin('disciplinas', 'disciplinas.id', 'agendamentos.disciplina_id')
+            ->when(
+                // Quando não for definido o período...
+                ! $params['periodo_id'],
+                // ...Une a tabela disciplinas à consulta
+                fn ($query) => $query->rightJoin('disciplinas', 'disciplinas.id', 'agendamentos.disciplina_id')
+            )
             // Extrai os nomes e IDs das disciplinas, retornando um array associativo
             ->pluck('disciplinas.nome', 'disciplinas.id')
             // Ordena os resultados pela chave (ID da disciplina)

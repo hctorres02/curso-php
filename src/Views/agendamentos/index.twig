@@ -13,6 +13,13 @@
     <ul>
         <li>
             <form role="group">
+                <select name="periodo_id">
+                    <option value="" {{ periodo_id ? '' : 'selected' }}>Período</option>
+                    <option disabled>------</option>
+                    {% for id, nome in periodos %}
+                    <option value="{{ id }}" {{ id == periodo_id ? 'selected': '' }}>{{ nome }}</option>
+                    {% endfor %}
+                </select>
                 <select name="atividade_id">
                     <option value="" {{ atividade_id ? '' : 'selected' }}>Atividade</option>
                     <option disabled>------</option>
