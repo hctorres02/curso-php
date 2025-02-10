@@ -4,6 +4,7 @@ namespace App\Http;
 
 use App\Traits\IsSingleton;
 use Twig\Environment;
+use Twig\TwigFunction;
 
 class View
 {
@@ -30,5 +31,10 @@ class View
         foreach ($data as $name => $value) {
             static::getInstance()->twig->addGlobal($name, $value);
         }
+    }
+
+    public static function addFunction(string $name, callable $callback): void
+    {
+        static::getInstance()->twig->addFunction(new TwigFunction($name, $callback));
     }
 }

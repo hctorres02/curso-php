@@ -15,6 +15,9 @@ View::addGlobals([
     'CURRENT_URI' => $request->getPathInfo(),
 ]);
 
+// adiciona helper URL
+View::addFunction('url', url(...));
+
 // paginação
 Illuminate\Pagination\Paginator::currentPageResolver(
     fn ($pageName) => $request->get($pageName)

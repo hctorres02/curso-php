@@ -58,7 +58,7 @@ if (! function_exists('refreshDatabase')) {
         createLocalDatabase(true);
 
         // executa migrations
-        foreach (glob(PROJECT_ROOT . '/database/migrations/*.php') as $migration) {
+        foreach (glob(PROJECT_ROOT.'/database/migrations/*.php') as $migration) {
             migrate($migration);
         }
     }
@@ -71,7 +71,7 @@ if (! function_exists('rollback')) {
         DB::table('migrations')->where('filename', $filename)->delete();
 
         // reverte migration
-        (require_once PROJECT_ROOT . "/database/migrations/{$filename}.php")->down();
+        (require_once PROJECT_ROOT."/database/migrations/{$filename}.php")->down();
     }
 }
 
@@ -79,5 +79,12 @@ if (! function_exists('today')) {
     function today(): string
     {
         return Carbon::today();
+    }
+}
+
+if (! function_exists('url')) {
+    function url(string $path, array $params = []): string
+    {
+        return implode('?', [$path, http_build_query($params)]);
     }
 }
