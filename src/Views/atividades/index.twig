@@ -1,0 +1,47 @@
+{% extends "base.twig" %}
+
+{% block main %}
+<nav>
+    <ul>
+        <li>
+            <hgroup role="heading">
+                <h3>Atividades</h3>
+                <p>Total: {{ total }} atividades</p>
+            </hgroup>
+        </li>
+    </ul>
+    <ul>
+        <li>
+            <form role="search">
+                <input type="search" name="nome" value="{{ nome }}" placeholder="Nome">
+                <input type="submit" value="Buscar">
+            </form>
+        </li>
+    </ul>
+</nav>
+{% for inicial, atividades in data %}
+<h4>{{ inicial }}</h4>
+<hr />
+<ul>
+    {% for atividade in atividades %}
+    <li>{{ atividade.nome }}</li>
+    {% endfor %}
+</ul>
+{% endfor %}
+<nav>
+    <ul>
+        {% for link in links %}
+        {% set label = loop.first ? 'Anterior' : (loop.last ? 'Próxima' : link.label) %}
+        {% set isCurrent = link.active ? 'true' : 'false' %}
+        <li>
+            {% if link.url %}
+            <a href="{{ link.url }}" aria-current="{{ isCurrent }}">{{ label }}</a>
+            {% else %}
+            <span>{{ label }}</span>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</nav>
+
+{% endblock %}

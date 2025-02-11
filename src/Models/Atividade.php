@@ -19,4 +19,27 @@ class Atividade extends Model
     {
         return $this->hasMany(Agendamento::class);
     }
+
+    public static function toSearch(array $params): array
+    {
+        // Inicia a consulta de atividades
+        $data = static::query()
+            // Aplica o filtro 'nome' caso ele seja fornecido, utilizando o operador 'like' para busca parcial
+            ->when($params['nome'], fn ($query, $nome) => $query->where('nome', 'like', "%{$nome}%"))
+            // Ordena os resultados pelo nome da atividade
+            ->orderBy('nome')
+            // Realiza a paginação
+            ->paginate(20)
+            // Mantém os parâmetros originais na URL para navegação entre páginas
+            ->appends($params)
+            // Converte os resultados para um array
+            ->toArray();
+
+        // Agrupa as atividades pela primeira letra inicial de seu nome
+        $data['data'] = collect($data['data'])->groupBy(
+            fn ($atividade) => $atividade['nome'][0]
+        )->toArray();
+
+        return array_merge($params, $data);
+    }
 }
