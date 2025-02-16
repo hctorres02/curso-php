@@ -4,6 +4,19 @@ use Faker\Factory;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Support\Carbon;
 
+if (! function_exists('attribute')) {
+    function attr(array $attributes): string
+    {
+        return collect($attributes)->reduce(function ($attributes, $value, $attr) {
+            if ($value !== false) {
+                $attributes .= ' '.(is_bool($value) ? $attr : "{$attr}=\"{$value}\"");
+            }
+
+            return trim($attributes, ' ');
+        }, '');
+    }
+}
+
 if (! function_exists('createLocalDatabase')) {
     function createLocalDatabase(bool $forceOverwrite = false): void
     {

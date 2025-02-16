@@ -1,4 +1,5 @@
 {% extends "base.twig" %}
+{% from "components.twig" import pagination %}
 
 {% block main %}
 <nav>
@@ -49,19 +50,5 @@
     {% endfor %}
 </div>
 {% endfor %}
-<nav>
-    <ul>
-        {% for link in links %}
-        {% set label = loop.first ? 'Anterior' : (loop.last ? 'Próxima' : link.label) %}
-        {% set isCurrent = link.active ? 'true' : 'false' %}
-        <li>
-            {% if link.url %}
-            <a href="{{ link.url }}" aria-current="{{ isCurrent }}">{{ label }}</a>
-            {% else %}
-            <span>{{ label }}</span>
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
-</nav>
+{{ pagination(links) }}
 {% endblock %}

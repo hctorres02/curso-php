@@ -1,4 +1,5 @@
 {% extends "base.twig" %}
+{% from "components.twig" import pagination, select %}
 
 {% block main %}
 <nav>
@@ -13,27 +14,9 @@
     <ul>
         <li>
             <form role="group">
-                <select name="periodo_id">
-                    <option value="" {{ periodo_id ? '' : 'selected' }}>Período</option>
-                    <option disabled>------</option>
-                    {% for id, nome in periodos %}
-                    <option value="{{ id }}" {{ id == periodo_id ? 'selected': '' }}>{{ nome }}</option>
-                    {% endfor %}
-                </select>
-                <select name="atividade_id">
-                    <option value="" {{ atividade_id ? '' : 'selected' }}>Atividade</option>
-                    <option disabled>------</option>
-                    {% for id, nome in atividades %}
-                    <option value="{{ id }}" {{ id == atividade_id ? 'selected': '' }}>{{ nome }}</option>
-                    {% endfor %}
-                </select>
-                <select name="disciplina_id">
-                    <option value="" {{ disciplina_id ? '' : 'selected' }}>Disciplina</option>
-                    <option disabled>------</option>
-                    {% for id, nome in disciplinas %}
-                    <option value="{{ id }}" {{ id == disciplina_id ? 'selected': '' }}>{{ nome }}</option>
-                    {% endfor %}
-                </select>
+                {{ select('Período', 'periodo_id', periodos, periodo_id) }}
+                {{ select('Atividade', 'atividade_id', atividades, atividade_id) }}
+                {{ select('Disciplina', 'disciplina_id', disciplinas, disciplina_id) }}
                 <input type="submit" value="Filtrar" />
             </form>
         </li>
@@ -63,19 +46,5 @@
         {% endfor %}
     </tbody>
 </table>
-<nav>
-    <ul>
-        {% for link in links %}
-        {% set label = loop.first ? 'Anterior' : (loop.last ? 'Próxima' : link.label) %}
-        {% set isCurrent = link.active ? 'true' : 'false' %}
-        <li>
-            {% if link.url %}
-            <a href="{{ link.url }}" aria-current="{{ isCurrent }}">{{ label }}</a>
-            {% else %}
-            <span>{{ label }}</span>
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
-</nav>
+{{ pagination(links) }}
 {% endblock %}

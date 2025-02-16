@@ -1,4 +1,5 @@
 {% extends "base.twig" %}
+{% from "components.twig" import pagination, select %}
 
 {% block main %}
 <nav>
@@ -14,13 +15,7 @@
         <li>
             <form role="search">
                 <input type="search" name="nome" value="{{ nome }}" placeholder="Nome">
-                <select name="periodo_id">
-                    <option value="" {{ periodo_id ? '' : 'selected' }}>Período</option>
-                    <option disabled>------</option>
-                    {% for id, nome in periodos %}
-                    <option value="{{ id }}" {{ id == periodo_id ? 'selected': '' }}>{{ nome }}</option>
-                    {% endfor %}
-                </select>
+                {{ select('Período', 'periodo_id', periodos, periodo_id) }}
                 <input type="submit" value="Buscar">
             </form>
         </li>
@@ -54,19 +49,5 @@
     {% endfor %}
 </div>
 {% endfor %}
-<nav>
-    <ul>
-        {% for link in links %}
-        {% set label = loop.first ? 'Anterior' : (loop.last ? 'Próxima' : link.label) %}
-        {% set isCurrent = link.active ? 'true' : 'false' %}
-        <li>
-            {% if link.url %}
-            <a href="{{ link.url }}" aria-current="{{ isCurrent }}">{{ label }}</a>
-            {% else %}
-            <span>{{ label }}</span>
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
-</nav>
+{{ pagination(links) }}
 {% endblock %}

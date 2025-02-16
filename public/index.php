@@ -15,6 +15,9 @@ View::addGlobals([
     'CURRENT_URI' => $request->getPathInfo(),
 ]);
 
+// adiciona helper ATTR
+View::addFunction('attr', attr(...));
+
 // adiciona helper URL
 View::addFunction('url', url(...));
 
