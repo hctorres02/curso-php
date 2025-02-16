@@ -2,18 +2,19 @@
 {% from "components.twig" import pagination %}
 
 {% block main %}
+<hgroup role="heading">
+    <h3>Períodos</h3>
+    <p>Total: {{ total }} períodos</p>
+</hgroup>
 <nav>
     <ul>
         <li>
-            <hgroup role="heading">
-                <h3>Períodos</h3>
-                <p>Total: {{ total }} períodos</p>
-            </hgroup>
+            <a href="{{ url('/periodos/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
         </li>
     </ul>
     <ul>
         <li>
-            <form role="search">
+            <form role="search" style="margin-bottom: 0.5rem;">
                 <input type="search" name="q" value="{{ q }}" placeholder="Ano ou semestre">
                 <input type="submit" value="Buscar">
             </form>
