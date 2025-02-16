@@ -4,6 +4,19 @@ use Faker\Factory;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Support\Carbon;
 
+if (! function_exists('attribute')) {
+    function attr(array $attributes): string
+    {
+        return collect($attributes)->reduce(function ($attributes, $value, $attr) {
+            if ($value !== false) {
+                $attributes .= ' '.(is_bool($value) ? $attr : "{$attr}=\"{$value}\"");
+            }
+
+            return trim($attributes, ' ');
+        }, '');
+    }
+}
+
 if (! function_exists('createLocalDatabase')) {
     function createLocalDatabase(bool $forceOverwrite = false): void
     {
@@ -85,6 +98,18 @@ if (! function_exists('today')) {
 if (! function_exists('url')) {
     function url(string $path, array $params = []): string
     {
-        return implode('?', [$path, http_build_query($params)]);
+        $params = collect($params)->reduce(function ($params, $value, $key) use (&$path) {
+            $newPath = preg_replace('/\{'.preg_quote($key, '/').'\}/', $value, $path);
+
+            if ($newPath === $path) {
+                $params[$key] = $value;
+            }
+
+            $path = $newPath;
+
+            return $params;
+        }, []);
+
+        return implode('?', array_filter([$path, http_build_query($params)]));
     }
 }

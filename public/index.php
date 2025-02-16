@@ -7,13 +7,19 @@ use Symfony\Component\HttpFoundation\Request;
 require __DIR__.'/../src/bootstrap.php';
 
 // captura requisição
-$request = Request::createFromGlobals();;
+$request = Request::createFromGlobals();
+
+// habilita reescrita de método (PUT, PATCH, DELETE)
+$request->enableHttpMethodParameterOverride();
 
 // adiciona variáveis globais ao contexto da view
 View::addGlobals([
     'APP_LOCALE' => str_replace('_', '-', env('APP_LOCALE')),
     'CURRENT_URI' => $request->getPathInfo(),
 ]);
+
+// adiciona helper ATTR
+View::addFunction('attr', attr(...));
 
 // adiciona helper URL
 View::addFunction('url', url(...));

@@ -4,11 +4,11 @@ namespace App\Http;
 
 use App\Traits\IsSingleton;
 use Illuminate\Database\Eloquent\Model;
+use ReflectionClass;
+use ReflectionFunction;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use ReflectionClass;
-use ReflectionFunction;
 
 /**
  * Classe Router que gerencia o roteamento de requisições HTTP.

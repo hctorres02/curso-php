@@ -1,18 +1,20 @@
 {% extends "base.twig" %}
+{% from "components.twig" import pagination %}
 
 {% block main %}
+<hgroup role="heading">
+    <h3>Períodos</h3>
+    <p>Total: {{ total }} períodos</p>
+</hgroup>
 <nav>
     <ul>
         <li>
-            <hgroup role="heading">
-                <h3>Períodos</h3>
-                <p>Total: {{ total }} períodos</p>
-            </hgroup>
+            <a href="{{ url('/periodos/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
         </li>
     </ul>
     <ul>
         <li>
-            <form role="search">
+            <form role="search" style="margin-bottom: 0.5rem;">
                 <input type="search" name="q" value="{{ q }}" placeholder="Ano ou semestre">
                 <input type="submit" value="Buscar">
             </form>
@@ -24,8 +26,22 @@
     {% for periodo in periodos %}
     {% if periodo %}
     <article>
-        <header>
-            <strong>{{ periodo.ano }}.{{ periodo.semestre }}</strong>
+        <header style="--pico-nav-element-spacing-vertical: 0;">
+            <nav>
+                <ul>
+                    <li>
+                        <strong>{{ periodo.ano }}.{{ periodo.semestre }}</strong><br />
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <a href="{{ url('/periodos/{id}/editar', {id: periodo.id}) }}">
+                            <small>&#9998; Editar</small>
+                        </a>
+                    </li>
+                    <li>{% include "periodos/excluir.twig" %}</li>
+                </ul>
+            </nav>
         </header>
         <ul>
             <li>
@@ -48,20 +64,8 @@
     {% endif %}
     {% endfor %}
 </div>
+{% else %}
+<p>Não há períodos cadastrados</p>
 {% endfor %}
-<nav>
-    <ul>
-        {% for link in links %}
-        {% set label = loop.first ? 'Anterior' : (loop.last ? 'Próxima' : link.label) %}
-        {% set isCurrent = link.active ? 'true' : 'false' %}
-        <li>
-            {% if link.url %}
-            <a href="{{ link.url }}" aria-current="{{ isCurrent }}">{{ label }}</a>
-            {% else %}
-            <span>{{ label }}</span>
-            {% endif %}
-        </li>
-        {% endfor %}
-    </ul>
-</nav>
+{{ pagination(links) }}
 {% endblock %}

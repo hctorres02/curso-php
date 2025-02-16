@@ -1,0 +1,35 @@
+{% macro pagination(links) %}
+<nav>
+    <span aria-hidden="true"><!-- placeholder --></span>
+    <div>
+        {% for link in links %}
+        {% set label = loop.first ? '&larr; Anterior' : (loop.last ? 'Próxima &rarr;' : link.label) %}
+            <a {{ attr({
+                href: link.url ?: 'javascript:;',
+                class: link.active ? '' : 'outline',
+                role: 'button',
+                disabled: link.active or not link.url,
+            })|raw }}>{{ label|raw }}</a>
+        {% endfor %}
+    </div>
+    <span aria-hidden="true"><!-- placeholder --></span>
+</nav>
+{% endmacro %}
+
+{% macro select(label, name, options = [], default_value = '') %}
+<select name="{{ name }}" aria-label="{{ label }}">
+    <option {{ attr({
+        value: '',
+        selected: not default_value,
+    })|raw }}>{{ label }}</option>
+    {% if options %}
+    <option disabled>------</option>
+    {% for value, label in options %}
+    <option {{ attr({
+        value,
+        selected: value == default_value,
+    })|raw }}>{{ label }}</option>
+    {% endfor %}
+    {% endif %}
+</select>
+{% endmacro %}
