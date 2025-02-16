@@ -45,5 +45,5 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Twig components
 - [x] Criação
 - [x] Edição
-- [ ] Exclusão
+- [x] Exclusão
 - [ ] Menu dinâmico

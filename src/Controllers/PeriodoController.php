@@ -48,4 +48,13 @@ class PeriodoController
 
         return new RedirectResponse('/periodos');
     }
+
+    public function excluir(Periodo $periodo)
+    {
+        $periodo->agendamentos()->delete();
+        $periodo->disciplinas()->delete();
+        $periodo->delete();
+
+        return new RedirectResponse('/periodos');
+    }
 }

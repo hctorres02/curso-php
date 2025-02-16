@@ -39,6 +39,7 @@
                             <small>&#9998; Editar</small>
                         </a>
                     </li>
+                    <li>{% include "periodos/excluir.twig" %}</li>
                 </ul>
             </nav>
         </header>
@@ -63,6 +64,8 @@
     {% endif %}
     {% endfor %}
 </div>
+{% else %}
+<p>Não há períodos cadastrados</p>
 {% endfor %}
 {{ pagination(links) }}
 {% endblock %}

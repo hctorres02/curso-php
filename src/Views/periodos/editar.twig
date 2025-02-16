@@ -10,6 +10,9 @@
             <a href="{{ url('/periodos') }}">&larr; Voltar para listagem</a>
         </li>
     </ul>
+    <ul>
+        <li>{% include "periodos/excluir.twig" %}</li>
+    </ul>
 </nav>
 <form action="{{ url('/periodos/{id}', {id: periodo.id}) }}" method="post">
     {% include "periodos/fieldset.twig" %}
