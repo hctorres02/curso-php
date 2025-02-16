@@ -1,0 +1,19 @@
+{% extends "base.twig" %}
+
+{% block main %}
+<hgroup role="heading">
+    <h3>Editar período</h3>
+</hgroup>
+<nav>
+    <ul>
+        <li>
+            <a href="{{ url('/periodos') }}">&larr; Voltar para listagem</a>
+        </li>
+    </ul>
+</nav>
+<form action="{{ url('/periodos/{id}', {id: periodo.id}) }}" method="post">
+    {% include "periodos/fieldset.twig" %}
+    <input type="hidden" name="_method" value="put">
+    <input type="submit" value="&#128190; Salvar">
+</form>
+{% endblock %}

@@ -26,8 +26,21 @@
     {% for periodo in periodos %}
     {% if periodo %}
     <article>
-        <header>
-            <strong>{{ periodo.ano }}.{{ periodo.semestre }}</strong>
+        <header style="--pico-nav-element-spacing-vertical: 0;">
+            <nav>
+                <ul>
+                    <li>
+                        <strong>{{ periodo.ano }}.{{ periodo.semestre }}</strong><br />
+                    </li>
+                </ul>
+                <ul>
+                    <li>
+                        <a href="{{ url('/periodos/{id}/editar', {id: periodo.id}) }}">
+                            <small>&#9998; Editar</small>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </header>
         <ul>
             <li>

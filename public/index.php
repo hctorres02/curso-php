@@ -7,7 +7,10 @@ use Symfony\Component\HttpFoundation\Request;
 require __DIR__.'/../src/bootstrap.php';
 
 // captura requisição
-$request = Request::createFromGlobals();;
+$request = Request::createFromGlobals();
+
+// habilita reescrita de método (PUT, PATCH, DELETE)
+$request->enableHttpMethodParameterOverride();
 
 // adiciona variáveis globais ao contexto da view
 View::addGlobals([

@@ -17,6 +17,8 @@ Router::get('/agendamentos/{agendamento}', [AgendamentoController::class, 'ver']
 Router::get('/periodos', [PeriodoController::class, 'index']);
 Router::get('/periodos/cadastrar', [PeriodoController::class, 'cadastrar']);
 Router::post('/periodos', [PeriodoController::class, 'salvar']);
+Router::get('/periodos/{periodo}/editar', [PeriodoController::class, 'editar']);
+Router::put('/periodos/{periodo}', [PeriodoController::class, 'atualizar']);
 
 // disciplinas
 Router::get('/disciplinas', [DisciplinaController::class, 'index']);

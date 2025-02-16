@@ -33,4 +33,19 @@ class PeriodoController
 
         return new RedirectResponse('/periodos');
     }
+
+    public function editar(Periodo $periodo)
+    {
+        return View::render('periodos/editar', compact('periodo'));
+    }
+
+    public function atualizar(Request $request, Periodo $periodo)
+    {
+        $periodo->update([
+            'ano' => $request->get('ano'),
+            'semestre' => $request->get('semestre'),
+        ]);
+
+        return new RedirectResponse('/periodos');
+    }
 }
