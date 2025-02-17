@@ -1,0 +1,18 @@
+{% extends "base.twig" %}
+
+{% block main %}
+<hgroup role="heading">
+    <h3>Cadastrar atividade</h3>
+</hgroup>
+<nav>
+    <ul>
+        <li>
+            <a href="{{ url('/atividades') }}">&larr; Voltar para listagem</a>
+        </li>
+    </ul>
+</nav>
+<form action="{{ url('/atividades') }}" method="post">
+    {% include "atividades/fieldset.twig" %}
+    <input type="submit" value="&#128190; Cadastrar">
+</form>
+{% endblock %}

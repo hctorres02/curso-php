@@ -2,18 +2,19 @@
 {% from "components.twig" import pagination %}
 
 {% block main %}
+<hgroup role="heading">
+    <h3>Atividades</h3>
+    <p>Total: {{ total }} atividades</p>
+</hgroup>
 <nav>
     <ul>
         <li>
-            <hgroup role="heading">
-                <h3>Atividades</h3>
-                <p>Total: {{ total }} atividades</p>
-            </hgroup>
+            <a href="{{ url('/atividades/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
         </li>
     </ul>
     <ul>
         <li>
-            <form role="search">
+            <form role="search" style="margin-bottom: 0.5rem;">
                 <input type="search" name="nome" value="{{ nome }}" placeholder="Nome">
                 <input type="submit" value="Buscar">
             </form>
@@ -25,9 +26,14 @@
 <hr />
 <ul>
     {% for atividade in atividades %}
-    <li>{{ atividade.nome }}</li>
+    <li>
+        {{ atividade.nome }}
+        <a href="{{ url('/atividades/{id}/editar', {id: atividade.id}) }}" title="Editar atividade">&#9998;</a>
+    </li>
     {% endfor %}
 </ul>
+{% else %}
+<p>Não há atividades</p>
 {% endfor %}
 {{ pagination(links) }}
 {% endblock %}

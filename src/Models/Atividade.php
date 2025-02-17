@@ -20,6 +20,14 @@ class Atividade extends Model
         return $this->hasMany(Agendamento::class);
     }
 
+    public static function toOptGroup(): array
+    {
+        return static::query()
+            ->orderBy('nome')
+            ->pluck('nome', 'id')
+            ->toArray();
+    }
+
     public static function toSearch(array $params): array
     {
         // Inicia a consulta de atividades

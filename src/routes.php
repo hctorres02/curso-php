@@ -26,3 +26,8 @@ Router::get('/disciplinas', [DisciplinaController::class, 'index']);
 
 // atividades
 Router::get('/atividades', [AtividadeController::class, 'index']);
+Router::get('/atividades/cadastrar', [AtividadeController::class, 'cadastrar']);
+Router::post('/atividades', [AtividadeController::class, 'salvar']);
+Router::get('/atividades/{atividade}/editar', [AtividadeController::class, 'editar']);
+Router::put('/atividades/{atividade}', [AtividadeController::class, 'atualizar']);
+Router::delete('/atividades/{atividade}', [AtividadeController::class, 'excluir']);

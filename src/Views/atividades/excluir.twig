@@ -1,0 +1,6 @@
+<form action="{{ url('/atividades/{id}', {id: atividade.id}) }}" method="post">
+    <input type="hidden" name="_method" value="delete">
+    <a href="javascript:;" onclick="if (confirm('Deseja excluir este item?')) this.closest('form').submit()">
+        <small>&#128465; Excluir</small>
+    </a>
+</form>
