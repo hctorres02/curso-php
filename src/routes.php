@@ -23,6 +23,11 @@ Router::delete('/periodos/{periodo}', [PeriodoController::class, 'excluir']);
 
 // disciplinas
 Router::get('/disciplinas', [DisciplinaController::class, 'index']);
+Router::get('/disciplinas/cadastrar', [DisciplinaController::class, 'cadastrar']);
+Router::post('/disciplinas', [DisciplinaController::class, 'salvar']);
+Router::get('/disciplinas/{atividade}/editar', [DisciplinaController::class, 'editar']);
+Router::put('/disciplinas/{atividade}', [DisciplinaController::class, 'atualizar']);
+Router::delete('/disciplinas/{atividade}', [DisciplinaController::class, 'excluir']);
 
 // atividades
 Router::get('/atividades', [AtividadeController::class, 'index']);

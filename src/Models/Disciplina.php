@@ -27,6 +27,18 @@ class Disciplina extends Model
         return $this->hasMany(Agendamento::class);
     }
 
+    public static function toOptGroup(): array
+    {
+        return static::query()
+            ->with('periodo:id,ano,semestre')
+            ->orderBy('nome')
+            ->get(['id', 'periodo_id', 'nome'])
+            ->groupBy(fn ($disciplina) => "{$disciplina->periodo->ano}.{$disciplina->periodo->semestre}")
+            ->map(fn ($disciplina) => $disciplina->pluck('nome', 'id'))
+            ->sortKeysDesc()
+            ->toArray();
+    }
+
     public static function toSearch(array $params): array
     {
         // Inicia a consulta das disciplinas, com carregamento do relacionamento 'periodo'

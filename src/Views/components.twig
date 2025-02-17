@@ -4,16 +4,31 @@
     <div>
         {% for link in links %}
         {% set label = loop.first ? '&larr; Anterior' : (loop.last ? 'Próxima &rarr;' : link.label) %}
-            <a {{ attr({
-                href: link.url ?: 'javascript:;',
-                class: link.active ? '' : 'outline',
-                role: 'button',
-                disabled: link.active or not link.url,
-            })|raw }}>{{ label|raw }}</a>
+        <a {{ attr({
+            href: link.url ?: 'javascript:;',
+            class: link.active ? '' : 'outline',
+            role: 'button',
+            disabled: link.active or not link.url,
+        })|raw }}>{{ label|raw }}</a>
         {% endfor %}
     </div>
     <span aria-hidden="true"><!-- placeholder --></span>
 </nav>
+{% endmacro %}
+
+{% macro opt(label, value, default_value) %}
+<option {{ attr({
+    value,
+    selected: value == default_value,
+})|raw }}>{{ label }}</option>
+{% endmacro %}
+
+{% macro group(label, options, default_value) %}
+<optgroup label="{{ label }}">
+    {% for value, label in options %}
+    {{ _self.opt(label, value, default_value) }}
+    {% endfor %}
+</optgroup>
 {% endmacro %}
 
 {% macro select(label, name, options = [], default_value = '') %}
@@ -25,10 +40,7 @@
     {% if options %}
     <option disabled>------</option>
     {% for value, label in options %}
-    <option {{ attr({
-        value,
-        selected: value == default_value,
-    })|raw }}>{{ label }}</option>
+    {{ label is iterable ? _self.group(value, label, default_value) : _self.opt(label, value, default_value) }}
     {% endfor %}
     {% endif %}
 </select>

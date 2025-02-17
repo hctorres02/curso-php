@@ -1,0 +1,22 @@
+{% extends "base.twig" %}
+
+{% block main %}
+<hgroup role="heading">
+    <h3>Editar disciplina</h3>
+</hgroup>
+<nav>
+    <ul>
+        <li>
+            <a href="{{ url('/disciplinas') }}">&larr; Voltar para listagem</a>
+        </li>
+    </ul>
+    <ul>
+        <li>{% include "disciplinas/excluir.twig" %}</li>
+    </ul>
+</nav>
+<form action="{{ url('/disciplinas/{id}', {id: disciplina.id}) }}" method="post">
+    {% include "disciplinas/fieldset.twig" %}
+    <input type="hidden" name="_method" value="put">
+    <input type="submit" value="&#128190; Salvar">
+</form>
+{% endblock %}

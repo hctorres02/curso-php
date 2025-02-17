@@ -1,0 +1,16 @@
+{% from "components.twig" import select %}
+
+<fieldset class="grid">
+    <label>
+        Período
+        {{ select('Período', 'periodo_id', periodos, disciplina.periodo_id ?? '') }}
+    </label>
+    <label>
+        Nome
+        <input type="text" name="nome" value="{{ disciplina.nome ?? '' }}" placeholder="Nome" />
+    </label>
+    <label>
+        Cor
+        <input type="color" name="cor" value="{{ disciplina.cor ?? '' }}" placeholder="Cor" />
+    </label>
+</fieldset>
