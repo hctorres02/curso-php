@@ -1,0 +1,18 @@
+{% extends "base.twig" %}
+
+{% block main %}
+<hgroup role="heading">
+    <h3>Cadastrar agendamento</h3>
+</hgroup>
+<nav>
+    <ul>
+        <li>
+            <a href="{{ url('/agendamentos') }}">&larr; Voltar para listagem</a>
+        </li>
+    </ul>
+</nav>
+<form action="{{ url('/agendamentos') }}" method="post">
+    {% include "agendamentos/fieldset.twig" %}
+    <input type="submit" value="&#128190; Cadastrar">
+</form>
+{% endblock %}

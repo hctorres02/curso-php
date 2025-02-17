@@ -1,0 +1,22 @@
+{% from "components.twig" import select %}
+
+<fieldset class="grid">
+    <label>
+        Atividade
+        {{ select('Atividade', 'atividade_id', atividades, agendamento.atividade_id ?? '') }}
+    </label>
+    <label>
+        Disciplina
+        {{ select('Disciplina', 'disciplina_id', disciplinas, agendamento.disciplina_id ?? '') }}
+    </label>
+    <label>
+        Data
+        <input type="date" name="data" value="{{ (agendamento.data ?? '')|date('Y-m-d') }}">
+    </label>
+</fieldset>
+<fieldset class="grid">
+    <label>
+        Conteúdo
+        <textarea name="conteudo" rows="15">{{ agendamento.conteudo ?? '' }}</textarea>
+    </label>
+</fieldset>

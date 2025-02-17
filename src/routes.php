@@ -11,7 +11,12 @@ Router::redirect('/', '/agendamentos');
 
 // agendamentos
 Router::get('/agendamentos', [AgendamentoController::class, 'index']);
+Router::get('/agendamentos/cadastrar', [AgendamentoController::class, 'cadastrar']);
+Router::post('/agendamentos', [AgendamentoController::class, 'salvar']);
 Router::get('/agendamentos/{agendamento}', [AgendamentoController::class, 'ver']);
+Router::get('/agendamentos/{periodo}/editar', [AgendamentoController::class, 'editar']);
+Router::put('/agendamentos/{periodo}', [AgendamentoController::class, 'atualizar']);
+Router::delete('/agendamentos/{periodo}', [AgendamentoController::class, 'excluir']);
 
 // períodos
 Router::get('/periodos', [PeriodoController::class, 'index']);
