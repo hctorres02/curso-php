@@ -2,6 +2,7 @@
 
 use App\Http\View;
 use Faker\Factory;
+use GuzzleHttp\Client;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -53,11 +54,21 @@ if (! function_exists('hello_word')) {
     }
 }
 
+if (! function_exists('httpClient')) {
+    function httpClient(): Client
+    {
+        return new Client([
+            'base_uri' => env('APP_URL'),
+            'timeout' => 0,
+        ]);
+    }
+}
+
 if (! function_exists('migrate')) {
     function migrate(string $migration): void
     {
         // executa migration
-        (require_once $migration)->up();
+        (require $migration)->up();
 
         // registra migration no banco de dados
         DB::table('migrations')->insert([
@@ -87,7 +98,7 @@ if (! function_exists('rollback')) {
         DB::table('migrations')->where('filename', $filename)->delete();
 
         // reverte migration
-        (require_once PROJECT_ROOT."/database/migrations/{$filename}.php")->down();
+        (require PROJECT_ROOT."/database/migrations/{$filename}.php")->down();
     }
 }
 
@@ -102,6 +113,41 @@ if (! function_exists('response')) {
     function response(string $viewName, array $data = [], int $status = Response::HTTP_OK): Response
     {
         return new Response(View::render($viewName, $data), $status);
+    }
+}
+
+if (! function_exists('runServer')) {
+    function runServer(bool $keepOn = false): string
+    {
+        $host = env('APP_URL');
+
+        if (! $host) {
+            echo "Você precisa definir um valor para APP_URL no seu `.env`\n";
+            exit(1);
+        }
+
+        $root = PROJECT_ROOT;
+        $command = "php -c {$root}/99-custom.ini -S {$host} -t {$root}/public";
+
+        if (! $keepOn) {
+            $command = "{$command} > /dev/null 2>&1 &";
+        }
+
+        exec($command);
+        sleep(2);
+
+        return $command;
+    }
+}
+
+if (! function_exists('stopServer')) {
+    function stopServer(): void
+    {
+        $root = PROJECT_ROOT;
+        $host = env('APP_URL');
+        $command = "php -c {$root}/99-custom.ini -S {$host} -t {$root}/public";
+
+        exec("pkill -f '{$command}'");
     }
 }
 
