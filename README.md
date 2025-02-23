@@ -52,4 +52,4 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Requisição
 - [x] Sessão
 - [x] Validação
-- [ ] Resposta
+- [x] Resposta

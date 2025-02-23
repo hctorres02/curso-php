@@ -3,58 +3,58 @@
 namespace App\Controllers;
 
 use App\Http\Request;
-use App\Http\View;
 use App\Models\Atividade;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class AtividadeController
 {
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $data = Atividade::toSearch([
             'nome' => $request->get('nome'),
         ]);
 
-        return View::render('atividades/index', $data);
+        return response('atividades/index', $data);
     }
 
-    public function cadastrar()
+    public function cadastrar(): Response
     {
-        return View::render('atividades/cadastrar');
+        return response('atividades/cadastrar');
     }
 
-    public function salvar(Request $request)
+    public function salvar(Request $request): RedirectResponse
     {
         if (! $request->validate(Atividade::rules())) {
-            return new RedirectResponse('/atividades/cadastrar');
+            return redirect('/atividades/cadastrar');
         }
 
         $atividade = Atividade::create($request->validated);
 
-        return new RedirectResponse('/atividades');
+        return redirect('/atividades');
     }
 
-    public function editar(Atividade $atividade)
+    public function editar(Atividade $atividade): Response
     {
-        return View::render('atividades/editar', compact('atividade'));
+        return response('atividades/editar', compact('atividade'));
     }
 
-    public function atualizar(Request $request, Atividade $atividade)
+    public function atualizar(Request $request, Atividade $atividade): RedirectResponse
     {
         if (! $request->validate(Atividade::rules())) {
-            return new RedirectResponse("/atividades/{$atividade->id}/editar");
+            return redirect("/atividades/{$atividade->id}/editar");
         }
 
         $atividade->update($request->validated);
 
-        return new RedirectResponse('/atividades');
+        return redirect('/atividades');
     }
 
-    public function excluir(Atividade $atividade)
+    public function excluir(Atividade $atividade): RedirectResponse
     {
         $atividade->agendamentos()->delete();
         $atividade->delete();
 
-        return new RedirectResponse('/atividades');
+        return redirect('/atividades');
     }
 }

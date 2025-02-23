@@ -3,24 +3,24 @@
 namespace App\Controllers;
 
 use App\Http\Request;
-use App\Http\View;
 use App\Models\Disciplina;
 use App\Models\Periodo;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class DisciplinaController
 {
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $data = Disciplina::toSearch([
             'nome' => $request->get('nome'),
             'periodo_id' => $request->get('periodo_id'),
         ]);
 
-        return View::render('disciplinas/index', $data);
+        return response('disciplinas/index', $data);
     }
 
-    public function cadastrar()
+    public function cadastrar(): Response
     {
         $periodos = Periodo::query()
             ->select('id')
@@ -28,21 +28,21 @@ class DisciplinaController
             ->pluck('nome', 'id')
             ->sortDesc();
 
-        return view::render('disciplinas/cadastrar', compact('periodos'));
+        return response('disciplinas/cadastrar', compact('periodos'));
     }
 
-    public function salvar(Request $request)
+    public function salvar(Request $request): RedirectResponse
     {
         if (! $request->validate(Disciplina::rules())) {
-            return new RedirectResponse('/disciplinas/cadastrar');
+            return redirect('/disciplinas/cadastrar');
         }
 
         $disciplina = Disciplina::create($request->validated);
 
-        return new RedirectResponse('/disciplinas');
+        return redirect('/disciplinas');
     }
 
-    public function editar(Disciplina $disciplina)
+    public function editar(Disciplina $disciplina): Response
     {
         $periodos = Periodo::query()
             ->select('id')
@@ -50,13 +50,13 @@ class DisciplinaController
             ->pluck('nome', 'id')
             ->sortDesc();
 
-        return view::render('disciplinas/editar', compact('periodos', 'disciplina'));
+        return response('disciplinas/editar', compact('periodos', 'disciplina'));
     }
 
-    public function atualizar(Request $request, Disciplina $disciplina)
+    public function atualizar(Request $request, Disciplina $disciplina): RedirectResponse
     {
         if (! $request->validate(Disciplina::rules())) {
-            return new RedirectResponse("/disciplinas/{$disciplina->id}/editar");
+            return redirect("/disciplinas/{$disciplina->id}/editar");
         }
 
         $disciplina->update([
@@ -65,14 +65,14 @@ class DisciplinaController
             'cor' => $request->get('cor'),
         ]);
 
-        return new RedirectResponse('/disciplinas');
+        return redirect('/disciplinas');
     }
 
-    public function excluir(Disciplina $disciplina)
+    public function excluir(Disciplina $disciplina): RedirectResponse
     {
         $disciplina->agendamentos()->delete();
         $disciplina->delete();
 
-        return new RedirectResponse('/disciplinas');
+        return redirect('/disciplinas');
     }
 }

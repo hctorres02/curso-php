@@ -3,59 +3,59 @@
 namespace App\Controllers;
 
 use App\Http\Request;
-use App\Http\View;
 use App\Models\Periodo;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class PeriodoController
 {
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $data = Periodo::toSearch([
             'q' => $request->get('q'),
         ]);
 
-        return View::render('periodos/index', $data);
+        return response('periodos/index', $data);
     }
 
-    public function cadastrar()
+    public function cadastrar(): Response
     {
-        return View::render('periodos/cadastrar');
+        return response('periodos/cadastrar');
     }
 
-    public function salvar(Request $request)
+    public function salvar(Request $request): Response
     {
         if (! $request->validate(Periodo::rules())) {
-            return new RedirectResponse('/periodos/cadastrar');
+            return redirect('/periodos/cadastrar');
         }
 
         $periodo = Periodo::create($request->validated);
 
-        return new RedirectResponse('/periodos');
+        return redirect('/periodos');
     }
 
-    public function editar(Periodo $periodo)
+    public function editar(Periodo $periodo): Response
     {
-        return View::render('periodos/editar', compact('periodo'));
+        return response('periodos/editar', compact('periodo'));
     }
 
-    public function atualizar(Request $request, Periodo $periodo)
+    public function atualizar(Request $request, Periodo $periodo): RedirectResponse
     {
         if (! $request->validate(Periodo::rules())) {
-            return new RedirectResponse("/periodos/{$periodo->id}/editar");
+            return redirect("/periodos/{$periodo->id}/editar");
         }
 
         $periodo->update($request->validated);
 
-        return new RedirectResponse('/periodos');
+        return redirect('/periodos');
     }
 
-    public function excluir(Periodo $periodo)
+    public function excluir(Periodo $periodo): RedirectResponse
     {
         $periodo->agendamentos()->delete();
         $periodo->disciplinas()->delete();
         $periodo->delete();
 
-        return new RedirectResponse('/periodos');
+        return redirect('/periodos');
     }
 }

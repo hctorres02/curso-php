@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\View;
 use Faker\Factory;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Support\Carbon;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 if (! function_exists('attribute')) {
     function attr(array $attributes): string
@@ -85,6 +88,20 @@ if (! function_exists('rollback')) {
 
         // reverte migration
         (require_once PROJECT_ROOT."/database/migrations/{$filename}.php")->down();
+    }
+}
+
+if (! function_exists('redirect')) {
+    function redirect(string $url, int $status = Response::HTTP_FOUND): RedirectResponse
+    {
+        return new RedirectResponse($url, $status);
+    }
+}
+
+if (! function_exists('response')) {
+    function response(string $viewName, array $data = [], int $status = Response::HTTP_OK): Response
+    {
+        return new Response(View::render($viewName, $data), $status);
     }
 }
 
