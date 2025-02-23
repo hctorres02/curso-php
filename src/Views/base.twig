@@ -1,3 +1,5 @@
+{% from "components.twig" import main_menu %}
+
 <!doctype html>
 <html lang="{{ APP_LOCALE }}">
 
@@ -21,20 +23,7 @@
                         </hgroup>
                     </li>
                 </ul>
-                <ul>
-                    <li>
-                        <a href="/agendamentos">Agendamentos</a>
-                    </li>
-                    <li>
-                        <a href="/periodos">Períodos</a>
-                    </li>
-                    <li>
-                        <a href="/disciplinas">Disciplinas</a>
-                    </li>
-                    <li>
-                        <a href="/atividades">Atividades</a>
-                    </li>
-                </ul>
+                {{ main_menu(MAIN_MENU) }}
             </nav>
         </header>
         <main>

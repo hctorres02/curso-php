@@ -16,6 +16,12 @@ $request->enableHttpMethodParameterOverride();
 View::addGlobals([
     'APP_LOCALE' => str_replace('_', '-', env('APP_LOCALE')),
     'CURRENT_URI' => $request->getPathInfo(),
+    'MAIN_MENU' => [
+        'Agendamentos' => '/agendamentos',
+        'Períodos' => '/periodos',
+        'Disciplinas' => '/disciplinas',
+        'Atividades' => '/atividades',
+    ],
 ]);
 
 // adiciona helper ATTR
