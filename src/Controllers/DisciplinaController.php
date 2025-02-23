@@ -2,11 +2,11 @@
 
 namespace App\Controllers;
 
+use App\Http\Request;
 use App\Http\View;
 use App\Models\Disciplina;
 use App\Models\Periodo;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 class DisciplinaController
 {

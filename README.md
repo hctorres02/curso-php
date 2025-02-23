@@ -49,7 +49,7 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Menu dinâmico
 
 #### Fluxo HTTP
-- [ ] Requisição
+- [x] Requisição
 - [ ] Sessão
 - [ ] Validação
 - [ ] Resposta

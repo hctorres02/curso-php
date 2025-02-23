@@ -1,13 +1,13 @@
 <?php
 
+use App\Http\Request;
 use App\Http\Router;
 use App\Http\View;
-use Symfony\Component\HttpFoundation\Request;
 
 require __DIR__.'/../src/bootstrap.php';
 
 // captura requisição
-$request = Request::createFromGlobals();
+$request = Request::boot();
 
 // habilita reescrita de método (PUT, PATCH, DELETE)
 $request->enableHttpMethodParameterOverride();

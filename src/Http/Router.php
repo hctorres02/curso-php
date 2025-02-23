@@ -2,12 +2,12 @@
 
 namespace App\Http;
 
+use App\Http\Request;
 use App\Traits\IsSingleton;
 use Illuminate\Database\Eloquent\Model;
 use ReflectionClass;
 use ReflectionFunction;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -233,7 +233,7 @@ class Router
             }
 
             $params = array_filter($params, is_string(...), ARRAY_FILTER_USE_KEY);
-            $content = $this->resolveCallback($action, $params, $uri);
+            $content = $this->resolveCallback($action, $params);
 
             if ($content instanceof RedirectResponse) {
                 return $content;

@@ -2,11 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Http\Request;
 use App\Http\View;
 use App\Models\Periodo;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class PeriodoController
 {
