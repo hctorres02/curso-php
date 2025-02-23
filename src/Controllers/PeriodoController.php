@@ -2,59 +2,60 @@
 
 namespace App\Controllers;
 
-use App\Http\View;
+use App\Http\Request;
 use App\Models\Periodo;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class PeriodoController
 {
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $data = Periodo::toSearch([
             'q' => $request->get('q'),
         ]);
 
-        return View::render('periodos/index', $data);
+        return response('periodos/index', $data);
     }
 
-    public function cadastrar()
+    public function cadastrar(): Response
     {
-        return View::render('periodos/cadastrar');
+        return response('periodos/cadastrar');
     }
 
-    public function salvar(Request $request)
+    public function salvar(Request $request): Response
     {
-        $periodo = Periodo::create([
-            'ano' => $request->get('ano'),
-            'semestre' => $request->get('semestre'),
-        ]);
+        if (! $request->validate(Periodo::rules())) {
+            return redirect('/periodos/cadastrar');
+        }
 
-        return new RedirectResponse('/periodos');
+        $periodo = Periodo::create($request->validated);
+
+        return redirect('/periodos');
     }
 
-    public function editar(Periodo $periodo)
+    public function editar(Periodo $periodo): Response
     {
-        return View::render('periodos/editar', compact('periodo'));
+        return response('periodos/editar', compact('periodo'));
     }
 
-    public function atualizar(Request $request, Periodo $periodo)
+    public function atualizar(Request $request, Periodo $periodo): RedirectResponse
     {
-        $periodo->update([
-            'ano' => $request->get('ano'),
-            'semestre' => $request->get('semestre'),
-        ]);
+        if (! $request->validate(Periodo::rules())) {
+            return redirect("/periodos/{$periodo->id}/editar");
+        }
 
-        return new RedirectResponse('/periodos');
+        $periodo->update($request->validated);
+
+        return redirect('/periodos');
     }
 
-    public function excluir(Periodo $periodo)
+    public function excluir(Periodo $periodo): RedirectResponse
     {
         $periodo->agendamentos()->delete();
         $periodo->disciplinas()->delete();
         $periodo->delete();
 
-        return new RedirectResponse('/periodos');
+        return redirect('/periodos');
     }
 }

@@ -1,21 +1,30 @@
 <?php
 
+use App\Http\Request;
 use App\Http\Router;
 use App\Http\View;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
+use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 require __DIR__.'/../src/bootstrap.php';
 
 // captura requisição
-$request = Request::createFromGlobals();
+$request = Request::boot();
 
 // habilita reescrita de método (PUT, PATCH, DELETE)
 $request->enableHttpMethodParameterOverride();
+
+// define sessão
+$request->setSession(new Session(
+    new NativeSessionStorage(handler: new NativeFileSessionHandler)
+));
 
 // adiciona variáveis globais ao contexto da view
 View::addGlobals([
     'APP_LOCALE' => str_replace('_', '-', env('APP_LOCALE')),
     'CURRENT_URI' => $request->getPathInfo(),
+    'ERRORS' => $request->getErrors(),
     'MAIN_MENU' => [
         'Agendamentos' => '/agendamentos',
         'Períodos' => '/periodos',

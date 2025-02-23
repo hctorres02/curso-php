@@ -2,12 +2,12 @@
 
 namespace App\Http;
 
+use App\Http\Request;
 use App\Traits\IsSingleton;
 use Illuminate\Database\Eloquent\Model;
 use ReflectionClass;
 use ReflectionFunction;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
+use ReflectionParameter;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -55,13 +55,6 @@ class Router
     private Request $request;
 
     /**
-     * Objeto Response que será retornado ao cliente.
-     *
-     * @var Response
-     */
-    private Response $response;
-
-    /**
      * Método mágico que intercepta chamadas estáticas de métodos não definidos,
      * registrando as rotas no roteador.
      *
@@ -86,7 +79,6 @@ class Router
     {
         $router = static::getInstance();
         $router->request = $request;
-        $router->response = new Response;
 
         return $router->resolveRoute();
     }
@@ -100,9 +92,9 @@ class Router
      *
      * @return void
      */
-    public static function redirect(string $from, string $to, int $status = 302): void
+    public static function redirect(string $from, string $to, int $status = Response::HTTP_FOUND): void
     {
-        static::get($from, fn () => new RedirectResponse($to, $status));
+        static::get($from, fn () => redirect($to, $status));
     }
 
     /**
@@ -153,12 +145,7 @@ class Router
         $reflectionClass = new ReflectionClass($controller);
 
         if (! $reflectionClass->hasMethod($method)) {
-            $this->response->setStatusCode(Response::HTTP_NOT_IMPLEMENTED);
-
-            return View::render('erro_501', [
-                'controller' => $controller,
-                'method' => $method,
-            ]);
+            return response('erro_501', compact('controller', 'method'), Response::HTTP_NOT_IMPLEMENTED);
         }
 
         $dependencies = $this->resolveParams($reflectionClass->getConstructor()?->getParameters() ?: []);
@@ -180,7 +167,6 @@ class Router
     {
         return match (true) {
             $className === Request::class => $this->request,
-            $className === Response::class => $this->response,
             is_subclass_of($className, Model::class) => $className::findOrFail($value),
             default => new $className
         };
@@ -201,17 +187,13 @@ class Router
      *
      * @return array Retorna um array de valores resolvidos para os parâmetros do método ou do construtor.
      */
-    private function resolveParams(array $reflectionParams, array $routeParams = [])
+    private function resolveParams(array $reflectionParams, array $routeParams = []): array
     {
-        return array_reduce($reflectionParams, function ($resolvedParams, $param) use ($routeParams) {
+        return array_reduce($reflectionParams, function (array $resolvedParams, ReflectionParameter $param) use ($routeParams) {
             $paramType = $param->getType();
             $paramName = $paramType->getName();
-
-            if ($paramType && ! $param->isOptional()) {
-                $resolvedParams[] = $this->resolveDependency($paramName, array_shift($routeParams));
-            } else {
-                $resolvedParams[] = array_shift($routeParams);
-            }
+            $routeParam = array_shift($routeParams);
+            $resolvedParams[] = $paramType && ! $param->isOptional() ? $this->resolveDependency($paramName, $routeParam) : $routeParam;
 
             return $resolvedParams;
         }, []);
@@ -228,25 +210,14 @@ class Router
             $pattern = '#^'.preg_replace('/\{([\w]+)\}/', '(?P<\1>[^/]+)', $uri).'$#';
             $path = rtrim($this->request->getPathInfo(), '/') ?: '/';
 
-            if (! preg_match($pattern, $path, $params)) {
-                continue;
+            if (preg_match($pattern, $path, $params)) {
+                return $this->resolveCallback(
+                    $action,
+                    array_filter($params, is_string(...), ARRAY_FILTER_USE_KEY)
+                );
             }
-
-            $params = array_filter($params, is_string(...), ARRAY_FILTER_USE_KEY);
-            $content = $this->resolveCallback($action, $params, $uri);
-
-            if ($content instanceof RedirectResponse) {
-                return $content;
-            }
-
-            $this->response->setContent($content);
-
-            return $this->response;
         }
 
-        $this->response->setContent(View::render('erro_404'));
-        $this->response->setStatusCode(Response::HTTP_NOT_FOUND);
-
-        return $this->response;
+        return response('erro_404', status: Response::HTTP_NOT_FOUND);
     }
 }

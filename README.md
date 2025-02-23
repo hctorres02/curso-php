@@ -47,3 +47,10 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Edição
 - [x] Exclusão
 - [x] Menu dinâmico
+
+#### Fluxo HTTP
+- [x] Requisição
+- [x] Sessão
+- [x] Validação
+- [x] Resposta
+- [x] Testes

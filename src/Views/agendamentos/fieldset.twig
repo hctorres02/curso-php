@@ -1,4 +1,4 @@
-{% from "components.twig" import select %}
+{% from "components.twig" import input, select, textarea %}
 
 <fieldset class="grid">
     <label>
@@ -11,12 +11,12 @@
     </label>
     <label>
         Data
-        <input type="date" name="data" value="{{ (agendamento.data ?? '')|date('Y-m-d') }}">
+        {{ input('date', 'Data', 'data', (agendamento.data ?? '')|date('Y-m-d')) }}
     </label>
 </fieldset>
 <fieldset class="grid">
     <label>
         Conteúdo
-        <textarea name="conteudo" rows="15">{{ agendamento.conteudo ?? '' }}</textarea>
+        {{ textarea('Conteúdo', 'conteudo', agendamento.conteudo ?? '') }}
     </label>
 </fieldset>

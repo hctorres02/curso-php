@@ -7,7 +7,9 @@
         "illuminate/database": "^11.39",
         "symfony/http-foundation": "^7.2",
         "twig/twig": "^3.19",
-        "illuminate/pagination": "^11.41"
+        "illuminate/pagination": "^11.41",
+        "respect/validation": "^2.4",
+        "guzzlehttp/guzzle": "^7.9"
     },
     "require-dev": {
         "pestphp/pest": "^3.7",

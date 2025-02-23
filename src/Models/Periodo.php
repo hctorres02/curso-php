@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Respect\Validation\Validator;
 
 class Periodo extends Model
 {
@@ -15,6 +16,14 @@ class Periodo extends Model
         'ano',
         'semestre',
     ];
+
+    public static function rules(): array
+    {
+        return [
+            'ano' => Validator::alnum(),
+            'semestre' => Validator::alnum(),
+        ];
+    }
 
     public function atividades(): HasManyThrough
     {

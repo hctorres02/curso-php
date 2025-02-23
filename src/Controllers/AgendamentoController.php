@@ -2,16 +2,16 @@
 
 namespace App\Controllers;
 
-use App\Http\View;
+use App\Http\Request;
 use App\Models\Agendamento;
 use App\Models\Atividade;
 use App\Models\Disciplina;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AgendamentoController
 {
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
         $data = Agendamento::toSearch([
             'periodo_id' => $request->get('periodo_id'),
@@ -19,58 +19,56 @@ class AgendamentoController
             'disciplina_id' => $request->get('disciplina_id'),
         ]);
 
-        return View::render('agendamentos/index', $data);
+        return response('agendamentos/index', $data);
     }
 
-    public function cadastrar()
+    public function cadastrar(): Response
     {
         $atividades = Atividade::toOptGroup();
         $disciplinas = Disciplina::toOptGroup();
 
-        return View::render('agendamentos/cadastrar', compact('atividades', 'disciplinas'));
+        return response('agendamentos/cadastrar', compact('atividades', 'disciplinas'));
     }
 
-    public function salvar(Request $request)
+    public function salvar(Request $request): Response
     {
-        $agendamento = Agendamento::create([
-            'atividade_id' => $request->get('atividade_id'),
-            'disciplina_id' => $request->get('disciplina_id'),
-            'conteudo' => $request->get('conteudo'),
-            'data' => $request->get('data'),
-        ]);
+        if (! $request->validate(Agendamento::rules())) {
+            return redirect('/agendamentos/cadastrar');
+        }
 
-        return new RedirectResponse('/agendamentos');
+        $agendamento = Agendamento::create($request->validated);
+
+        return redirect('/agendamentos');
     }
 
-    public function ver(Agendamento $agendamento)
+    public function ver(Agendamento $agendamento): Response
     {
-        return View::render('agendamentos/ver', compact('agendamento'));
+        return response('agendamentos/ver', compact('agendamento'));
     }
 
-    public function editar(Agendamento $agendamento)
+    public function editar(Agendamento $agendamento): Response
     {
         $atividades = Atividade::toOptGroup();
         $disciplinas = Disciplina::toOptGroup();
 
-        return View::render('agendamentos/editar', compact('atividades', 'disciplinas', 'agendamento'));
+        return response('agendamentos/editar', compact('atividades', 'disciplinas', 'agendamento'));
     }
 
-    public function atualizar(Request $request, Agendamento $agendamento)
+    public function atualizar(Request $request, Agendamento $agendamento): RedirectResponse
     {
-        $agendamento->update([
-            'atividade_id' => $request->get('atividade_id'),
-            'disciplina_id' => $request->get('disciplina_id'),
-            'conteudo' => $request->get('conteudo'),
-            'data' => $request->get('data'),
-        ]);
+        if (! $request->validate(Agendamento::rules())) {
+            return redirect("/agendamentos/{$agendamento->id}/editar");
+        }
 
-        return new RedirectResponse('/agendamentos');
+        $agendamento->update($request->validated);
+
+        return redirect('/agendamentos');
     }
 
-    public function excluir(Agendamento $agendamento)
+    public function excluir(Agendamento $agendamento): RedirectResponse
     {
         $agendamento->delete();
 
-        return new RedirectResponse('/agendamentos');
+        return redirect('/agendamentos');
     }
 }

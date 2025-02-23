@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Respect\Validation\Validator;
 
 class Disciplina extends Model
 {
@@ -16,6 +17,15 @@ class Disciplina extends Model
         'nome',
         'cor',
     ];
+
+    public static function rules(): array
+    {
+        return [
+            'periodo_id' => Validator::intVal()->callback(Periodo::exists(...)),
+            'nome' => Validator::notEmpty()->max(20),
+            'cor' => Validator::hexRgbColor(),
+        ];
+    }
 
     public function periodo(): BelongsTo
     {
