@@ -1,10 +1,12 @@
+{% from "components.twig" import input %}
+
 <fieldset class="grid">
     <label>
         Nome
-        <input type="text" name="nome" value="{{ atividade.nome ?? '' }}" placeholder="Nome" />
+        {{ input('text', 'Nome', 'nome', atividade.nome ?? '') }}
     </label>
     <label>
         Cor
-        <input type="color" name="cor" value="{{ atividade.cor ?? '' }}" placeholder="Cor" />
+        {{ input('color', 'Cor', 'cor', atividade.cor ?? '') }}
     </label>
 </fieldset>

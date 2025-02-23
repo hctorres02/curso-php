@@ -1,4 +1,4 @@
-{% from "components.twig" import select %}
+{% from "components.twig" import input, select %}
 
 <fieldset class="grid">
     <label>
@@ -7,10 +7,10 @@
     </label>
     <label>
         Nome
-        <input type="text" name="nome" value="{{ disciplina.nome ?? '' }}" placeholder="Nome" />
+        {{ input('text', 'Nome', 'nome', disciplina.nome ?? '') }}
     </label>
     <label>
         Cor
-        <input type="color" name="cor" value="{{ disciplina.cor ?? '' }}" placeholder="Cor" />
+        {{ input('color', 'Cor', 'cor', disciplina.cor ?? '') }}
     </label>
 </fieldset>

@@ -25,10 +25,11 @@ class PeriodoController
 
     public function salvar(Request $request)
     {
-        $periodo = Periodo::create([
-            'ano' => $request->get('ano'),
-            'semestre' => $request->get('semestre'),
-        ]);
+        if (! $request->validate(Periodo::rules())) {
+            return new RedirectResponse('/periodos/cadastrar');
+        }
+
+        $periodo = Periodo::create($request->validated);
 
         return new RedirectResponse('/periodos');
     }
@@ -40,10 +41,11 @@ class PeriodoController
 
     public function atualizar(Request $request, Periodo $periodo)
     {
-        $periodo->update([
-            'ano' => $request->get('ano'),
-            'semestre' => $request->get('semestre'),
-        ]);
+        if (! $request->validate(Periodo::rules())) {
+            return new RedirectResponse("/periodos/{$periodo->id}/editar");
+        }
+
+        $periodo->update($request->validated);
 
         return new RedirectResponse('/periodos');
     }

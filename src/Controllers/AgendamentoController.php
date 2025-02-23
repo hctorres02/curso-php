@@ -32,12 +32,11 @@ class AgendamentoController
 
     public function salvar(Request $request)
     {
-        $agendamento = Agendamento::create([
-            'atividade_id' => $request->get('atividade_id'),
-            'disciplina_id' => $request->get('disciplina_id'),
-            'conteudo' => $request->get('conteudo'),
-            'data' => $request->get('data'),
-        ]);
+        if (! $request->validate(Agendamento::rules())) {
+            return new RedirectResponse('/agendamentos/cadastrar');
+        }
+
+        $agendamento = Agendamento::create($request->validated);
 
         return new RedirectResponse('/agendamentos');
     }
@@ -57,12 +56,11 @@ class AgendamentoController
 
     public function atualizar(Request $request, Agendamento $agendamento)
     {
-        $agendamento->update([
-            'atividade_id' => $request->get('atividade_id'),
-            'disciplina_id' => $request->get('disciplina_id'),
-            'conteudo' => $request->get('conteudo'),
-            'data' => $request->get('data'),
-        ]);
+        if (! $request->validate(Agendamento::rules())) {
+            return new RedirectResponse("/agendamentos/{$agendamento->id}/editar");
+        }
+
+        $agendamento->update($request->validated);
 
         return new RedirectResponse('/agendamentos');
     }

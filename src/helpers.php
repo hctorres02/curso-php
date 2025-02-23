@@ -7,7 +7,7 @@ use Illuminate\Support\Carbon;
 if (! function_exists('attribute')) {
     function attr(array $attributes): string
     {
-        return collect($attributes)->reduce(function ($attributes, $value, $attr) {
+        return collect($attributes)->reduce(function (string $attributes, mixed $value, string $attr) {
             if ($value !== false) {
                 $attributes .= ' '.(is_bool($value) ? $attr : "{$attr}=\"{$value}\"");
             }

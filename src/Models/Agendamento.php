@@ -9,6 +9,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Respect\Validation\Validator;
 
 class Agendamento extends Model
 {
@@ -20,6 +21,16 @@ class Agendamento extends Model
         'conteudo',
         'data',
     ];
+
+    public static function rules(): array
+    {
+        return [
+            'atividade_id' => Validator::intVal()->callback(Atividade::exists(...)),
+            'disciplina_id' => Validator::intVal()->callback(Disciplina::exists(...)),
+            'conteudo' => Validator::notEmpty()->max(512),
+            'data' => Validator::date('Y-m-d'),
+        ];
+    }
 
     public function atividade(): BelongsTo
     {

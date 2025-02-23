@@ -33,11 +33,11 @@ class DisciplinaController
 
     public function salvar(Request $request)
     {
-        $disciplina = Disciplina::create([
-            'periodo_id' => $request->get('periodo_id'),
-            'nome' => $request->get('nome'),
-            'cor' => $request->get('cor'),
-        ]);
+        if (! $request->validate(Disciplina::rules())) {
+            return new RedirectResponse('/disciplinas/cadastrar');
+        }
+
+        $disciplina = Disciplina::create($request->validated);
 
         return new RedirectResponse('/disciplinas');
     }
@@ -55,6 +55,10 @@ class DisciplinaController
 
     public function atualizar(Request $request, Disciplina $disciplina)
     {
+        if (! $request->validate(Disciplina::rules())) {
+            return new RedirectResponse("/disciplinas/{$disciplina->id}/editar");
+        }
+
         $disciplina->update([
             'periodo_id' => $request->get('periodo_id'),
             'nome' => $request->get('nome'),

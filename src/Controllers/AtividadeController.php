@@ -25,10 +25,11 @@ class AtividadeController
 
     public function salvar(Request $request)
     {
-        $atividade = Atividade::create([
-            'nome' => $request->get('nome'),
-            'cor' => $request->get('cor'),
-        ]);
+        if (! $request->validate(Atividade::rules())) {
+            return new RedirectResponse('/atividades/cadastrar');
+        }
+
+        $atividade = Atividade::create($request->validated);
 
         return new RedirectResponse('/atividades');
     }
@@ -40,10 +41,11 @@ class AtividadeController
 
     public function atualizar(Request $request, Atividade $atividade)
     {
-        $atividade->update([
-            'nome' => $request->get('nome'),
-            'cor' => $request->get('cor'),
-        ]);
+        if (! $request->validate(Atividade::rules())) {
+            return new RedirectResponse("/atividades/{$atividade->id}/editar");
+        }
+
+        $atividade->update($request->validated);
 
         return new RedirectResponse('/atividades');
     }
