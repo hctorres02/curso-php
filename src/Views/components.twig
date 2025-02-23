@@ -1,3 +1,17 @@
+{% macro main_menu(links) %}
+<ul>
+    {% for label, href in links %}
+    <li>
+        {% if CURRENT_URI starts with href %}
+        <a href="{{ href }}" aria-current="true"><strong>{{ label }}</strong></a>
+        {% else %}
+        <a href="{{ href }}" aria-current="false">{{ label }}</a>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endmacro %}
+
 {% macro pagination(links) %}
 <nav>
     <span aria-hidden="true"><!-- placeholder --></span>
