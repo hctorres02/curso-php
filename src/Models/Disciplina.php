@@ -22,7 +22,7 @@ class Disciplina extends Model
     {
         return [
             'periodo_id' => Validator::intVal()->callback(Periodo::exists(...)),
-            'nome' => Validator::notEmpty()->max(20),
+            'nome' => Validator::notEmpty()->length(2, 20),
             'cor' => Validator::hexRgbColor(),
         ];
     }
