@@ -19,7 +19,7 @@ class Atividade extends Model
     public static function rules(): array
     {
         return [
-            'nome' => Validator::notEmpty()->max(20),
+            'nome' => Validator::notEmpty()->length(2, 20),
             'cor' => Validator::hexRgbColor(),
         ];
     }
