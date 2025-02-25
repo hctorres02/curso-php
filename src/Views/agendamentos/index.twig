@@ -34,7 +34,7 @@
         {% for agendamento in data %}
         <tr style="vertical-align: top">
             <td>
-                {{ agendamento.data|date('d/m') }}<br />
+                <span title="{{ agendamento.data|date('Y-m-d') }}">{{ agendamento.data|date('d/m') }}</span><br />
                 <strong>{{ agendamento.disciplina.nome|upper }}</strong><br />
                 <small>{{ agendamento.atividade.nome }}</small>
             </td>

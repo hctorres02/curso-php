@@ -27,7 +27,7 @@ class Agendamento extends Model
         return [
             'atividade_id' => Validator::intVal()->callback(Atividade::exists(...)),
             'disciplina_id' => Validator::intVal()->callback(Disciplina::exists(...)),
-            'conteudo' => Validator::notEmpty()->max(512),
+            'conteudo' => Validator::notEmpty()->length(1, 512),
             'data' => Validator::date('Y-m-d'),
         ];
     }
