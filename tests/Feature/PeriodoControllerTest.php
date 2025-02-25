@@ -6,8 +6,11 @@ use Tests\TestCase;
 uses(TestCase::class);
 
 beforeAll(function () {
-    refreshDatabase();
     runServer();
+});
+
+beforeEach(function () {
+    refreshDatabase();
 });
 
 afterAll(function () {
@@ -50,7 +53,7 @@ describe('PeriodoController', function () {
 
         $periodo->refresh();
 
-        expect($responseContent)->toMatch('/total: 2 períodos/i');
+        expect($responseContent)->toMatch('/total: 1 períodos/i');
         expect($responseContent)->toMatch("/<strong>{$ano}\.{$semestre}<\/strong>/");
         expect($responseContent)->toMatch("/<strong>{$periodo->ano}\.{$periodo->semestre}<\/strong>/");
     });

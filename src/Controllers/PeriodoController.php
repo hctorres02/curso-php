@@ -23,7 +23,7 @@ class PeriodoController
         return response('periodos/cadastrar');
     }
 
-    public function salvar(Request $request): Response
+    public function salvar(Request $request): RedirectResponse
     {
         if (! $request->validate(Periodo::rules())) {
             return redirect('/periodos/cadastrar');

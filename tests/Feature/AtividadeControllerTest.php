@@ -6,8 +6,11 @@ use Tests\TestCase;
 uses(TestCase::class);
 
 beforeAll(function () {
-    refreshDatabase();
     runServer();
+});
+
+beforeEach(function () {
+    refreshDatabase();
 });
 
 afterAll(function () {
@@ -50,7 +53,7 @@ describe('AtividadeController', function () {
 
         $atividade->refresh();
 
-        expect($responseContent)->toMatch('/total: 2 atividades/i');
+        expect($responseContent)->toMatch('/total: 1 atividades/i');
         expect($responseContent)->toMatch("/{$nome}/i");
         expect($responseContent)->toMatch("/{$atividade->nome}/i");
     });

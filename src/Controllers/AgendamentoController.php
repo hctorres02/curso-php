@@ -30,7 +30,7 @@ class AgendamentoController
         return response('agendamentos/cadastrar', compact('atividades', 'disciplinas'));
     }
 
-    public function salvar(Request $request): Response
+    public function salvar(Request $request): RedirectResponse
     {
         if (! $request->validate(Agendamento::rules())) {
             return redirect('/agendamentos/cadastrar');

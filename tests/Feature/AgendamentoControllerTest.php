@@ -9,6 +9,9 @@ uses(TestCase::class);
 
 beforeAll(function () {
     runServer();
+});
+
+beforeEach(function () {
     refreshDatabase();
 });
 
@@ -63,7 +66,7 @@ describe('AgendamentoController', function () {
 
         $agendamento->refresh();
 
-        expect($responseContent)->toMatch('/existem 2 agendamentos previstos/i');
+        expect($responseContent)->toMatch('/existem 1 agendamentos previstos/i');
         expect($responseContent)->toMatch("/{$data}/i");
         expect($responseContent)->toMatch("/{$agendamento->data}/i");
         expect($responseContent)->toMatch("/<strong>{$disciplina->nome}<\/strong>/i");

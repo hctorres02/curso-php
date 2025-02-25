@@ -7,8 +7,11 @@ use Tests\TestCase;
 uses(TestCase::class);
 
 beforeAll(function () {
-    refreshDatabase();
     runServer();
+});
+
+beforeEach(function () {
+    refreshDatabase();
 });
 
 afterAll(function () {
