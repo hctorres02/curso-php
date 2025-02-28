@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Http;
 use App\Models\Periodo;
 use Tests\TestCase;
 
@@ -19,7 +20,7 @@ afterAll(function () {
 
 describe('PeriodoController', function () {
     test('não há períodos cadastrados', function () {
-        $response = httpClient()->get('/periodos');
+        $response = Http::get('/periodos');
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch('/total: 0 períodos/i');
@@ -33,7 +34,7 @@ describe('PeriodoController', function () {
             'form_params' => compact('ano', 'semestre'),
         ];
 
-        $response = httpClient()->post('/periodos', $options);
+        $response = Http::post('/periodos', $options);
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch('/total: 1 períodos/i');
@@ -48,7 +49,7 @@ describe('PeriodoController', function () {
             'form_params' => compact('ano', 'semestre'),
         ];
 
-        $response = httpClient()->put("/periodos/{$periodo->id}", $options);
+        $response = Http::put("/periodos/{$periodo->id}", $options);
         $responseContent = $response->getBody()->getContents();
 
         $periodo->refresh();
@@ -62,7 +63,7 @@ describe('PeriodoController', function () {
         $count = Periodo::query()->count();
         $periodo = Periodo::factory()->create();
 
-        $response = httpClient()->delete("/periodos/{$periodo->id}");
+        $response = Http::delete("/periodos/{$periodo->id}");
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch("/total: {$count} períodos/i");

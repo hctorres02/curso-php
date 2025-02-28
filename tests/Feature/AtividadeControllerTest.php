@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Http;
 use App\Models\Atividade;
 use Tests\TestCase;
 
@@ -19,7 +20,7 @@ afterAll(function () {
 
 describe('AtividadeController', function () {
     test('não há atividades', function () {
-        $response = httpClient()->get('/atividades');
+        $response = Http::get('/atividades');
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch('/total: 0 atividades/i');
@@ -33,7 +34,7 @@ describe('AtividadeController', function () {
             'form_params' => compact('nome', 'cor'),
         ];
 
-        $response = httpClient()->post('/atividades', $options);
+        $response = Http::post('/atividades', $options);
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch('/total: 1 atividades/i');
@@ -48,7 +49,7 @@ describe('AtividadeController', function () {
             'form_params' => compact('nome', 'cor'),
         ];
 
-        $response = httpClient()->put("/atividades/{$atividade->id}", $options);
+        $response = Http::put("/atividades/{$atividade->id}", $options);
         $responseContent = $response->getBody()->getContents();
 
         $atividade->refresh();
@@ -62,7 +63,7 @@ describe('AtividadeController', function () {
         $count = Atividade::query()->count();
         $atividade = Atividade::factory()->create();
 
-        $response = httpClient()->delete("/atividades/{$atividade->id}");
+        $response = Http::delete("/atividades/{$atividade->id}");
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch("/total: {$count} atividades/i");

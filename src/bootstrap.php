@@ -29,3 +29,6 @@ App\Http\View::boot(new Twig\Environment(
     new Twig\Loader\FilesystemLoader(PROJECT_ROOT.'/src/Views'),
     require PROJECT_ROOT.'/config/twig.php'
 ));
+
+// cliente HTTP
+App\Http\Http::boot(require PROJECT_ROOT.'/config/http.php');

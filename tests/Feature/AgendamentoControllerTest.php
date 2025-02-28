@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Http;
 use App\Models\Agendamento;
 use App\Models\Atividade;
 use App\Models\Disciplina;
@@ -21,7 +22,7 @@ afterAll(function () {
 
 describe('AgendamentoController', function () {
     test('não há agendamentos previstos', function () {
-        $response = httpClient()->get('/agendamentos');
+        $response = Http::get('/agendamentos');
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch('/existem 0 agendamentos previstos/i');
@@ -39,7 +40,7 @@ describe('AgendamentoController', function () {
             'form_params' => compact('atividade_id', 'disciplina_id', 'conteudo', 'data'),
         ];
 
-        $response = httpClient()->post('/agendamentos', $options);
+        $response = Http::post('/agendamentos', $options);
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch('/existem 1 agendamentos previstos/i');
@@ -61,7 +62,7 @@ describe('AgendamentoController', function () {
             'form_params' => compact('atividade_id', 'disciplina_id', 'conteudo', 'data'),
         ];
 
-        $response = httpClient()->put("/agendamentos/{$agendamento->id}", $options);
+        $response = Http::put("/agendamentos/{$agendamento->id}", $options);
         $responseContent = $response->getBody()->getContents();
 
         $agendamento->refresh();
@@ -81,7 +82,7 @@ describe('AgendamentoController', function () {
         $count = Agendamento::query()->count();
         $agendamento = Agendamento::factory()->create();
 
-        $response = httpClient()->delete("/agendamentos/{$agendamento->id}");
+        $response = Http::delete("/agendamentos/{$agendamento->id}");
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch("/existem {$count} agendamentos previstos/i");

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Http;
 use App\Models\Disciplina;
 use App\Models\Periodo;
 use Tests\TestCase;
@@ -20,7 +21,7 @@ afterAll(function () {
 
 describe('DisciplinaController', function () {
     test('não há disciplinas', function () {
-        $response = httpClient()->get('/disciplinas');
+        $response = Http::get('/disciplinas');
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch('/total: 0 disciplinas/i');
@@ -36,7 +37,7 @@ describe('DisciplinaController', function () {
             'form_params' => compact('periodo_id', 'nome', 'cor'),
         ];
 
-        $response = httpClient()->post('/disciplinas', $options);
+        $response = Http::post('/disciplinas', $options);
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch('/total: 1 disciplinas/i');
@@ -54,7 +55,7 @@ describe('DisciplinaController', function () {
             'form_params' => compact('periodo_id', 'nome', 'cor'),
         ];
 
-        $response = httpClient()->put("/disciplinas/{$disciplina->id}", $options);
+        $response = Http::put("/disciplinas/{$disciplina->id}", $options);
         $responseContent = $response->getBody()->getContents();
 
         $disciplina->refresh();
@@ -69,7 +70,7 @@ describe('DisciplinaController', function () {
         $count = Disciplina::query()->count();
         $disciplina = Disciplina::factory()->create();
 
-        $response = httpClient()->delete("/disciplinas/{$disciplina->id}");
+        $response = Http::delete("/disciplinas/{$disciplina->id}");
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch("/total: {$count} disciplinas/i");

@@ -2,7 +2,6 @@
 
 use App\Http\View;
 use Faker\Factory;
-use GuzzleHttp\Client;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -51,16 +50,6 @@ if (! function_exists('hello_word')) {
     function hello_world(): string
     {
         return 'Hello, world!';
-    }
-}
-
-if (! function_exists('httpClient')) {
-    function httpClient(): Client
-    {
-        return new Client([
-            'base_uri' => env('APP_URL'),
-            'timeout' => 0,
-        ]);
     }
 }
 
