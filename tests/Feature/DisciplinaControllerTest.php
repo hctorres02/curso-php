@@ -33,8 +33,9 @@ describe('DisciplinaController', function () {
         $periodo_id = $periodo->id;
         $nome = faker()->word();
         $cor = faker()->hexColor();
+        $_csrf_token = Http::getCsrfToken('/disciplinas/cadastrar');
         $options = [
-            'form_params' => compact('periodo_id', 'nome', 'cor'),
+            'form_params' => compact('periodo_id', 'nome', 'cor', '_csrf_token'),
         ];
 
         $response = Http::post('/disciplinas', $options);
@@ -51,8 +52,9 @@ describe('DisciplinaController', function () {
         $periodo_id = $periodo->id;
         $nome = faker()->word();
         $cor = faker()->hexColor();
+        $_csrf_token = Http::getCsrfToken('/disciplinas/cadastrar');
         $options = [
-            'form_params' => compact('periodo_id', 'nome', 'cor'),
+            'form_params' => compact('periodo_id', 'nome', 'cor', '_csrf_token'),
         ];
 
         $response = Http::put("/disciplinas/{$disciplina->id}", $options);
@@ -69,8 +71,12 @@ describe('DisciplinaController', function () {
     test('excluir disciplina', function () {
         $count = Disciplina::query()->count();
         $disciplina = Disciplina::factory()->create();
+        $_csrf_token = Http::getCsrfToken('/disciplinas/cadastrar');
+        $options = [
+            'form_params' => compact('_csrf_token'),
+        ];
 
-        $response = Http::delete("/disciplinas/{$disciplina->id}");
+        $response = Http::delete("/disciplinas/{$disciplina->id}", $options);
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch("/total: {$count} disciplinas/i");

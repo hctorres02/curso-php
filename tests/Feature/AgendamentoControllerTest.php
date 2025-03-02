@@ -36,8 +36,9 @@ describe('AgendamentoController', function () {
         $disciplina_id = $disciplina->id;
         $conteudo = faker()->words(20, true);
         $data = faker()->dateTimeBetween('+7 days', '+14 days')->format('Y-m-d');
+        $_csrf_token = Http::getCsrfToken('/agendamentos/cadastrar');
         $options = [
-            'form_params' => compact('atividade_id', 'disciplina_id', 'conteudo', 'data'),
+            'form_params' => compact('atividade_id', 'disciplina_id', 'conteudo', 'data', '_csrf_token'),
         ];
 
         $response = Http::post('/agendamentos', $options);
@@ -58,8 +59,9 @@ describe('AgendamentoController', function () {
         $agendamento = Agendamento::factory()->create();
         $conteudo = faker()->words(20, true);
         $data = faker()->dateTimeBetween('+7 days', '+14 days')->format('Y-m-d');
+        $_csrf_token = Http::getCsrfToken('/agendamentos/cadastrar');
         $options = [
-            'form_params' => compact('atividade_id', 'disciplina_id', 'conteudo', 'data'),
+            'form_params' => compact('atividade_id', 'disciplina_id', 'conteudo', 'data', '_csrf_token'),
         ];
 
         $response = Http::put("/agendamentos/{$agendamento->id}", $options);
@@ -81,8 +83,12 @@ describe('AgendamentoController', function () {
     test('excluir agendamento', function () {
         $count = Agendamento::query()->count();
         $agendamento = Agendamento::factory()->create();
+        $_csrf_token = Http::getCsrfToken('/agendamentos/cadastrar');
+        $options = [
+            'form_params' => compact('_csrf_token'),
+        ];
 
-        $response = Http::delete("/agendamentos/{$agendamento->id}");
+        $response = Http::delete("/agendamentos/{$agendamento->id}", $options);
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch("/existem {$count} agendamentos previstos/i");

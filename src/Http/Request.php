@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Traits\IsSingleton;
 use Respect\Validation\Exceptions\ValidationException;
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class Request
 {
@@ -66,5 +67,47 @@ class Request
 
         // Retorna true se não houver erros, indicando que a validação foi bem-sucedida; caso contrário, retorna false.
         return ! $this->errors;
+    }
+
+    /**
+     * Gera um token CSRF único e o armazena na sessão, caso ainda não exista.
+     *
+     * Este método verifica se já existe um token CSRF na sessão. Caso contrário, ele gera
+     * um novo token aleatório de 32 bytes e o armazena. O token gerado é retornado.
+     *
+     * @return string O token CSRF gerado ou recuperado da sessão.
+     */
+    public function generateCsrfToken(): string
+    {
+        /** @var Session */
+        $session = $this->getSession();
+
+        if (! $session->get('csrf_token')) {
+            $session->set('csrf_token', bin2hex(random_bytes(32)));
+        }
+
+        return $session->get('csrf_token');
+    }
+
+    /**
+     * Verifica se o token CSRF presente na requisição é válido.
+     *
+     * Este método tenta obter o token CSRF da requisição, seja do cabeçalho 'X-CSRF-TOKEN'
+     * ou do corpo da requisição (campo '_csrf_token'). Em seguida, ele compara esse token
+     * com o token armazenado na sessão. A verificação é feita utilizando a função hash_equals
+     * para prevenir ataques de timing.
+     *
+     * @return bool Retorna verdadeiro se o token CSRF da requisição for igual ao token da sessão, caso contrário, falso.
+     */
+    public function verifyCsrfToken(): bool
+    {
+        // Tenta obter o token CSRF do cabeçalho ou do corpo da requisição
+        $csrfToken = $this->headers->get('X-CSRF-TOKEN', $this->get('_csrf_token', ''));
+
+        // Obtém o token da sessão
+        $sessionToken = $this->getSession()->get('csrf_token', '');
+
+        // Verifica se os tokens são iguais
+        return hash_equals($sessionToken, $csrfToken);
     }
 }

@@ -1,5 +1,6 @@
 <form action="{{ url('/agendamentos/{id}', {id: agendamento.id}) }}" method="post">
     <input type="hidden" name="_method" value="delete">
+    <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />
     <a href="javascript:;" onclick="if (confirm('Deseja excluir este item?')) this.closest('form').submit()">
         <small>&#128465; Excluir</small>
     </a>

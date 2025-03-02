@@ -13,6 +13,7 @@
 </nav>
 <form action="{{ url('/atividades') }}" method="post">
     {% include "atividades/fieldset.twig" %}
+    <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />
     <input type="submit" value="&#128190; Cadastrar">
 </form>
 {% endblock %}

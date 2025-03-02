@@ -30,8 +30,9 @@ describe('AtividadeController', function () {
     test('cadastrar atividade', function () {
         $nome = faker()->word();
         $cor = faker()->hexColor();
+        $_csrf_token = Http::getCsrfToken('/atividades/cadastrar');
         $options = [
-            'form_params' => compact('nome', 'cor'),
+            'form_params' => compact('nome', 'cor', '_csrf_token'),
         ];
 
         $response = Http::post('/atividades', $options);
@@ -45,8 +46,9 @@ describe('AtividadeController', function () {
         $atividade = Atividade::factory()->create();
         $nome = faker()->word();
         $cor = faker()->hexColor();
+        $_csrf_token = Http::getCsrfToken('/atividades/cadastrar');
         $options = [
-            'form_params' => compact('nome', 'cor'),
+            'form_params' => compact('nome', 'cor', '_csrf_token'),
         ];
 
         $response = Http::put("/atividades/{$atividade->id}", $options);
@@ -62,8 +64,12 @@ describe('AtividadeController', function () {
     test('excluir atividade', function () {
         $count = Atividade::query()->count();
         $atividade = Atividade::factory()->create();
+        $_csrf_token = Http::getCsrfToken('/atividades/cadastrar');
+        $options = [
+            'form_params' => compact('_csrf_token'),
+        ];
 
-        $response = Http::delete("/atividades/{$atividade->id}");
+        $response = Http::delete("/atividades/{$atividade->id}", $options);
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch("/total: {$count} atividades/i");

@@ -1,6 +1,7 @@
 {
     "require": {
         "php": "^8.2",
+        "ext-dom": "*",
         "ext-pdo": "*",
         "ext-sqlite3": "*",
         "vlucas/phpdotenv": "^5.6",
