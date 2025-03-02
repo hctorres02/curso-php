@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use ReflectionClass;
 use ReflectionFunction;
 use ReflectionParameter;
+use Symfony\Component\HttpFoundation\Request as BaseRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -202,10 +203,24 @@ class Router
     /**
      * Resolve a rota correspondente à requisição e retorna a resposta.
      *
-     * @return Response A resposta gerada pela execução da rota ou uma resposta 404.
+     * Verifica se o método da solicitação está entre os métodos permitidos (DELETE, POST, PUT)
+     * e se o token CSRF é válido. Em seguida, tenta combinar o caminho da solicitação com as
+     * rotas registradas e resolve a ação correspondente.
+     * Caso nenhuma rota seja encontrada, será retornado um erro 404.
+     * Caso o CSRF falhe, será retornado um erro 403.
+     *
+     * @return Response A resposta da execução da rota ou erro
      */
     private function resolveRoute(): Response
     {
+        if (in_array($this->request->getMethod(), [
+            BaseRequest::METHOD_DELETE,
+            BaseRequest::METHOD_POST,
+            BaseRequest::METHOD_PUT,
+        ]) && ! $this->request->verifyCsrfToken()) {
+            return response('erro_403', status: Response::HTTP_FORBIDDEN);
+        }
+
         foreach ($this->getRoutes($this->request->getMethod()) as $uri => $action) {
             $pattern = '#^'.preg_replace('/\{([\w]+)\}/', '(?P<\1>[^/]+)', $uri).'$#';
             $path = rtrim($this->request->getPathInfo(), '/') ?: '/';

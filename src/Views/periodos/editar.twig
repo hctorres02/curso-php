@@ -17,6 +17,7 @@
 <form action="{{ url('/periodos/{id}', {id: periodo.id}) }}" method="post">
     {% include "periodos/fieldset.twig" %}
     <input type="hidden" name="_method" value="put">
+    <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />
     <input type="submit" value="&#128190; Salvar">
 </form>
 {% endblock %}

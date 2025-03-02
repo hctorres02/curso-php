@@ -23,6 +23,7 @@ $request->setSession(new Session(
 // adiciona variáveis globais ao contexto da view
 View::addGlobals([
     'APP_LOCALE' => str_replace('_', '-', env('APP_LOCALE')),
+    'CSRF_TOKEN' => $request->generateCsrfToken(),
     'CURRENT_URI' => $request->getPathInfo(),
     'ERRORS' => $request->getErrors(),
     'MAIN_MENU' => [

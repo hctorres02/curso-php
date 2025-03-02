@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Traits\IsSingleton;
+use DOMDocument;
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface;
 
@@ -46,5 +47,39 @@ class Http
     public static function __callStatic($method, $args = []): ResponseInterface
     {
         return call_user_func_array([self::getInstance()->client, $method], $args);
+    }
+
+    /**
+     * Recupera o CSRF Token de uma página, buscando a tag <input name="_csrf-token">.
+     *
+     * Realiza uma requisição GET para a URL fornecida, analisa o HTML da resposta
+     * e extrai o valor do token CSRF da tag <input name="_csrf-token">.
+     *
+     * @param string $path O caminho da URL da qual o CSRF token será extraído.
+     *
+     * @return string|null O CSRF token se encontrado, ou null se não encontrado.
+     */
+    public static function getCsrfToken(string $path): ?string
+    {
+        $response = self::get($path);
+        $responseContent = $response->getBody()->getContents();
+        $dom = new DOMDocument;
+
+        // Suprime erros de HTML mal formado
+        libxml_use_internal_errors(true);
+
+        // Carrega o conteúdo HTML da resposta para o DOMDocument
+        $dom->loadHTML($responseContent);
+
+        // Limpa os erros de parsing
+        libxml_clear_errors();
+
+        foreach ($dom->getElementsByTagName('input') as $input) {
+            if ($input->getAttribute('name') === '_csrf_token') {
+                return $input->getAttribute('value');
+            }
+        }
+
+        return null;
     }
 }
