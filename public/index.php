@@ -3,6 +3,7 @@
 use App\Http\Request;
 use App\Http\Router;
 use App\Http\View;
+use Illuminate\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
@@ -23,9 +24,9 @@ $request->setSession(new Session(
 // adiciona variáveis globais ao contexto da view
 View::addGlobals([
     'APP_LOCALE' => str_replace('_', '-', env('APP_LOCALE')),
-    'CSRF_TOKEN' => $request->generateCsrfToken(),
-    'CURRENT_URI' => $request->getPathInfo(),
-    'ERRORS' => $request->getErrors(),
+    'CSRF_TOKEN' => fn (Request $request) => $request->generateCsrfToken(),
+    'CURRENT_URI' => fn (Request $request) => $request->getPathInfo(),
+    'ERRORS' => fn (Request $request) => $request->getErrors(),
     'MAIN_MENU' => [
         'Agendamentos' => '/agendamentos',
         'Períodos' => '/periodos',
@@ -41,14 +42,10 @@ View::addFunction('attr', attr(...));
 View::addFunction('url', url(...));
 
 // paginação
-Illuminate\Pagination\Paginator::currentPageResolver(
-    fn ($pageName) => $request->get($pageName)
-);
+Paginator::currentPageResolver(fn ($pageName) => $request->get($pageName));
 
 // paginação
-Illuminate\Pagination\Paginator::currentPathResolver(
-    fn () => $request->getPathInfo()
-);
+Paginator::currentPathResolver(fn () => $request->getPathInfo());
 
 // despacha rota e captura resposta
 $response = Router::dispatch($request);

@@ -125,82 +125,6 @@ class Router
     }
 
     /**
-     * Resolve o callback de uma rota com os parâmetros extraídos da URL.
-     *
-     * @param mixed $action O callback da rota.
-     * @param array $params Parâmetros extraídos da URL.
-     * @param string $uri Nome da rota que está sendo resolvida.
-     *
-     * @return mixed O conteúdo gerado pela execução do callback.
-     */
-    private function resolveCallback(mixed $action, array $params): mixed
-    {
-        if (is_callable($action)) {
-            $reflectionFunction = new ReflectionFunction($action);
-            $params = $this->resolveParams($reflectionFunction->getParameters(), $params);
-
-            return $reflectionFunction->invokeArgs($params);
-        }
-
-        [$controller, $method] = is_array($action) ? $action : [$action, '__invoke'];
-        $reflectionClass = new ReflectionClass($controller);
-
-        if (! $reflectionClass->hasMethod($method)) {
-            return response('erro_501', compact('controller', 'method'), Response::HTTP_NOT_IMPLEMENTED);
-        }
-
-        $dependencies = $this->resolveParams($reflectionClass->getConstructor()?->getParameters() ?: []);
-        $controllerInstance = $reflectionClass->newInstanceArgs($dependencies);
-        $reflectionMethod = $reflectionClass->getMethod($method);
-        $params = $this->resolveParams($reflectionMethod->getParameters(), $params);
-
-        return $reflectionMethod->invokeArgs($controllerInstance, $params);
-    }
-
-    /**
-     * Resolve uma dependência através do nome da classe.
-     *
-     * @param string $className O nome completo da classe a ser resolvida.
-     *
-     * @return object A instância da dependência.
-     */
-    private function resolveDependency(string $className, mixed $value): object
-    {
-        return match (true) {
-            $className === Request::class => $this->request,
-            is_subclass_of($className, Model::class) => $className::findOrFail($value),
-            default => new $className
-        };
-    }
-
-    /**
-     * Resolve os parâmetros necessários para a execução de um método, incluindo a injeção de dependências.
-     *
-     * Este método usa reflexão para analisar os parâmetros do construtor ou do método de um controlador e resolve
-     * as dependências necessárias através de um container de dependências ou usa valores de parâmetros de rota
-     * para preenchê-los quando apropriado.
-     *
-     * O método pode resolver tanto parâmetros de dependências (como objetos que precisam ser injetados) quanto
-     * parâmetros extraídos da URL, como os parâmetros de rota que são passados para o controlador.
-     *
-     * @param \ReflectionParameter[] $reflectionParams Parâmetros obtidos via reflexão do método ou do construtor.
-     * @param array $routeParams Parâmetros extraídos da URL ou parâmetros adicionais que precisam ser passados ao método.
-     *
-     * @return array Retorna um array de valores resolvidos para os parâmetros do método ou do construtor.
-     */
-    private function resolveParams(array $reflectionParams, array $routeParams = []): array
-    {
-        return array_reduce($reflectionParams, function (array $resolvedParams, ReflectionParameter $param) use ($routeParams) {
-            $paramType = $param->getType();
-            $paramName = $paramType->getName();
-            $routeParam = array_shift($routeParams);
-            $resolvedParams[] = $paramType && ! $param->isOptional() ? $this->resolveDependency($paramName, $routeParam) : $routeParam;
-
-            return $resolvedParams;
-        }, []);
-    }
-
-    /**
      * Resolve a rota correspondente à requisição e retorna a resposta.
      *
      * Verifica se o método da solicitação está entre os métodos permitidos (DELETE, POST, PUT)
@@ -226,7 +150,7 @@ class Router
             $path = rtrim($this->request->getPathInfo(), '/') ?: '/';
 
             if (preg_match($pattern, $path, $params)) {
-                return $this->resolveCallback(
+                return resolveCallback(
                     $action,
                     array_filter($params, is_string(...), ARRAY_FILTER_USE_KEY)
                 );

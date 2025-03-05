@@ -29,6 +29,10 @@ class View
     public static function addGlobals(array $data): void
     {
         foreach ($data as $name => $value) {
+            if (is_callable($value)) {
+                $value = resolveCallback($value);
+            }
+
             static::getInstance()->twig->addGlobal($name, $value);
         }
     }

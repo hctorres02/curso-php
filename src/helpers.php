@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Request;
 use App\Http\View;
 use Faker\Factory;
 use Illuminate\Database\Capsule\Manager as DB;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -102,6 +104,49 @@ if (! function_exists('response')) {
     function response(string $viewName, array $data = [], int $status = Response::HTTP_OK): Response
     {
         return new Response(View::render($viewName, $data), $status);
+    }
+}
+
+if (! function_exists('resolveCallback')) {
+    function resolveCallback(array|callable|string $action, array $params = []): mixed
+    {
+        if (is_callable($action)) {
+            $reflectionFunction = new \ReflectionFunction($action);
+            $params = resolveParams($reflectionFunction->getParameters(), $params);
+
+            return $reflectionFunction->invokeArgs($params);
+        }
+
+        try {
+            [$className, $method] = is_array($action) ? $action : [$action, '__invoke'];
+            $reflectionClass = new \ReflectionClass($className);
+            $dependencies = resolveParams($reflectionClass->getConstructor()?->getParameters() ?: []);
+            $controllerInstance = $reflectionClass->newInstanceArgs($dependencies);
+            $reflectionMethod = $reflectionClass->getMethod($method);
+            $params = resolveParams($reflectionMethod->getParameters(), $params);
+
+            return $reflectionMethod->invokeArgs($controllerInstance, $params);
+        } catch (ReflectionException $e) {
+            return response('erro_501', compact('className', 'method'), Response::HTTP_NOT_IMPLEMENTED);
+        }
+    }
+}
+
+if (! function_exists('resolveParams')) {
+    function resolveParams(array $reflectionParams, array $routeParams = []): array
+    {
+        return array_reduce($reflectionParams, function (array $resolvedParams, ReflectionParameter $param) use ($routeParams) {
+            $paramType = $param->getType();
+            $paramName = $paramType->getName();
+            $routeParam = array_shift($routeParams);
+            $resolvedParams[] = empty($paramType) || $param->isOptional() ? $routeParam : match (true) {
+                $paramName === Request::class => Request::getInstance(),
+                is_subclass_of($paramName, Model::class) => $paramName::findOrFail($routeParam),
+                default => new $paramName
+            };
+
+            return $resolvedParams;
+        }, []);
     }
 }
 
