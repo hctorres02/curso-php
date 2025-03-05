@@ -8,7 +8,7 @@ trait IsSingleton
 
     private function __construct() {}
 
-    private static function getInstance(): self
+    public static function getInstance(): self
     {
         if (empty(self::$instance)) {
             self::$instance = new self;
