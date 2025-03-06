@@ -3,9 +3,10 @@
 use App\Http\Request;
 use App\Http\Router;
 use App\Http\View;
+use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Pagination\Paginator;
 use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\Storage\Handler\NativeFileSessionHandler;
+use Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
 
 require __DIR__.'/../src/bootstrap.php';
@@ -18,7 +19,7 @@ $request->enableHttpMethodParameterOverride();
 
 // define sessão
 $request->setSession(new Session(
-    new NativeSessionStorage(handler: new NativeFileSessionHandler)
+    new NativeSessionStorage(handler: new PdoSessionHandler(DB::connection()->getPdo()))
 ));
 
 // adiciona variáveis globais ao contexto da view
