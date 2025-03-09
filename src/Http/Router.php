@@ -4,11 +4,6 @@ namespace App\Http;
 
 use App\Http\Request;
 use App\Traits\IsSingleton;
-use Illuminate\Database\Eloquent\Model;
-use ReflectionClass;
-use ReflectionFunction;
-use ReflectionParameter;
-use Symfony\Component\HttpFoundation\Request as BaseRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -21,21 +16,10 @@ use Symfony\Component\HttpFoundation\Response;
  * métodos explícitos na classe. Eles são interceptados pelo método mágico `__callStatic`,
  * que direciona a chamada para o método `register` para efetuar o registro da rota.
  *
- * @method static void get(string $uri, mixed $action) Registra uma rota do tipo GET.
- * O parâmetro `$uri` define o padrão da URL para a rota (exemplo: '/home').
- * O parâmetro `$action` é a função ou o controlador que será executado quando a rota for acessada.
- *
- * @method static void post(string $uri, mixed $action) Registra uma rota do tipo POST.
- * O parâmetro `$uri` define o padrão da URL para a rota (exemplo: '/submit').
- * O parâmetro `$action` é a função ou o controlador que será executado quando a rota for acionada.
- *
- * @method static void put(string $uri, mixed $action) Registra uma rota do tipo PUT.
- * O parâmetro `$uri` define o padrão da URL para a rota (exemplo: '/update/{id}').
- * O parâmetro `$action` é a função ou o controlador que será executado para processar a requisição PUT.
- *
- * @method static void delete(string $uri, mixed $action) Registra uma rota do tipo DELETE.
- * O parâmetro `$uri` define o padrão da URL para a rota (exemplo: '/delete/{id}').
- * O parâmetro `$action` é a função ou o controlador que será executado quando a rota DELETE for chamada.
+ * @method static void get(string $uri, mixed $action, array $middlewares = []) Registra uma rota do tipo GET.
+ * @method static void post(string $uri, mixed $action, array $middlewares = []) Registra uma rota do tipo POST.
+ * @method static void put(string $uri, mixed $action, array $middlewares = []) Registra uma rota do tipo PUT.
+ * @method static void delete(string $uri, mixed $action, array $middlewares = []) Registra uma rota do tipo DELETE.
  */
 class Router
 {
@@ -73,15 +57,16 @@ class Router
      * Dispara o roteador, resolvendo a rota correspondente à requisição e retornando a resposta.
      *
      * @param Request $request Objeto Request que representa a requisição HTTP.
+     * @param array $middlewares Middlewares globais.
      *
-     * @return Response A resposta gerada pela execução da rota.
+     * @return Response A resposta gerada pela execução dos middlewares e ação da rota.
      */
-    public static function dispatch(Request $request): Response
+    public static function dispatch(Request $request, array $middlewares): Response
     {
         $router = static::getInstance();
         $router->request = $request;
 
-        return $router->resolveRoute();
+        return $router->getResponse($middlewares, $router->resolveRoute(...));
     }
 
     /**
@@ -96,6 +81,31 @@ class Router
     public static function redirect(string $from, string $to, int $status = Response::HTTP_FOUND): void
     {
         static::get($from, fn () => redirect($to, $status));
+    }
+
+    /**
+     * Resolve a execução dos middlewares fornecidos, executando-os na ordem e retornando a resposta apropriada.
+     *
+     * Esse método percorre os middlewares passados, resolvendo e executando cada um deles.
+     * Caso algum middleware retorne uma resposta diferente de `true`, será retornado um erro 403.
+     *
+     * @param array $middlewares Lista de middlewares a serem executados.
+     * @param mixed $action Ação subsequente a execução dos middlewares.
+     * @param array $params Parâmetros adicionais.
+     *
+     * @return Response
+     */
+    private function getResponse(array $middlewares, mixed $action, array $params = []): Response
+    {
+        foreach ($middlewares as $middleware) {
+            $middlewareResponse = resolveCallback($middleware, $params);
+
+            if ($middlewareResponse !== true) {
+                return $middlewareResponse ?: response('erro_403', status: Response::HTTP_FORBIDDEN);
+            }
+        }
+
+        return resolveCallback($action, $params);
     }
 
     /**
@@ -116,12 +126,13 @@ class Router
      * @param string $method Método HTTP (GET, POST, etc.).
      * @param string $uri URI da rota.
      * @param mixed $action Será executado quando a rota for acionada.
+     * @param array $middlewares Middlewares locais.
      *
      * @return void
      */
-    private function register(string $method, string $uri, mixed $action): void
+    private function register(string $method, string $uri, mixed $action, array $middlewares = []): void
     {
-        $this->routes[strtoupper($method)][$uri] = $action;
+        $this->routes[strtoupper($method)][$uri] = compact('action', 'middlewares');
     }
 
     /**
@@ -137,20 +148,15 @@ class Router
      */
     private function resolveRoute(): Response
     {
-        if (in_array($this->request->getMethod(), [
-            BaseRequest::METHOD_DELETE,
-            BaseRequest::METHOD_POST,
-            BaseRequest::METHOD_PUT,
-        ]) && ! $this->request->verifyCsrfToken()) {
-            return response('erro_403', status: Response::HTTP_FORBIDDEN);
-        }
-
         foreach ($this->getRoutes($this->request->getMethod()) as $uri => $action) {
             $pattern = '#^'.preg_replace('/\{([\w]+)\}/', '(?P<\1>[^/]+)', $uri).'$#';
             $path = rtrim($this->request->getPathInfo(), '/') ?: '/';
 
             if (preg_match($pattern, $path, $params)) {
-                return resolveCallback(
+                extract($action);
+
+                return $this->getResponse(
+                    $middlewares,
                     $action,
                     array_filter($params, is_string(...), ARRAY_FILTER_USE_KEY)
                 );
