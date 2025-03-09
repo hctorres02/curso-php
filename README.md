@@ -50,6 +50,7 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 
 #### Fluxo HTTP
 - [x] Requisição
+- [x] Middlewares
 - [x] Sessão
 - [x] CSRF
 - [x] Validação

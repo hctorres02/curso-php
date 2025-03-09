@@ -24,7 +24,12 @@
                         </hgroup>
                     </li>
                 </ul>
-                {{ main_menu(MAIN_MENU) }}
+                {{ main_menu({
+                    'Agendamentos': '/agendamentos',
+                    'Períodos': '/periodos',
+                    'Disciplinas': '/disciplinas',
+                    'Atividades': '/atividades',
+                }) }}
             </nav>
         </header>
         <main>
