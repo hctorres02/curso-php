@@ -24,6 +24,11 @@ class Request
         return static::getInstance();
     }
 
+    public static function __callStatic($method, $args): mixed
+    {
+        return call_user_func_array([self::getInstance()->request, $method], $args);
+    }
+
     public function __get($name): mixed
     {
         return $this->request->{$name};
