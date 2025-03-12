@@ -46,6 +46,7 @@
 {% endmacro %}
 
 {% macro select(label, name, options = [], default_value = '') %}
+{% set default_value = OLD[name] ?? default_value %}
 {% set is_invalid = name in (ERRORS|keys) %}
 <select name="{{ name }}" aria-label="{{ label }}" aria-invalid="{{ is_invalid ? 'true' : '' }}">
     <option {{ attr({
@@ -65,6 +66,7 @@
 {% endmacro %}
 
 {% macro input(type, placeholder, name, value = '') %}
+{% set value = OLD[name] ?? value %}
 {% set is_invalid = name in (ERRORS|keys) %}
 <input {{ attr({
     type,
@@ -79,6 +81,7 @@
 {% endmacro %}
 
 {% macro textarea(placeholder, name, value = '') %}
+{% set value = OLD[name] ?? value %}
 {% set is_invalid = name in (ERRORS|keys) %}
 <textarea {{ attr({
     name,

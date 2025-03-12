@@ -16,6 +16,7 @@ class ConfigureView
             'CSRF_TOKEN' => session()->get('csrf_token'),
             'CURRENT_URI' => $request->getPathInfo(),
             'ERRORS' => flash()->get('err'),
+            'OLD' => flash()->get('old'),
         ]);
 
         return true;

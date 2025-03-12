@@ -15,6 +15,11 @@ class Request
 
     public array $errors = [];
 
+    public array $protected = [
+    ];
+
+    public array $old = [];
+
     public array $validated = [];
 
     public static function boot(): static
@@ -26,7 +31,7 @@ class Request
 
     public static function __callStatic($method, $args): mixed
     {
-        return call_user_func_array([self::getInstance()->request, $method], $args);
+        return call_user_func_array([static::getInstance()->request, $method], $args);
     }
 
     public function __get($name): mixed
@@ -39,8 +44,12 @@ class Request
         return call_user_func_array([$this->request, $method], $args);
     }
 
-    public function validate(array $rules): bool
+    public function validate(array $rules, array $only = []): bool
     {
+        if ($only) {
+            $rules = array_intersect_key($rules, array_flip($only));
+        }
+
         foreach ($rules as $field => $rule) {
             try {
                 // Obtém o valor do campo da requisição usando o método get.
@@ -54,14 +63,21 @@ class Request
             } catch (ValidationException $e) {
                 // Se ocorrer um erro durante a validação, armazena a mensagem de erro no array de erros.
                 $this->errors[$field] = $e->getMessage();
+            } finally {
+                $this->old[$field] = ! in_array($field, $this->protected) ? $value : null;
             }
         }
 
-        // Define os erros no objeto, caso existam.
-        flash()->set('err', $this->errors);
+        if ($this->errors) {
+            flash()->setAll([
+                'err' => $this->errors,
+                'old' => $this->old,
+            ]);
 
-        // Retorna true se não houver erros, indicando que a validação foi bem-sucedida; caso contrário, retorna false.
-        return ! $this->errors;
+            return false;
+        }
+
+        return true;
     }
 
     /**
