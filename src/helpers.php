@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 if (! function_exists('attribute')) {
     function attr(array $attributes): string
@@ -171,6 +172,13 @@ if (! function_exists('runServer')) {
         sleep(2);
 
         return $command;
+    }
+}
+
+if (! function_exists('session')) {
+    function session(): Session
+    {
+        return Request::getSession();
     }
 }
 
