@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 if (! function_exists('attribute')) {
@@ -46,6 +47,13 @@ if (! function_exists('faker')) {
     function faker(): Faker\Generator
     {
         return Factory::create(env('APP_LOCALE', 'en'));
+    }
+}
+
+if (! function_exists('flash')) {
+    function flash(): FlashBag
+    {
+        return session()->getFlashBag();
     }
 }
 

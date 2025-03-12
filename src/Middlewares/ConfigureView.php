@@ -13,9 +13,9 @@ class ConfigureView
         View::addFunction('url', url(...));
         View::addGlobals([
             'APP_LOCALE' => str_replace('_', '-', env('APP_LOCALE')),
-            'ERRORS' => $request->getErrors(),
             'CSRF_TOKEN' => session()->get('csrf_token'),
             'CURRENT_URI' => $request->getPathInfo(),
+            'ERRORS' => flash()->get('err'),
         ]);
 
         return true;

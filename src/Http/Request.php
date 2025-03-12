@@ -39,16 +39,6 @@ class Request
         return call_user_func_array([$this->request, $method], $args);
     }
 
-    public function getErrors(): array
-    {
-        return $this->getSession()->getFlashBag()->get('err');
-    }
-
-    public function setErrors(array $errors): void
-    {
-        $this->getSession()->getFlashBag()->set('err', $errors);
-    }
-
     public function validate(array $rules): bool
     {
         foreach ($rules as $field => $rule) {
@@ -68,7 +58,7 @@ class Request
         }
 
         // Define os erros no objeto, caso existam.
-        $this->setErrors($this->errors);
+        flash()->set('err', $this->errors);
 
         // Retorna true se não houver erros, indicando que a validação foi bem-sucedida; caso contrário, retorna false.
         return ! $this->errors;
