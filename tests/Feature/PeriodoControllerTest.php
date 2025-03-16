@@ -2,6 +2,7 @@
 
 use App\Http\Http;
 use App\Models\Periodo;
+use App\Models\Usuario;
 use Tests\TestCase;
 
 uses(TestCase::class);
@@ -12,6 +13,14 @@ beforeAll(function () {
 
 beforeEach(function () {
     refreshDatabase();
+
+    $senha = faker()->password(8);
+    $email = Usuario::factory()->create(compact('senha'))->email;
+    $_csrf_token = Http::getCsrfToken('/login');
+
+    Http::post('/login', [
+        'form_params' => compact('senha', 'email', '_csrf_token'),
+    ]);
 });
 
 afterAll(function () {
