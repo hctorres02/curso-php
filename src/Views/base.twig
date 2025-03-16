@@ -24,11 +24,16 @@
                         </hgroup>
                     </li>
                 </ul>
-                {{ main_menu({
+                {{ main_menu(USUARIO ? {
                     'Agendamentos': '/agendamentos',
                     'Períodos': '/periodos',
                     'Disciplinas': '/disciplinas',
                     'Atividades': '/atividades',
+                    'Perfil': '/usuarios/editar',
+                    'Logout': '/logout',
+                } : {
+                    'Agendamentos': '/agendamentos',
+                    'Login': '/login',
                 }) }}
             </nav>
         </header>

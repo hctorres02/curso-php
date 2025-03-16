@@ -2,12 +2,26 @@
 
 use App\Controllers\AgendamentoController;
 use App\Controllers\AtividadeController;
+use App\Controllers\AuthController;
 use App\Controllers\DisciplinaController;
 use App\Controllers\PeriodoController;
+use App\Controllers\UsuarioController;
 use App\Http\Router;
 
 // página inicial
 Router::redirect('/', '/agendamentos');
+
+// autenticação
+Router::get('/login', [AuthController::class, 'index']);
+Router::post('/login', [AuthController::class, 'login']);
+Router::get('/logout', [AuthController::class, 'logout']);
+
+// usuários
+Router::get('/usuarios', [UsuarioController::class, 'index']);
+Router::get('/usuarios/cadastrar', [UsuarioController::class, 'cadastrar']);
+Router::post('/usuarios', [UsuarioController::class, 'salvar']);
+Router::get('/usuarios/editar', [UsuarioController::class, 'editar']);
+Router::put('/usuarios/editar', [UsuarioController::class, 'atualizar']);
 
 // agendamentos
 Router::get('/agendamentos', [AgendamentoController::class, 'index']);

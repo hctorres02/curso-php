@@ -8,9 +8,11 @@
 </hgroup>
 <nav>
     <ul>
+        {% if (USUARIO) %}
         <li>
             <a href="{{ url('/agendamentos/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
         </li>
+        {% endif %}
     </ul>
     <ul>
         <li>
@@ -40,9 +42,11 @@
             </td>
             <td>
                 {{ agendamento.conteudo }}<br />
+                {% if (USUARIO) %}
                 <a href="{{ url('/agendamentos/{id}/editar', {id: agendamento.id}) }}">
                     <small>&#9998; Editar</small>
                 </a>
+                {% endif %}
             </td>
         </tr>
         {% else %}
