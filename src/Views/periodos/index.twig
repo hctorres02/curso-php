@@ -8,9 +8,11 @@
 </hgroup>
 <nav>
     <ul>
+        {% if (USUARIO) %}
         <li>
             <a href="{{ url('/periodos/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
         </li>
+        {% endif %}
     </ul>
     <ul>
         <li>
@@ -34,12 +36,14 @@
                     </li>
                 </ul>
                 <ul>
+                    {% if (USUARIO) %}
                     <li>
                         <a href="{{ url('/periodos/{id}/editar', {id: periodo.id}) }}">
                             <small>&#9998; Editar</small>
                         </a>
                     </li>
                     <li>{% include "periodos/excluir.twig" %}</li>
+                    {% endif %}
                 </ul>
             </nav>
         </header>

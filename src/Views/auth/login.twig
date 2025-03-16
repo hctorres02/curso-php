@@ -1,0 +1,34 @@
+{% extends "base.twig" %}
+{% from "macros.twig" import input %}
+
+{% block main %}
+<hgroup role="heading">
+    <h3>Login</h3>
+    <p>Insira suas credenciais para continuar o acesso.</p>
+</hgroup>
+<nav>
+    <ul>
+        <li>
+            <a href="{{ url('/agendamentos') }}">&larr; Voltar para agendamentos</a>
+        </li>
+    </ul>
+</nav>
+<form action="{{ url('/login') }}" method="post">
+    <fieldset class="grid">
+        <label>
+            Email
+            {{ input('email', 'Email', 'email') }}
+        </label>
+        <label>
+            Senha
+            {{ input('password', 'Senha', 'senha') }}
+        </label>
+    </fieldset>
+    <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />
+    <input type="submit" value="&#128272; Entrar">
+</form>
+<p>
+    Não tem cadastro?
+    <a href="{{ url('/usuarios/cadastrar')}}">Cadastre-se</a>
+</p>
+{% endblock %}

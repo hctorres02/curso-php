@@ -1,0 +1,12 @@
+{% extends "base.twig" %}
+
+{% block main %}
+<hgroup role="heading">
+    <h3>Cadastro de usuário</h3>
+</hgroup>
+<form action="{{ url('/usuarios') }}" method="post">
+    {% include "usuarios/fieldset.twig" %}
+    <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />
+    <input type="submit" value="&#128190; Cadastrar">
+</form>
+{% endblock %}

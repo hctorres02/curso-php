@@ -1,0 +1,18 @@
+{% from "macros.twig" import input %}
+
+<fieldset class="grid">
+    <label>
+        Nome
+        {{ input('text', 'Nome', 'nome', USUARIO.nome ?? '') }}
+    </label>
+    <label>
+        Email
+        {{ input('email', 'Email', 'email', USUARIO.email ?? '') }}
+    </label>
+    {% if not USUARIO %}
+    <label>
+        Senha
+        {{ input('password', 'Senha', 'senha') }}
+    </label>
+    {% endif %}
+</fieldset>

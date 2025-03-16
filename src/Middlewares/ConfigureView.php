@@ -17,6 +17,7 @@ class ConfigureView
             'CURRENT_URI' => $request->getPathInfo(),
             'ERRORS' => flash()->get('err'),
             'OLD' => flash()->get('old'),
+            'USUARIO' => session()->get('usuario'),
         ]);
 
         return true;

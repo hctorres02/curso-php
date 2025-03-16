@@ -44,6 +44,11 @@ class Request
         return call_user_func_array([$this->request, $method], $args);
     }
 
+    public function attemptedUri(string $default): string
+    {
+        return $this->getSession()->get('attempted_uri', $default);
+    }
+
     public function validate(array $rules, array $only = []): bool
     {
         if ($only) {

@@ -4,6 +4,7 @@ use App\Models\Agendamento;
 use App\Models\Atividade;
 use App\Models\Disciplina;
 use App\Models\Periodo;
+use App\Models\Usuario;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Model;
@@ -50,6 +51,7 @@ describe('model', function () {
         expect($countOne)->toEqual(1);
     });
 })->with([
+    [Usuario::class, ['id', 'usuario_id', 'nome', 'email', 'senha']],
     [Periodo::class, ['id', 'ano', 'semestre']],
     [Disciplina::class, ['id', 'periodo_id', 'nome', 'cor']],
     [Atividade::class, ['id', 'nome', 'cor']],
