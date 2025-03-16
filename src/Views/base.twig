@@ -10,6 +10,11 @@
         <meta name="csrf-token" content="{{ CSRF_TOKEN }}">
         <link rel="icon" href="/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+        <style>
+            nav a[aria-current=true] {
+                font-weight: bold;
+            }
+        </style>
         <title>Plano de aulas</title>
     </head>
 
@@ -24,17 +29,7 @@
                         </hgroup>
                     </li>
                 </ul>
-                {{ main_menu(USUARIO ? {
-                    'Agendamentos': '/agendamentos',
-                    'Períodos': '/periodos',
-                    'Disciplinas': '/disciplinas',
-                    'Atividades': '/atividades',
-                    'Perfil': '/usuarios/editar',
-                    'Logout': '/logout',
-                } : {
-                    'Agendamentos': '/agendamentos',
-                    'Login': '/login',
-                }) }}
+                {{ MAIN_MENU|raw }}
             </nav>
         </header>
         <main>
