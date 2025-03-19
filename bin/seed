@@ -5,6 +5,7 @@ use App\Models\Agendamento;
 use App\Models\Atividade;
 use App\Models\Disciplina;
 use App\Models\Periodo;
+use App\Models\Usuario;
 
 require __DIR__ . '/../src/bootstrap.php';
 
@@ -121,6 +122,15 @@ try {
             ], range(1, rand(1, (int) ($agendamentosAnswer ?: 30)))),
         ], [])
     );
+
+    /**
+     * Cadastra usuário administrador
+     */
+    Usuario::create([
+        'nome' => env('ADMIN_NAME'),
+        'email' => env('ADMIN_EMAIL'),
+        'senha' => env('ADMIN_PWD'),
+    ]);
 
     /**
      * Quantidade de atividades cadastradas
