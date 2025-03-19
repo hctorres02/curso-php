@@ -9,7 +9,7 @@ class Visitante
     public function __invoke(): bool|RedirectResponse
     {
         if (session()->get('usuario')) {
-            return redirect('/usuarios/editar');
+            return redirect('/cadastro/editar');
         }
 
         return true;

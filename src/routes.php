@@ -3,6 +3,7 @@
 use App\Controllers\AgendamentoController;
 use App\Controllers\AtividadeController;
 use App\Controllers\AuthController;
+use App\Controllers\CadastroController;
 use App\Controllers\DisciplinaController;
 use App\Controllers\PeriodoController;
 use App\Controllers\UsuarioController;
@@ -17,6 +18,12 @@ Router::redirect('/', '/agendamentos');
 Router::get('/login', [AuthController::class, 'index'], [Visitante::class]);
 Router::post('/login', [AuthController::class, 'login'], [Visitante::class]);
 Router::get('/logout', [AuthController::class, 'logout']);
+
+// cadastro
+Router::get('/cadastro', [CadastroController::class, 'cadastrar'], [Visitante::class]);
+Router::post('/cadastro', [CadastroController::class, 'salvar'], [Visitante::class]);
+Router::get('/cadastro/editar', [CadastroController::class, 'editar'], [AcessoRestrito::class]);
+Router::put('/cadastro/editar', [CadastroController::class, 'atualizar'], [AcessoRestrito::class]);
 
 // usuários
 Router::get('/usuarios', [UsuarioController::class, 'index'], [AcessoRestrito::class]);

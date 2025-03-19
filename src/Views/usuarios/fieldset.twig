@@ -3,13 +3,13 @@
 <fieldset class="grid">
     <label>
         Nome
-        {{ input('text', 'Nome', 'nome', USUARIO.nome ?? '') }}
+        {{ input('text', 'Nome', 'nome', usuario.nome ?? '') }}
     </label>
     <label>
         Email
-        {{ input('email', 'Email', 'email', USUARIO.email ?? '') }}
+        {{ input('email', 'Email', 'email', usuario.email ?? '') }}
     </label>
-    {% if not USUARIO %}
+    {% if usuario is not defined %}
     <label>
         Senha
         {{ input('password', 'Senha', 'senha') }}

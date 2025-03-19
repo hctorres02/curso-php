@@ -18,7 +18,7 @@ return Menu::new()
         ->submenu(fn (Menu $submenu) => $submenu
             ->wrap('details', ['class' => 'dropdown', 'dir' => 'rtl'])
             ->prepend("<summary>{$usuario->email}</summary>")
-            ->link('/usuarios/editar', 'Editar perfil')
+            ->link('/cadastro/editar', 'Editar perfil')
             ->link('/logout', 'Logout')
         )
     )
@@ -26,7 +26,7 @@ return Menu::new()
     // Se o usuário NÃO estiver autenticado, exibe apenas opções limitadas
     ->if(! $usuario, fn (Menu $menu) => $menu
         ->link('/login', 'Login')
-        ->link('/usuarios/cadastrar', 'Cadastro')
+        ->link('/cadastro', 'Cadastro')
     )
 
     // Define como ativo o link correspondente à URI atual
