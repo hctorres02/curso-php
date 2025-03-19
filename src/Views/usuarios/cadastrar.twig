@@ -4,6 +4,13 @@
 <hgroup role="heading">
     <h3>Cadastro de usuário</h3>
 </hgroup>
+<nav>
+    <ul>
+        <li>
+            <a href="{{ url('/usuarios') }}">&larr; Voltar para listagem</a>
+        </li>
+    </ul>
+</nav>
 <form action="{{ url('/usuarios') }}" method="post">
     {% include "usuarios/fieldset.twig" %}
     <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />

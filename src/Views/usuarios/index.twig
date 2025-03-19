@@ -1,0 +1,54 @@
+{% extends "base.twig" %}
+{% from "macros.twig" import pagination, select %}
+
+{% block main %}
+<hgroup role="heading">
+    <h3>Usuários</h3>
+    <p>Total: {{ total }} usuários cadastrados</p>
+</hgroup>
+<nav>
+    <ul>
+        {% if can('manter_usuarios') %}
+        <li>
+            <a href="{{ url('/usuarios/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
+        </li>
+        {% endif %}
+    </ul>
+    <ul>
+        <li>
+            <form role="search" style="margin-bottom: 0.5rem;">
+                <input type="search" name="q" value="{{ q }}" placeholder="Nome ou email">
+                <input type="submit" value="Buscar">
+            </form>
+        </li>
+    </ul>
+</nav>
+<table class="striped">
+    <thead>
+        <tr>
+            <th width="300px" scope="col">Nome</th>
+            <th width="auto" scope="col">Email</th>
+            <th width="100px" scope="col">&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for usuario in data %}
+        <tr style="vertical-align: top">
+            <td>
+                {{ usuario.nome|title }}<br />
+                <small>{{ usuario.role|lower }}</small>
+            </td>
+            <td>{{ usuario.email|lower }}</td>
+            <td>
+                <a href="{{ url('/usuarios/{id}/editar', {id: usuario.id}) }}">editar</a>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="2">Não há usuários cadastrados</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{{ pagination(links) }}
+{% endblock %}

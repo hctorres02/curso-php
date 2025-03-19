@@ -28,6 +28,22 @@ class Usuario extends Model
         ];
     }
 
+    public static function toSearch(array $params): array
+    {
+        $data = static::query()
+            ->when($params['q'], fn ($query, $q) => $query->where(
+                fn ($query) => $query
+                    ->whereLike('nome', "%{$q}%")
+                    ->orWhereLike('email', "%{$q}%")
+            ))
+            ->whereNot('id', session()->get('usuario_id'))
+            ->paginate(10)
+            ->appends(array_filter($params))
+            ->toArray();
+
+        return array_merge($params, $data);
+    }
+
     public function nome(): Attribute
     {
         return Attribute::make(set: fn (string $nome) => ucwords(strtolower($nome)));

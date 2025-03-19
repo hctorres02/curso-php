@@ -9,9 +9,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UsuarioController
 {
-    public function index(): RedirectResponse
+    public function index(Request $request): Response
     {
-        return redirect('/usuarios/editar');
+        $data = Usuario::toSearch([
+            'q' => $request->get('q'),
+        ]);
+
+        return response('/usuarios/index', $data);
     }
 
     public function cadastrar(): Response
@@ -27,30 +31,22 @@ class UsuarioController
 
         $usuario = Usuario::create($request->validated);
 
-        session()->set('usuario', $usuario);
-
-        return redirect($request->attemptedUri('/agendamentos'));
+        return redirect("/usuarios/{$usuario->id}/editar");
     }
 
-    public function editar(): Response
+    public function editar(Usuario $usuario): Response
     {
-        return response('usuarios/editar');
+        return response('usuarios/editar', compact('usuario'));
     }
 
-    public function atualizar(Request $request): RedirectResponse
+    public function atualizar(Request $request, Usuario $usuario): RedirectResponse
     {
         if (! $request->validate(Usuario::rules(), ['nome', 'email'])) {
-            return redirect('/usuarios/editar');
+            return redirect("/usuarios/{$usuario->id}/editar");
         }
 
-        $usuario = session()->get('usuario');
-
         $usuario->update($request->validated);
-        $usuario->refresh();
 
-        session()->set('usuario', $usuario);
-        session()->migrate(true);
-
-        return redirect('/usuarios/editar');
+        return redirect("/usuarios/{$usuario->id}/editar");
     }
 }

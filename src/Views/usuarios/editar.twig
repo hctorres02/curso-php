@@ -2,9 +2,16 @@
 
 {% block main %}
 <hgroup role="heading">
-    <h3>Editar cadastro</h3>
+    <h3>Editar usuário</h3>
 </hgroup>
-<form action="{{ url('/usuarios/editar') }}" method="post">
+<nav>
+    <ul>
+        <li>
+            <a href="{{ url('/usuarios') }}">&larr; Voltar para listagem</a>
+        </li>
+    </ul>
+</nav>
+<form action="{{ url('/usuarios/{id}', {id: usuario.id}) }}" method="post">
     {% include "usuarios/fieldset.twig" %}
     <input type="hidden" name="_method" value="put" />
     <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />

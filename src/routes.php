@@ -27,10 +27,10 @@ Router::put('/cadastro/editar', [CadastroController::class, 'atualizar'], [Acess
 
 // usuários
 Router::get('/usuarios', [UsuarioController::class, 'index'], [AcessoRestrito::class]);
-Router::get('/usuarios/cadastrar', [UsuarioController::class, 'cadastrar'], [Visitante::class]);
-Router::post('/usuarios', [UsuarioController::class, 'salvar'], [Visitante::class]);
-Router::get('/usuarios/editar', [UsuarioController::class, 'editar'], [AcessoRestrito::class]);
-Router::put('/usuarios/editar', [UsuarioController::class, 'atualizar'], [AcessoRestrito::class]);
+Router::get('/usuarios/cadastrar', [UsuarioController::class, 'cadastrar'], [AcessoRestrito::class]);
+Router::post('/usuarios', [UsuarioController::class, 'salvar'], [AcessoRestrito::class]);
+Router::get('/usuarios/{usuario}/editar', [UsuarioController::class, 'editar'], [AcessoRestrito::class]);
+Router::put('/usuarios/{usuario}', [UsuarioController::class, 'atualizar'], [AcessoRestrito::class]);
 
 // agendamentos
 Router::get('/agendamentos', [AgendamentoController::class, 'index']);

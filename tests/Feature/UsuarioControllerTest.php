@@ -12,6 +12,15 @@ beforeAll(function () {
 
 beforeEach(function () {
     refreshDatabase();
+
+    $senha = faker()->password(8);
+    $email = faker()->safeEmail();
+    $usuario = Usuario::factory()->create(compact('email', 'senha'));
+    $_csrf_token = Http::getCsrfToken('/login');
+
+    Http::post('/login', [
+        'form_params' => compact('email', 'senha', '_csrf_token'),
+    ]);
 });
 
 afterAll(function () {
@@ -19,6 +28,14 @@ afterAll(function () {
 });
 
 describe('UsuarioController', function () {
+    test('não há usuários cadastrados', function () {
+        $response = Http::get('/usuarios');
+        $responseContent = $response->getBody()->getContents();
+
+        expect($responseContent)->toMatch('/total: 0 usuários/i');
+        expect($responseContent)->toMatch('/não há usuários cadastrados/i');
+    });
+
     test('cadastrar usuario', function () {
         $nome = faker()->firstName();
         $email = faker()->safeEmail();
@@ -28,9 +45,7 @@ describe('UsuarioController', function () {
             'form_params' => compact('nome', 'email', 'senha', '_csrf_token'),
         ];
 
-        Http::post('/usuarios', $options);
-
-        $response = Http::get('/usuarios/editar');
+        $response = Http::post('/usuarios', $options);
         $responseContent = $response->getBody()->getContents();
 
         expect($responseContent)->toMatch("/{$nome}/i");
@@ -41,17 +56,13 @@ describe('UsuarioController', function () {
         $nome = faker()->firstName();
         $email = faker()->safeEmail();
         $senha = faker()->password(8);
-        $usuario = Usuario::factory()->create(compact('senha'));
-        $_csrf_token = Http::getCsrfToken('/login');
+        $usuario = Usuario::factory()->create(compact('email', 'senha'));
+        $_csrf_token = Http::getCsrfToken("/usuarios/{$usuario->id}/editar");
         $options = [
             'form_params' => compact('nome', 'email', '_csrf_token'),
         ];
 
-        Http::post('/login', [
-            'form_params' => [...compact('senha', '_csrf_token'), 'email' => $usuario->email],
-        ]);
-
-        $response = Http::put('/usuarios/editar', $options);
+        $response = Http::put("/usuarios/{$usuario->id}", $options);
         $responseContent = $response->getBody()->getContents();
 
         $usuario->refresh();
