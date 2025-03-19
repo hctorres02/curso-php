@@ -25,6 +25,7 @@ class Auth
         }
 
         session()->set('usuario', $usuario);
+        session()->set('usuario_id', $usuario->id);
         session()->migrate(true);
 
         return $usuario;

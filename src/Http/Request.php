@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Models\Usuario;
 use App\Traits\IsSingleton;
 use Respect\Validation\Exceptions\ValidationException;
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
@@ -47,6 +48,11 @@ class Request
     public function attemptedUri(string $default): string
     {
         return $this->getSession()->get('attempted_uri', $default);
+    }
+
+    public function setUsuario($id): void
+    {
+        session()->set('usuario', Usuario::find($id));
     }
 
     public function validate(array $rules, array $only = []): bool

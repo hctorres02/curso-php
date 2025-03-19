@@ -17,6 +17,7 @@ class StartSession
         $session = new Session($storage);
 
         $request->setSession($session);
+        $request->setUsuario($session->get('usuario_id'));
         $request->generateCsrfToken();
 
         return true;
