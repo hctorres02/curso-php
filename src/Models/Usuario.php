@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Permission;
 use App\Enums\Role;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,6 +23,7 @@ class Usuario extends Model
         'email',
         'senha',
         'role',
+        'permissions',
     ];
 
     public static function rules(): array
@@ -32,6 +34,7 @@ class Usuario extends Model
             'email' => Validator::notEmpty()->email(),
             'senha' => Validator::notEmpty()->length(8),
             'role' => Validator::notEmpty()->in(Role::values()),
+            'permissions' => Validator::nullable(Validator::arrayType()->each(Validator::in(Permission::values()))),
         ];
     }
 
@@ -66,6 +69,19 @@ class Usuario extends Model
     public function senha(): Attribute
     {
         return Attribute::make(set: fn (string $senha) => password_hash($senha, constant(env('PASSWORD_ALGO'))));
+    }
+
+    public function permissions(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value) => json_decode($value ?: '[]'),
+            set: fn (?array $value) => json_encode($value ?: []),
+        );
+    }
+
+    public function hasPermission(Permission|string $permission): bool
+    {
+        return in_array($permission->value ?? $permission, array_merge($this->permissions, $this->role->permissions()));
     }
 
     public function hasRole(Role|string ...$roles): bool

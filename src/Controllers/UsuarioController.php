@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Enums\Permission;
 use App\Enums\Role;
 use App\Http\Request;
 use App\Models\Usuario;
@@ -23,8 +24,9 @@ class UsuarioController
     public function cadastrar(): Response
     {
         $roles = Role::toArray();
+        $permissions = Permission::toArray();
 
-        return response('usuarios/cadastrar', compact('roles'));
+        return response('usuarios/cadastrar', compact('roles', 'permissions'));
     }
 
     public function salvar(Request $request): RedirectResponse
@@ -41,13 +43,14 @@ class UsuarioController
     public function editar(Usuario $usuario): Response
     {
         $roles = Role::toArray();
+        $permissions = Permission::toArray();
 
-        return response('usuarios/editar', compact('usuario', 'roles'));
+        return response('usuarios/editar', compact('usuario', 'roles', 'permissions'));
     }
 
     public function atualizar(Request $request, Usuario $usuario): RedirectResponse
     {
-        if (! $request->validate(Usuario::rules(), ['nome', 'email', 'role'])) {
+        if (! $request->validate(Usuario::rules(), ['nome', 'email', 'role', 'permissions'])) {
             return redirect("/usuarios/{$usuario->id}/editar");
         }
 

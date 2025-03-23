@@ -10,6 +10,7 @@ class ConfigureView
     public function __invoke(Request $request): bool
     {
         View::addFunction('attr', attr(...));
+        View::addFunction('hasPermission', hasPermission(...));
         View::addFunction('hasRole', hasRole(...));
         View::addFunction('url', url(...));
         View::addGlobals([

@@ -1,4 +1,4 @@
-{% from "macros.twig" import input, select %}
+{% from "macros.twig" import checkbox, input, select %}
 
 <fieldset class="grid">
     <label>
@@ -22,5 +22,11 @@
         Role
         {{ select(null, 'role', roles, usuario.role.value ?? '') }}
     </label>
+</fieldset>
+{% endif %}
+{% if permissions is defined %}
+<fieldset>
+    <legend>Permissions</legend>
+    {{ checkbox('permissions', permissions, usuario.permissions ?? []) }}
 </fieldset>
 {% endif %}
