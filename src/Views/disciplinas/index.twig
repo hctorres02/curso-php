@@ -8,7 +8,7 @@
 </hgroup>
 <nav>
     <ul>
-        {% if (USUARIO) %}
+        {% if hasPermission('manter_disciplinas') %}
         <li>
             <a href="{{ url('/disciplinas/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
         </li>
@@ -35,7 +35,7 @@
             {% for disciplina in disciplinas %}
             <li>
                 <strong>{{ disciplina.nome }}</strong>
-                {% if (USUARIO) %}
+                {% if hasPermission('manter_disciplinas') %}
                 <a href="{{ url('/disciplinas/{id}/editar', {id: disciplina.id}) }}" title="Editar disciplina">&#9998;</a>
                 {% endif %}
                 <br />

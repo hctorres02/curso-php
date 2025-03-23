@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,6 +21,7 @@ class UsuarioFactory extends Factory
             'nome' => faker()->firstName(),
             'email' => faker()->safeEmail(),
             'senha' => faker()->password(8),
+            'role' => Role::VISITANTE,
         ];
     }
 }

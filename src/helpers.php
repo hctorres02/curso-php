@@ -1,7 +1,10 @@
 <?php
 
+use App\Enums\Permission;
+use App\Enums\Role;
 use App\Http\Request;
 use App\Http\View;
+use App\Models\Usuario;
 use Faker\Factory;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Model;
@@ -54,6 +57,26 @@ if (! function_exists('flash')) {
     function flash(): FlashBag
     {
         return session()->getFlashBag();
+    }
+}
+
+if (! function_exists('hasPermission')) {
+    function hasPermission(Permission|string $permission, ?Usuario $usuario = null): bool
+    {
+        if (! $usuario) {
+            $usuario = session()->get('usuario');
+        }
+
+        return $usuario && $usuario->hasPermission($permission);
+    }
+}
+
+if (! function_exists('hasRole')) {
+    function hasRole(Role|string ...$roles): bool
+    {
+        $usuario = session()->get('usuario');
+
+        return $usuario && $usuario->hasRole(...$roles);
     }
 }
 
@@ -117,8 +140,12 @@ if (! function_exists('response')) {
 }
 
 if (! function_exists('resolveCallback')) {
-    function resolveCallback(array|callable|string $action, array $params = []): mixed
+    function resolveCallback(array|callable|Permission|string $action, array $params = []): mixed
     {
+        if (is_a($action, Permission::class)) {
+            return hasPermission($action);
+        }
+
         if (is_callable($action)) {
             $reflectionFunction = new \ReflectionFunction($action);
             $params = resolveParams($reflectionFunction->getParameters(), $params);

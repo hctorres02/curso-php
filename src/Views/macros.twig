@@ -49,20 +49,44 @@
 {% set default_value = OLD[name] ?? default_value %}
 {% set is_invalid = name in (ERRORS|keys) %}
 <select name="{{ name }}" aria-label="{{ label }}" aria-invalid="{{ is_invalid ? 'true' : '' }}">
+    {% if label %}
     <option {{ attr({
         value: '',
         selected: not default_value,
     })|raw }}>{{ label }}</option>
-    {% if options %}
     <option disabled>------</option>
+    {% endif %}
     {% for value, label in options %}
     {{ label is iterable ? _self.group(value, label, default_value) : _self.opt(label, value, default_value) }}
     {% endfor %}
-    {% endif %}
 </select>
 {% if is_invalid %}
 <small>{{ ERRORS[name] }}</small>
 {% endif %}
+{% endmacro %}
+
+{% macro checkbox(name, options, checked_options = [], columns = 4) %}
+{% for group in options|batch(columns, '') %}
+<div class="grid">
+    {% for value in group %}
+    <div>
+        {% if value %}
+        <label>
+            <input {{ attr({
+                type: 'checkbox',
+                name: name~'[]',
+                value,
+                checked: value in (OLD[name] ?? checked_options)
+            })|raw }}>
+            {{ value }}
+        </label>
+        {% else %}
+        <!-- placeholder -->
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
+{% endfor %}
 {% endmacro %}
 
 {% macro input(type, placeholder, name, value = '') %}

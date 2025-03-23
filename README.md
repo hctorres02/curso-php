@@ -55,5 +55,6 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] CSRF
 - [x] Validação
 - [ ] Autenticação
+- [ ] Autorização
 - [x] Resposta
 - [x] Testes

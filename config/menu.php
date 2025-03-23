@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Permission;
 use App\Http\Request;
 use Spatie\Menu\Link;
 use Spatie\Menu\Menu;
@@ -12,13 +13,14 @@ return Menu::new()
 
     // Se o usuário estiver autenticado, adiciona links específicos
     ->if(! ! $usuario, fn (Menu $menu) => $menu
-        ->link('/periodos', 'Períodos')
-        ->link('/disciplinas', 'Disciplinas')
-        ->link('/atividades', 'Atividades')
+        ->linkIf($usuario->hasPermission(Permission::MANTER_PERIODOS), '/periodos', 'Períodos')
+        ->linkIf($usuario->hasPermission(Permission::MANTER_DISCIPLINAS), '/disciplinas', 'Disciplinas')
+        ->linkIf($usuario->hasPermission(Permission::MANTER_ATIVIDADES), '/atividades', 'Atividades')
+        ->linkIf($usuario->hasPermission(Permission::MANTER_USUARIOS), '/usuarios', 'Usuários')
         ->submenu(fn (Menu $submenu) => $submenu
             ->wrap('details', ['class' => 'dropdown', 'dir' => 'rtl'])
             ->prepend("<summary>{$usuario->email}</summary>")
-            ->link('/cadastro/editar', 'Editar perfil')
+            ->linkIf($usuario->hasPermission(Permission::MANTER_PERFIL), '/cadastro/editar', 'Editar perfil')
             ->link('/logout', 'Logout')
         )
     )

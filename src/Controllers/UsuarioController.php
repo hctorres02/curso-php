@@ -2,6 +2,8 @@
 
 namespace App\Controllers;
 
+use App\Enums\Permission;
+use App\Enums\Role;
 use App\Http\Request;
 use App\Models\Usuario;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,6 +15,7 @@ class UsuarioController
     {
         $data = Usuario::toSearch([
             'q' => $request->get('q'),
+            'role' => $request->get('role'),
         ]);
 
         return response('/usuarios/index', $data);
@@ -20,7 +23,10 @@ class UsuarioController
 
     public function cadastrar(): Response
     {
-        return response('usuarios/cadastrar');
+        $roles = Role::toArray();
+        $permissions = Permission::toArray();
+
+        return response('usuarios/cadastrar', compact('roles', 'permissions'));
     }
 
     public function salvar(Request $request): RedirectResponse
@@ -36,12 +42,15 @@ class UsuarioController
 
     public function editar(Usuario $usuario): Response
     {
-        return response('usuarios/editar', compact('usuario'));
+        $roles = Role::toArray();
+        $permissions = Permission::toArray();
+
+        return response('usuarios/editar', compact('usuario', 'roles', 'permissions'));
     }
 
     public function atualizar(Request $request, Usuario $usuario): RedirectResponse
     {
-        if (! $request->validate(Usuario::rules(), ['nome', 'email'])) {
+        if (! $request->validate(Usuario::rules(), ['nome', 'email', 'role', 'permissions'])) {
             return redirect("/usuarios/{$usuario->id}/editar");
         }
 
