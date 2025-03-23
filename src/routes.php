@@ -6,6 +6,7 @@ use App\Controllers\AuthController;
 use App\Controllers\CadastroController;
 use App\Controllers\DisciplinaController;
 use App\Controllers\PeriodoController;
+use App\Controllers\RoleController;
 use App\Controllers\UsuarioController;
 use App\Enums\Permission;
 use App\Http\Router;
@@ -342,5 +343,15 @@ Router::delete(
     middlewares: [
         AcessoRestrito::class,
         Permission::MANTER_ATIVIDADES,
+    ]
+);
+
+// roles
+Router::get(
+    uri: '/roles/{role}/permissions',
+    action: [RoleController::class, 'permissions'],
+    middlewares: [
+        AcessoRestrito::class,
+        Permission::MANTER_USUARIOS,
     ]
 );

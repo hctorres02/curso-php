@@ -29,4 +29,33 @@
     <legend>Permissions</legend>
     {{ checkbox('permissions', permissions, usuario.permissions ?? []) }}
 </fieldset>
+<script>
+    window.addEventListener('DOMContentLoaded', function () {
+        const inputRole = document.querySelector('select[name="role"]')
+
+        if (inputRole) {
+            inputRole.addEventListener('change', async function () {
+                const uri = '{{ url("/roles/{role}/permissions", {role:":role"}) }}'
+                const response = await fetch(uri.replace(':role', this.value))
+                const defaultPermissions = await response.json()
+                const userPermissions = JSON.parse('{{ (usuario.permissions ?? [])|json_encode|raw }}')
+                const inputPermissions = document.querySelectorAll('input[name="permissions[]"]')
+
+                inputPermissions.forEach(function (input) {
+                    const permission = input.value
+                    const isDefault = defaultPermissions.includes(permission)
+                    const isUserPermission = userPermissions.includes(permission)
+
+                    Object.assign(input, {
+                        ariaDisabled: isDefault,
+                        checked: isDefault || isUserPermission,
+                        disabled: isDefault,
+                    })
+                })
+            })
+
+            inputRole.dispatchEvent(new Event('change'))
+        }
+    })
+</script>
 {% endif %}
