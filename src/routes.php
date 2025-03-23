@@ -10,6 +10,7 @@ use App\Controllers\UsuarioController;
 use App\Enums\Permission;
 use App\Http\Router;
 use App\Middlewares\AcessoRestrito;
+use App\Middlewares\NaoPodeEditarAdminOuSiMesmo;
 use App\Middlewares\Visitante;
 
 // página inicial
@@ -30,8 +31,8 @@ Router::put('/cadastro/editar', [CadastroController::class, 'atualizar'], [Acess
 Router::get('/usuarios', [UsuarioController::class, 'index'], [AcessoRestrito::class, Permission::MANTER_USUARIOS]);
 Router::get('/usuarios/cadastrar', [UsuarioController::class, 'cadastrar'], [AcessoRestrito::class, Permission::MANTER_USUARIOS]);
 Router::post('/usuarios', [UsuarioController::class, 'salvar'], [AcessoRestrito::class, Permission::MANTER_USUARIOS]);
-Router::get('/usuarios/{usuario}/editar', [UsuarioController::class, 'editar'], [AcessoRestrito::class, Permission::MANTER_USUARIOS]);
-Router::put('/usuarios/{usuario}', [UsuarioController::class, 'atualizar'], [AcessoRestrito::class, Permission::MANTER_USUARIOS]);
+Router::get('/usuarios/{usuario}/editar', [UsuarioController::class, 'editar'], [AcessoRestrito::class, Permission::MANTER_USUARIOS, NaoPodeEditarAdminOuSiMesmo::class]);
+Router::put('/usuarios/{usuario}', [UsuarioController::class, 'atualizar'], [AcessoRestrito::class, Permission::MANTER_USUARIOS, NaoPodeEditarAdminOuSiMesmo::class]);
 
 // agendamentos
 Router::get('/agendamentos', [AgendamentoController::class, 'index']);

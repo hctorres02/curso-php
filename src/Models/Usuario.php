@@ -46,7 +46,7 @@ class Usuario extends Model
                     ->whereLike('nome', "%{$q}%")
                     ->orWhereLike('email', "%{$q}%")
             ))
-            ->whereNot('id', session()->get('usuario_id'))
+            ->whereNotIn('id', [1, session()->get('usuario_id')])
             ->paginate(10)
             ->appends(array_filter($params))
             ->toArray();
