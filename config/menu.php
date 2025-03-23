@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Role;
 use App\Http\Request;
 use Spatie\Menu\Link;
 use Spatie\Menu\Menu;
@@ -12,9 +13,10 @@ return Menu::new()
 
     // Se o usuário estiver autenticado, adiciona links específicos
     ->if(! ! $usuario, fn (Menu $menu) => $menu
-        ->link('/periodos', 'Períodos')
-        ->link('/disciplinas', 'Disciplinas')
-        ->link('/atividades', 'Atividades')
+        ->linkIf($usuario->hasRole(Role::ADMINISTRADOR, Role::CONTRIBUIDOR), '/periodos', 'Períodos')
+        ->linkIf($usuario->hasRole(Role::ADMINISTRADOR, Role::CONTRIBUIDOR), '/disciplinas', 'Disciplinas')
+        ->linkIf($usuario->hasRole(Role::ADMINISTRADOR, Role::CONTRIBUIDOR), '/atividades', 'Atividades')
+        ->linkIf($usuario->hasRole(Role::ADMINISTRADOR), '/usuarios', 'Usuários')
         ->submenu(fn (Menu $submenu) => $submenu
             ->wrap('details', ['class' => 'dropdown', 'dir' => 'rtl'])
             ->prepend("<summary>{$usuario->email}</summary>")

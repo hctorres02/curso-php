@@ -8,7 +8,7 @@
 </hgroup>
 <nav>
     <ul>
-        {% if (USUARIO) %}
+        {% if hasRole('administrador', 'contribuidor') %}
         <li>
             <a href="{{ url('/periodos/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
         </li>
@@ -36,7 +36,7 @@
                     </li>
                 </ul>
                 <ul>
-                    {% if (USUARIO) %}
+                    {% if hasRole('administrador', 'contribuidor') %}
                     <li>
                         <a href="{{ url('/periodos/{id}/editar', {id: periodo.id}) }}">
                             <small>&#9998; Editar</small>

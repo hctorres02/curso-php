@@ -49,16 +49,16 @@
 {% set default_value = OLD[name] ?? default_value %}
 {% set is_invalid = name in (ERRORS|keys) %}
 <select name="{{ name }}" aria-label="{{ label }}" aria-invalid="{{ is_invalid ? 'true' : '' }}">
+    {% if label %}
     <option {{ attr({
         value: '',
         selected: not default_value,
     })|raw }}>{{ label }}</option>
-    {% if options %}
     <option disabled>------</option>
+    {% endif %}
     {% for value, label in options %}
     {{ label is iterable ? _self.group(value, label, default_value) : _self.opt(label, value, default_value) }}
     {% endfor %}
-    {% endif %}
 </select>
 {% if is_invalid %}
 <small>{{ ERRORS[name] }}</small>

@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 
+use App\Enums\Role;
 use App\Models\Agendamento;
 use App\Models\Atividade;
 use App\Models\Disciplina;
@@ -130,6 +131,7 @@ try {
         'nome' => env('ADMIN_NAME'),
         'email' => env('ADMIN_EMAIL'),
         'senha' => env('ADMIN_PWD'),
+        'role' => Role::ADMINISTRADOR,
     ]);
 
     /**

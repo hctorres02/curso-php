@@ -8,7 +8,7 @@
 </hgroup>
 <nav>
     <ul>
-        {% if (USUARIO) %}
+        {% if hasRole('administrador', 'contribuidor') %}
         <li>
             <a href="{{ url('/agendamentos/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
         </li>
@@ -42,7 +42,7 @@
             </td>
             <td>
                 {{ agendamento.conteudo }}<br />
-                {% if (USUARIO) %}
+                {% if hasRole('administrador', 'contribuidor') %}
                 <a href="{{ url('/agendamentos/{id}/editar', {id: agendamento.id}) }}">
                     <small>&#9998; Editar</small>
                 </a>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Role;
 use App\Http\Request;
 use App\Http\View;
 use Faker\Factory;
@@ -54,6 +55,15 @@ if (! function_exists('flash')) {
     function flash(): FlashBag
     {
         return session()->getFlashBag();
+    }
+}
+
+if (! function_exists('hasRole')) {
+    function hasRole(Role|string ...$roles): bool
+    {
+        $usuario = session()->get('usuario');
+
+        return $usuario && $usuario->hasRole(...$roles);
     }
 }
 

@@ -10,6 +10,7 @@ class ConfigureView
     public function __invoke(Request $request): bool
     {
         View::addFunction('attr', attr(...));
+        View::addFunction('hasRole', hasRole(...));
         View::addFunction('url', url(...));
         View::addGlobals([
             'APP_LOCALE' => str_replace('_', '-', env('APP_LOCALE')),
