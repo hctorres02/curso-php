@@ -20,7 +20,7 @@ class ConfigureView
             'ERRORS' => flash()->get('err'),
             'OLD' => flash()->get('old'),
             'USUARIO' => session()->get('usuario'),
-            'MAIN_MENU' => require PROJECT_ROOT.'/config/menu.php',
+            'MENU' => require PROJECT_ROOT.'/config/menu.php',
         ]);
 
         return true;
