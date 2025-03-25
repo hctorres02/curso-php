@@ -2,29 +2,37 @@
 {% from "macros.twig" import pagination, select %}
 
 {% block main %}
-<hgroup role="heading">
-    <h3>Agendamentos</h3>
-    <p>Existem {{ total }} agendamentos previstos</p>
-</hgroup>
-<nav>
-    <ul>
-        {% if hasPermission('manter_agendamentos') %}
-        <li>
-            <a href="{{ url('/agendamentos/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
-        </li>
-        {% endif %}
-    </ul>
-    <ul>
-        <li>
-            <form role="search">
-                {{ select('Período', 'periodo_id', periodos, periodo_id) }}
-                {{ select('Atividade', 'atividade_id', atividades, atividade_id) }}
-                {{ select('Disciplina', 'disciplina_id', disciplinas, disciplina_id) }}
-                <input type="submit" value="Filtrar" />
-            </form>
-        </li>
-    </ul>
-</nav>
+<section>
+    <nav>
+        <ul>
+            <li>
+                <hgroup role="heading">
+                    <h3>Agendamentos</h3>
+                    <p>Existem {{ total }} agendamentos previstos</p>
+                </hgroup>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <form role="search">
+                    {{ select('Período', 'periodo_id', periodos, periodo_id) }}
+                    {{ select('Atividade', 'atividade_id', atividades, atividade_id) }}
+                    {{ select('Disciplina', 'disciplina_id', disciplinas, disciplina_id) }}
+                    <input type="submit" value="Filtrar" />
+                </form>
+            </li>
+        </ul>
+    </nav>
+    <nav>
+        <ul>
+            {% if hasPermission('manter_agendamentos') %}
+            <li>
+                <a href="{{ url('/agendamentos/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</section>
 <table class="striped">
     <thead>
         <tr>

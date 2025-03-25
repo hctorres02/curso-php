@@ -2,28 +2,36 @@
 {% from "macros.twig" import pagination, select %}
 
 {% block main %}
-<hgroup role="heading">
-    <h3>Usuários</h3>
-    <p>Total: {{ total }} usuários cadastrados</p>
-</hgroup>
-<nav>
-    <ul>
-        {% if hasRole('administrador') %}
-        <li>
-            <a href="{{ url('/usuarios/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
-        </li>
-        {% endif %}
-    </ul>
-    <ul>
-        <li>
-            <form role="search" style="margin-bottom: 0.5rem;">
-                <input type="search" name="q" value="{{ q }}" placeholder="Nome ou email">
-                {{ select('Role', 'role', roles, role) }}
-                <input type="submit" value="Buscar">
-            </form>
-        </li>
-    </ul>
-</nav>
+<section>
+    <nav>
+        <ul>
+            <li>
+                <hgroup role="heading">
+                    <h3>Usuários</h3>
+                    <p>Total: {{ total }} usuários cadastrados</p>
+                </hgroup>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <form role="search" style="margin-bottom: 0.5rem;">
+                    <input type="search" name="q" value="{{ q }}" placeholder="Nome ou email">
+                    {{ select('Role', 'role', roles, role) }}
+                    <input type="submit" value="Buscar">
+                </form>
+            </li>
+        </ul>
+    </nav>
+    <nav>
+        <ul>
+            {% if hasRole('administrador') %}
+            <li>
+                <a href="{{ url('/usuarios/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</section>
 <table class="striped">
     <thead>
         <tr>

@@ -2,28 +2,36 @@
 {% from "macros.twig" import pagination, select %}
 
 {% block main %}
-<hgroup role="heading">
-    <h3>Disciplinas</h3>
-    <p>Total: {{ total }} disciplinas</p>
-</hgroup>
-<nav>
-    <ul>
-        {% if hasPermission('manter_disciplinas') %}
-        <li>
-            <a href="{{ url('/disciplinas/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
-        </li>
-        {% endif %}
-    </ul>
-    <ul>
-        <li>
-            <form role="search" style="margin-bottom: 0.5rem;">
-                <input type="search" name="nome" value="{{ nome }}" placeholder="Nome">
-                {{ select('Período', 'periodo_id', periodos, periodo_id) }}
-                <input type="submit" value="Buscar">
-            </form>
-        </li>
-    </ul>
-</nav>
+<section>
+    <nav>
+        <ul>
+            <li>
+                <hgroup role="heading">
+                    <h3>Disciplinas</h3>
+                    <p>Total: {{ total }} disciplinas</p>
+                </hgroup>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <form role="search" style="margin-bottom: 0.5rem;">
+                    <input type="search" name="nome" value="{{ nome }}" placeholder="Nome">
+                    {{ select('Período', 'periodo_id', periodos, periodo_id) }}
+                    <input type="submit" value="Buscar">
+                </form>
+            </li>
+        </ul>
+    </nav>
+    <nav>
+        <ul>
+            {% if hasPermission('manter_disciplinas') %}
+            <li>
+                <a href="{{ url('/disciplinas/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</section>
 {% for grupo in data|batch(3, '') %}
 <div class="grid">
     {% for inicial, disciplinas in grupo %}
@@ -36,7 +44,8 @@
             <li>
                 <strong>{{ disciplina.nome }}</strong>
                 {% if hasPermission('manter_disciplinas') %}
-                <a href="{{ url('/disciplinas/{id}/editar', {id: disciplina.id}) }}" title="Editar disciplina">&#9998;</a>
+                <a href="{{ url('/disciplinas/{id}/editar', {id: disciplina.id}) }}"
+                    title="Editar disciplina">&#9998;</a>
                 {% endif %}
                 <br />
                 {% if periodo_id %}

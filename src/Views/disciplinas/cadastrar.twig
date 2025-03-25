@@ -1,16 +1,24 @@
 {% extends "base.twig" %}
 
 {% block main %}
-<hgroup role="heading">
-    <h3>Cadastrar disciplina</h3>
-</hgroup>
-<nav>
-    <ul>
-        <li>
-            <a href="{{ url('/disciplinas') }}">&larr; Voltar para listagem</a>
-        </li>
-    </ul>
-</nav>
+<section>
+    <nav>
+        <ul>
+            <li>
+                <hgroup role="heading">
+                    <h3>Cadastrar disciplina</h3>
+                </hgroup>
+            </li>
+        </ul>
+    </nav>
+    <nav>
+        <ul>
+            <li>
+                <a href="{{ url('/disciplinas') }}">&larr; Voltar para listagem</a>
+            </li>
+        </ul>
+    </nav>
+</section>
 <form action="{{ url('/disciplinas') }}" method="post">
     {% include "disciplinas/fieldset.twig" %}
     <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />

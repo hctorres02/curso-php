@@ -1,16 +1,24 @@
 {% extends "base.twig" %}
 
 {% block main %}
-<hgroup role="heading">
-    <h3>Editar usuário</h3>
-</hgroup>
-<nav>
-    <ul>
-        <li>
-            <a href="{{ url('/usuarios') }}">&larr; Voltar para listagem</a>
-        </li>
-    </ul>
-</nav>
+<section>
+    <nav>
+        <ul>
+            <li>
+                <hgroup role="heading">
+                    <h3>Editar usuário</h3>
+                </hgroup>
+            </li>
+        </ul>
+    </nav>
+    <nav>
+        <ul>
+            <li>
+                <a href="{{ url('/usuarios') }}">&larr; Voltar para listagem</a>
+            </li>
+        </ul>
+    </nav>
+</section>
 <form action="{{ url('/usuarios/{id}', {id: usuario.id}) }}" method="post">
     {% include "usuarios/fieldset.twig" %}
     <input type="hidden" name="_method" value="put" />

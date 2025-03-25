@@ -1,19 +1,28 @@
 {% extends "base.twig" %}
 
 {% block main %}
-<hgroup role="heading">
-    <h3>Editar agendamento</h3>
-</hgroup>
-<nav>
-    <ul>
-        <li>
-            <a href="{{ url('/agendamentos') }}">&larr; Voltar para listagem</a>
-        </li>
-    </ul>
-    <ul>
-        <li>{% include "agendamentos/excluir.twig" %}</li>
-    </ul>
-</nav>
+<section>
+    <nav>
+        <ul>
+            <li>
+
+                <hgroup role="heading">
+                    <h3>Editar agendamento</h3>
+                </hgroup>
+            </li>
+        </ul>
+    </nav>
+    <nav>
+        <ul>
+            <li>
+                <a href="{{ url('/agendamentos') }}">&larr; Voltar para listagem</a>
+            </li>
+        </ul>
+        <ul>
+            <li>{% include "agendamentos/excluir.twig" %}</li>
+        </ul>
+    </nav>
+</section>
 <form action="{{ url('/agendamentos/{id}', {id: agendamento.id}) }}" method="post">
     {% include "agendamentos/fieldset.twig" %}
     <input type="hidden" name="_method" value="put">

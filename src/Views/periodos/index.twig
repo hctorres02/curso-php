@@ -2,27 +2,35 @@
 {% from "macros.twig" import pagination %}
 
 {% block main %}
-<hgroup role="heading">
-    <h3>Períodos</h3>
-    <p>Total: {{ total }} períodos</p>
-</hgroup>
-<nav>
-    <ul>
-        {% if hasPermission('manter_periodos') %}
-        <li>
-            <a href="{{ url('/periodos/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
-        </li>
-        {% endif %}
-    </ul>
-    <ul>
-        <li>
-            <form role="search" style="margin-bottom: 0.5rem;">
-                <input type="search" name="q" value="{{ q }}" placeholder="Ano ou semestre">
-                <input type="submit" value="Buscar">
-            </form>
-        </li>
-    </ul>
-</nav>
+<section>
+    <nav>
+        <ul>
+            <li>
+                <hgroup role="heading">
+                    <h3>Períodos</h3>
+                    <p>Total: {{ total }} períodos</p>
+                </hgroup>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <form role="search" style="margin-bottom: 0.5rem;">
+                    <input type="search" name="q" value="{{ q }}" placeholder="Ano ou semestre">
+                    <input type="submit" value="Buscar">
+                </form>
+            </li>
+        </ul>
+    </nav>
+    <nav>
+        <ul>
+            {% if hasPermission('manter_periodos') %}
+            <li>
+                <a href="{{ url('/periodos/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</section>
 {% for periodos in data|batch(3, '') %}
 <div class="grid">
     {% for periodo in periodos %}

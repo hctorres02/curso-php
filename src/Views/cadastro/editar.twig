@@ -1,9 +1,17 @@
 {% extends "base.twig" %}
 
 {% block main %}
-<hgroup role="heading">
-    <h3>Editar cadastro</h3>
-</hgroup>
+<section>
+    <nav>
+        <ul>
+            <li>
+                <hgroup role="heading">
+                    <h3>Editar cadastro</h3>
+                </hgroup>
+            </li>
+        </ul>
+    </nav>
+</section>
 <form action="{{ url('/cadastro/editar') }}" method="post">
     {% include "usuarios/fieldset.twig" %}
     <input type="hidden" name="_method" value="put" />

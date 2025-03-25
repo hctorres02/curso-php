@@ -2,17 +2,25 @@
 {% from "macros.twig" import input %}
 
 {% block main %}
-<hgroup role="heading">
-    <h3>Login</h3>
-    <p>Insira suas credenciais para continuar o acesso.</p>
-</hgroup>
-<nav>
-    <ul>
-        <li>
-            <a href="{{ url('/agendamentos') }}">&larr; Voltar para agendamentos</a>
-        </li>
-    </ul>
-</nav>
+<section>
+    <nav>
+        <ul>
+            <li>
+                <hgroup role="heading">
+                    <h3>Login</h3>
+                    <p>Insira suas credenciais para continuar o acesso.</p>
+                </hgroup>
+            </li>
+        </ul>
+    </nav>
+    <nav>
+        <ul>
+            <li>
+                <a href="{{ url('/agendamentos') }}">&larr; Voltar para agendamentos</a>
+            </li>
+        </ul>
+    </nav>
+</section>
 <form action="{{ url('/login') }}" method="post">
     <fieldset class="grid">
         <label>

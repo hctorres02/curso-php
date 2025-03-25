@@ -2,27 +2,35 @@
 {% from "macros.twig" import pagination %}
 
 {% block main %}
-<hgroup role="heading">
-    <h3>Atividades</h3>
-    <p>Total: {{ total }} atividades</p>
-</hgroup>
-<nav>
-    <ul>
-        {% if hasPermission('manter_atividades') %}
-        <li>
-            <a href="{{ url('/atividades/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
-        </li>
-        {% endif %}
-    </ul>
-    <ul>
-        <li>
-            <form role="search" style="margin-bottom: 0.5rem;">
-                <input type="search" name="nome" value="{{ nome }}" placeholder="Nome">
-                <input type="submit" value="Buscar">
-            </form>
-        </li>
-    </ul>
-</nav>
+<section>
+    <nav>
+        <ul>
+            <li>
+                <hgroup role="heading">
+                    <h3>Atividades</h3>
+                    <p>Total: {{ total }} atividades</p>
+                </hgroup>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <form role="search" style="margin-bottom: 0.5rem;">
+                    <input type="search" name="nome" value="{{ nome }}" placeholder="Nome">
+                    <input type="submit" value="Buscar">
+                </form>
+            </li>
+        </ul>
+    </nav>
+    <nav>
+        <ul>
+            {% if hasPermission('manter_atividades') %}
+            <li>
+                <a href="{{ url('/atividades/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</section>
 {% for inicial, atividades in data %}
 <h4>{{ inicial }}</h4>
 <hr />
