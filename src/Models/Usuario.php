@@ -81,7 +81,8 @@ class Usuario extends Model
 
     public function hasPermission(Permission|string $permission): bool
     {
-        return in_array($permission->value ?? $permission, array_merge($this->permissions, $this->role->permissions()));
+        return $this->hasRole(Role::ADMINISTRADOR)
+            || in_array($permission->value ?? $permission, array_merge($this->permissions, $this->role->permissions()));
     }
 
     public function hasRole(Role|string ...$roles): bool
