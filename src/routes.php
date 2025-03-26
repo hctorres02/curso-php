@@ -61,7 +61,6 @@ Router::get(
     action: [CadastroController::class, 'editar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_PERFIL,
     ]
 );
 
@@ -70,7 +69,6 @@ Router::put(
     action: [CadastroController::class, 'atualizar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_PERFIL,
     ]
 );
 
@@ -80,7 +78,7 @@ Router::get(
     action: [UsuarioController::class, 'index'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_USUARIOS,
+        Permission::VER_USUARIOS,
     ]
 );
 
@@ -89,7 +87,7 @@ Router::get(
     action: [UsuarioController::class, 'cadastrar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_USUARIOS,
+        Permission::CADASTRAR_USUARIOS,
     ]
 );
 
@@ -98,7 +96,7 @@ Router::post(
     action: [UsuarioController::class, 'salvar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_USUARIOS,
+        Permission::CADASTRAR_USUARIOS,
     ]
 );
 
@@ -107,7 +105,7 @@ Router::get(
     action: [UsuarioController::class, 'editar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_USUARIOS,
+        Permission::EDITAR_USUARIOS,
         NaoPodeEditarAdminOuSiMesmo::class,
     ]
 );
@@ -117,7 +115,7 @@ Router::put(
     action: [UsuarioController::class, 'atualizar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_USUARIOS,
+        Permission::EDITAR_USUARIOS,
         NaoPodeEditarAdminOuSiMesmo::class,
     ]
 );
@@ -132,7 +130,7 @@ Router::get(
     action: [AgendamentoController::class, 'cadastrar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_AGENDAMENTOS,
+        Permission::VER_AGENDAMENTOS,
     ]
 );
 
@@ -141,7 +139,7 @@ Router::post(
     action: [AgendamentoController::class, 'salvar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_AGENDAMENTOS,
+        Permission::CADASTRAR_AGENDAMENTOS,
     ]
 );
 
@@ -150,7 +148,7 @@ Router::get(
     action: [AgendamentoController::class, 'ver'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_AGENDAMENTOS,
+        Permission::CADASTRAR_AGENDAMENTOS,
     ]
 );
 
@@ -159,7 +157,7 @@ Router::get(
     action: [AgendamentoController::class, 'editar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_AGENDAMENTOS,
+        Permission::EDITAR_AGENDAMENTOS,
     ]
 );
 
@@ -168,7 +166,7 @@ Router::put(
     action: [AgendamentoController::class, 'atualizar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_AGENDAMENTOS,
+        Permission::EDITAR_AGENDAMENTOS,
     ]
 );
 
@@ -177,7 +175,7 @@ Router::delete(
     action: [AgendamentoController::class, 'excluir'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_AGENDAMENTOS,
+        Permission::EXCLUIR_AGENDAMENTOS,
     ]
 );
 
@@ -187,7 +185,7 @@ Router::get(
     action: [PeriodoController::class, 'index'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_PERIODOS,
+        Permission::VER_PERIODOS,
     ]
 );
 
@@ -196,7 +194,7 @@ Router::get(
     action: [PeriodoController::class, 'cadastrar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_PERIODOS,
+        Permission::CADASTRAR_PERIODOS,
     ]
 );
 
@@ -205,7 +203,7 @@ Router::post(
     action: [PeriodoController::class, 'salvar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_PERIODOS,
+        Permission::CADASTRAR_PERIODOS,
     ]
 );
 
@@ -214,7 +212,7 @@ Router::get(
     action: [PeriodoController::class, 'editar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_PERIODOS,
+        Permission::EDITAR_PERIODOS,
     ]
 );
 
@@ -223,7 +221,7 @@ Router::put(
     action: [PeriodoController::class, 'atualizar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_PERIODOS,
+        Permission::EDITAR_PERIODOS,
     ]
 );
 
@@ -232,7 +230,7 @@ Router::delete(
     action: [PeriodoController::class, 'excluir'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_PERIODOS,
+        Permission::EXCLUIR_PERIODOS,
     ]
 );
 
@@ -242,7 +240,7 @@ Router::get(
     action: [DisciplinaController::class, 'index'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_DISCIPLINAS,
+        Permission::VER_DISCIPLINAS,
     ]
 );
 
@@ -251,7 +249,7 @@ Router::get(
     action: [DisciplinaController::class, 'cadastrar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_DISCIPLINAS,
+        Permission::CADASTRAR_DISCIPLINAS,
     ]
 );
 
@@ -260,7 +258,7 @@ Router::post(
     action: [DisciplinaController::class, 'salvar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_DISCIPLINAS,
+        Permission::CADASTRAR_DISCIPLINAS,
     ]
 );
 
@@ -269,7 +267,7 @@ Router::get(
     action: [DisciplinaController::class, 'editar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_DISCIPLINAS,
+        Permission::EDITAR_DISCIPLINAS,
     ]
 );
 
@@ -278,7 +276,7 @@ Router::put(
     action: [DisciplinaController::class, 'atualizar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_DISCIPLINAS,
+        Permission::EDITAR_DISCIPLINAS,
     ]
 );
 
@@ -287,7 +285,7 @@ Router::delete(
     action: [DisciplinaController::class, 'excluir'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_DISCIPLINAS,
+        Permission::EXCLUIR_DISCIPLINAS,
     ]
 );
 
@@ -297,7 +295,7 @@ Router::get(
     action: [AtividadeController::class, 'index'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_ATIVIDADES,
+        Permission::VER_ATIVIDADES,
     ]
 );
 
@@ -306,7 +304,7 @@ Router::get(
     action: [AtividadeController::class, 'cadastrar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_ATIVIDADES,
+        Permission::CADASTRAR_ATIVIDADES,
     ]
 );
 
@@ -315,7 +313,7 @@ Router::post(
     action: [AtividadeController::class, 'salvar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_ATIVIDADES,
+        Permission::CADASTRAR_ATIVIDADES,
     ]
 );
 
@@ -324,7 +322,7 @@ Router::get(
     action: [AtividadeController::class, 'editar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_ATIVIDADES,
+        Permission::EDITAR_ATIVIDADES,
     ]
 );
 
@@ -333,7 +331,7 @@ Router::put(
     action: [AtividadeController::class, 'atualizar'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_ATIVIDADES,
+        Permission::EDITAR_ATIVIDADES,
     ]
 );
 
@@ -342,7 +340,7 @@ Router::delete(
     action: [AtividadeController::class, 'excluir'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_ATIVIDADES,
+        Permission::EXCLUIR_ATIVIDADES,
     ]
 );
 
@@ -352,6 +350,6 @@ Router::get(
     action: [RoleController::class, 'permissions'],
     middlewares: [
         AcessoRestrito::class,
-        Permission::MANTER_USUARIOS,
+        Permission::ATRIBUIR_PERMISSOES,
     ]
 );

@@ -24,7 +24,7 @@
     </nav>
     <nav>
         <ul>
-            {% if hasRole('administrador') %}
+            {% if hasPermission('cadastrar_usuarios') %}
             <li>
                 <a href="{{ url('/usuarios/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
             </li>
@@ -49,7 +49,9 @@
             </td>
             <td>{{ usuario.email|lower }}</td>
             <td>
+                {% if hasPermission('editar_usuarios') %}
                 <a href="{{ url('/usuarios/{id}/editar', {id: usuario.id}) }}">editar</a>
+                {% endif %}
             </td>
         </tr>
         {% else %}

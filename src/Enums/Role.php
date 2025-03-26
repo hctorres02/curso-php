@@ -23,24 +23,30 @@ enum Role: string
 
         $roleKey = $this->value;
         $cachedPermissions[$roleKey] ??= array_column(match ($this) {
+            default => [],
             self::VISITANTE => [
-                Permission::MANTER_PERFIL,
+                Permission::VER_AGENDAMENTOS,
             ],
             self::CONTRIBUIDOR => [
-                Permission::MANTER_PERFIL,
-                Permission::MANTER_AGENDAMENTOS,
-                Permission::MANTER_ATIVIDADES,
-                Permission::MANTER_DISCIPLINAS,
-                Permission::MANTER_PERIODOS,
-            ],
-            self::ADMINISTRADOR => [
-                Permission::MANTER_PERFIL,
-                Permission::MANTER_AGENDAMENTOS,
-                Permission::MANTER_ATIVIDADES,
-                Permission::MANTER_DISCIPLINAS,
-                Permission::MANTER_PERIODOS,
-                Permission::MANTER_PERMISSOES,
-                Permission::MANTER_USUARIOS,
+                Permission::VER_AGENDAMENTOS,
+                Permission::CADASTRAR_AGENDAMENTOS,
+                Permission::EDITAR_AGENDAMENTOS,
+                Permission::EXCLUIR_AGENDAMENTOS,
+
+                Permission::VER_ATIVIDADES,
+                Permission::CADASTRAR_ATIVIDADES,
+                Permission::EDITAR_ATIVIDADES,
+                Permission::EXCLUIR_ATIVIDADES,
+
+                Permission::VER_DISCIPLINAS,
+                Permission::CADASTRAR_DISCIPLINAS,
+                Permission::EDITAR_DISCIPLINAS,
+                Permission::EXCLUIR_DISCIPLINAS,
+
+                Permission::VER_PERIODOS,
+                Permission::CADASTRAR_PERIODOS,
+                Permission::EDITAR_PERIODOS,
+                Permission::EXCLUIR_PERIODOS,
             ],
         }, 'value');
 

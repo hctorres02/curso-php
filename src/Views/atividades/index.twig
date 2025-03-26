@@ -23,7 +23,7 @@
     </nav>
     <nav>
         <ul>
-            {% if hasPermission('manter_atividades') %}
+            {% if hasPermission('cadastrar_atividades') %}
             <li>
                 <a href="{{ url('/atividades/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
             </li>
@@ -38,7 +38,7 @@
     {% for atividade in atividades %}
     <li>
         {{ atividade.nome }}
-        {% if hasPermission('manter_atividades') %}
+        {% if hasPermission('editar_atividades') %}
         <a href="{{ url('/atividades/{id}/editar', {id: atividade.id}) }}" title="Editar atividade">&#9998;</a>
         {% endif %}
     </li>

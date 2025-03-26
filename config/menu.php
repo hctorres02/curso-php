@@ -32,10 +32,10 @@ return array_map(fn (Menu $menu) => ! $menu->count() ? null : $menu
         ->if($isAuthenticated, fn (Menu $menu) => $menu
             ->wrap('nav', ['class' => 'container'])
             ->link('/agendamentos', 'Agendamentos')
-            ->linkIf($usuario->hasPermission(Permission::MANTER_PERIODOS), '/periodos', 'Períodos')
-            ->linkIf($usuario->hasPermission(Permission::MANTER_DISCIPLINAS), '/disciplinas', 'Disciplinas')
-            ->linkIf($usuario->hasPermission(Permission::MANTER_ATIVIDADES), '/atividades', 'Atividades')
-            ->linkIf($usuario->hasPermission(Permission::MANTER_USUARIOS), '/usuarios', 'Usuários')
+            ->linkIf($usuario->hasPermission(Permission::VER_PERIODOS), '/periodos', 'Períodos')
+            ->linkIf($usuario->hasPermission(Permission::VER_DISCIPLINAS), '/disciplinas', 'Disciplinas')
+            ->linkIf($usuario->hasPermission(Permission::VER_ATIVIDADES), '/atividades', 'Atividades')
+            ->linkIf($usuario->hasPermission(Permission::VER_USUARIOS), '/usuarios', 'Usuários')
         ),
 
     /**
@@ -47,7 +47,7 @@ return array_map(fn (Menu $menu) => ! $menu->count() ? null : $menu
             ->submenu(fn (Menu $submenu) => $submenu
                 ->wrap('details', ['class' => 'dropdown', 'dir' => 'rtl'])
                 ->prepend("<summary>{$usuario->email}</summary>")
-                ->linkIf($usuario->hasPermission(Permission::MANTER_PERFIL), '/cadastro/editar', 'Editar perfil')
+                ->link('/cadastro/editar', 'Editar perfil')
                 ->link('/logout', 'Logout')
             )
         )

@@ -16,7 +16,7 @@
     </label>
     {% endif %}
 </fieldset>
-{% if roles is defined %}
+{% if roles is defined and hasPermission('atribuir_role') %}
 <fieldset>
     <label>
         Role
@@ -24,7 +24,7 @@
     </label>
 </fieldset>
 {% endif %}
-{% if permissions is defined %}
+{% if permissions is defined and hasPermission('atribuir_permissoes') %}
 <fieldset>
     <legend>Permissions</legend>
     {{ checkbox('permissions', permissions, usuario.permissions ?? []) }}
