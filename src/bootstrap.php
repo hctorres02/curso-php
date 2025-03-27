@@ -1,34 +1,37 @@
 <?php
 
+use App\Http\Http;
+use Dotenv\Dotenv;
+use Illuminate\Database\Capsule\Manager;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run;
+
 // raíz do projeto
-define('PROJECT_ROOT', realpath(__DIR__ . '/..'));
+define('PROJECT_ROOT', realpath(__DIR__.'/..'));
 
 // raíz pública
-define('WEB_ROOT', PROJECT_ROOT . '/public');
+define('WEB_ROOT', PROJECT_ROOT.'/public');
 
 // auto carregamento
-require PROJECT_ROOT . '/vendor/autoload.php';
+require PROJECT_ROOT.'/vendor/autoload.php';
 
 // variáveis de ambiente
-Dotenv\Dotenv::createImmutable(PROJECT_ROOT)->load();
+Dotenv::createImmutable(PROJECT_ROOT)->load();
 
 // coletor de erros
-(new Whoops\Run)->prependHandler(new Whoops\Handler\PrettyPageHandler)->register();
+tap(new Run, function (Run $runner) {
+    $handler = new PrettyPageHandler;
+
+    $runner->prependHandler($handler);
+    $runner->register();
+});
 
 // banco de dados
-$dbManager = new \Illuminate\Database\Capsule\Manager;
-$dbManager->addConnection(require PROJECT_ROOT . '/config/database.php');
-$dbManager->setAsGlobal();
-$dbManager->bootEloquent();
-
-// rotas
-require PROJECT_ROOT.'/src/routes.php';
-
-// template engine
-App\Http\View::boot(new Twig\Environment(
-    new Twig\Loader\FilesystemLoader(PROJECT_ROOT.'/src/Views'),
-    require PROJECT_ROOT.'/config/twig.php'
-));
+tap(new Manager, function (Manager $dbManager) {
+    $dbManager->addConnection(require PROJECT_ROOT.'/config/database.php');
+    $dbManager->setAsGlobal();
+    $dbManager->bootEloquent();
+});
 
 // cliente HTTP
-App\Http\Http::boot(require PROJECT_ROOT.'/config/http.php');
+Http::boot(require PROJECT_ROOT.'/config/http.php');
