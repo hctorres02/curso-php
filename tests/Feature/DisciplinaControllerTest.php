@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Role;
 use App\Http\Http;
 use App\Models\Disciplina;
 use App\Models\Periodo;
@@ -16,7 +17,8 @@ beforeEach(function () {
     refreshDatabase();
 
     $senha = faker()->password(8);
-    $email = Usuario::factory()->create(compact('senha'))->email;
+    $role = Role::ADMINISTRADOR;
+    $email = Usuario::factory()->create(compact('senha', 'role'))->email;
     $_csrf_token = Http::getCsrfToken('/login');
 
     Http::post('/login', [

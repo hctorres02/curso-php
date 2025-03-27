@@ -58,6 +58,15 @@ class Request
     public function validate(array $rules, array $only = []): bool
     {
         if ($only) {
+            foreach ($only as $key => $field) {
+                if (is_numeric($key)) {
+                    continue;
+                }
+
+                $only[$key] = hasPermission($field) ? $key : null;
+            }
+
+            $only = array_filter(array_values($only));
             $rules = array_intersect_key($rules, array_flip($only));
         }
 

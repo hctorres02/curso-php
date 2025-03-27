@@ -31,7 +31,13 @@ class UsuarioController
 
     public function salvar(Request $request): RedirectResponse
     {
-        if (! $request->validate(Usuario::rules())) {
+        if (! $request->validate(Usuario::rules(), [
+            'nome',
+            'email',
+            'senha',
+            'role' => Permission::ATRIBUIR_ROLE,
+            'permissions' => Permission::ATRIBUIR_PERMISSOES,
+        ])) {
             return redirect('/usuarios/cadastrar');
         }
 
@@ -50,7 +56,12 @@ class UsuarioController
 
     public function atualizar(Request $request, Usuario $usuario): RedirectResponse
     {
-        if (! $request->validate(Usuario::rules(), ['nome', 'email', 'role', 'permissions'])) {
+        if (! $request->validate(Usuario::rules(), [
+            'nome',
+            'email',
+            'role' => Permission::ATRIBUIR_ROLE,
+            'permissions' => Permission::ATRIBUIR_PERMISSOES,
+        ])) {
             return redirect("/usuarios/{$usuario->id}/editar");
         }
 
