@@ -3,6 +3,8 @@
 use App\Http\Http;
 use Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpFoundation\Response;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
 
@@ -20,7 +22,16 @@ Dotenv::createImmutable(PROJECT_ROOT)->load();
 
 // coletor de erros
 tap(new Run, function (Run $runner) {
-    $handler = new PrettyPageHandler;
+    $handler = env('APP_DEBUG') ? new PrettyPageHandler : function (Exception $exception) {
+        // define a resposta apropriada
+        $response = match (true) {
+            $exception instanceof ModelNotFoundException => responseError(Response::HTTP_NOT_FOUND),
+            default => responseError(Response::HTTP_INTERNAL_SERVER_ERROR)
+        };
+
+        // enviar resposta
+        $response->send();
+    };
 
     $runner->prependHandler($handler);
     $runner->register();

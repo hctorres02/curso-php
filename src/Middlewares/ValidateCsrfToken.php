@@ -16,7 +16,7 @@ class ValidateCsrfToken
             BaseRequest::METHOD_POST,
             BaseRequest::METHOD_PUT,
         ])) {
-            return $request->verifyCsrfToken() ?: response('erro_400', status: Response::HTTP_BAD_REQUEST);
+            return $request->verifyCsrfToken() ?: responseError(Response::HTTP_BAD_REQUEST);
         }
 
         return true;

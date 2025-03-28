@@ -101,7 +101,7 @@ class Router
             $middlewareResponse = resolveCallback($middleware, $params);
 
             if ($middlewareResponse !== true) {
-                return $middlewareResponse ?: response('erro_403', status: Response::HTTP_FORBIDDEN);
+                return $middlewareResponse ?: responseError(Response::HTTP_FORBIDDEN);
             }
         }
 
@@ -163,6 +163,6 @@ class Router
             }
         }
 
-        return response('erro_404', status: Response::HTTP_NOT_FOUND);
+        return responseError(Response::HTTP_NOT_FOUND);
     }
 }

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="{{ APP_LOCALE }}">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="color-scheme" content="light dark">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" href="/favicon.ico" type="image/x-icon">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+        <title>{{ header }}</title>
+    </head>
+
+    <body>
+        <header>
+            <div class="container">
+                <hgroup>
+                    <h1>{{ header }}</h1>
+                    <p>{{ message }}</p>
+                </hgroup>
+                <p>URI: <mark>{{ CURRENT_URI }}</mark></p>
+                <p><a href="/">Ir para página inicial</a></p>
+            </div>
+        </header>
+    </body>
+
+</html>

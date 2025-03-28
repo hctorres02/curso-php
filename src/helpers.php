@@ -139,6 +139,44 @@ if (! function_exists('response')) {
     }
 }
 
+if (! function_exists('responseError')) {
+    function responseError(int $status): Response
+    {
+        $data = match ($status) {
+            Response::HTTP_BAD_REQUEST => [
+                'header' => '400 Solicitação Inválida',
+                'message' => 'O servidor não pode processar a solicitação devido a uma sintaxe inválida'
+            ],
+            Response::HTTP_UNAUTHORIZED => [
+                'header' => '401 Não Autorizado',
+                'message' => 'A solicitação requer autenticação do usuário'
+            ],
+            Response::HTTP_FORBIDDEN => [
+                'header' => '403 Proibido',
+                'message' => 'O cliente não tem permissão para acessar este recurso'
+            ],
+            Response::HTTP_NOT_FOUND => [
+                'header' => '404 Não Encontrado',
+                'message' => 'O servidor não conseguiu encontrar o recurso solicitado'
+            ],
+            Response::HTTP_INTERNAL_SERVER_ERROR => [
+                'header' => '500 Erro Interno do Servidor',
+                'message' => 'Ocorreu um erro inesperado no servidor'
+            ],
+            Response::HTTP_NOT_IMPLEMENTED => [
+                'header' => '501 Não Implementado',
+                'message' => 'O servidor não reconhece o método da solicitação ou não tem capacidade para atendê-lo'
+            ],
+            default => [
+                'header' => 'Erro Desconhecido',
+                'message' => 'Consulte a documentação ou entre em contato com o suporte'
+            ]
+        };
+
+        return response('erro', $data, $status);
+    }
+}
+
 if (! function_exists('resolveCallback')) {
     function resolveCallback(array|callable|Permission|string $action, array $params = []): mixed
     {
@@ -163,7 +201,7 @@ if (! function_exists('resolveCallback')) {
 
             return $reflectionMethod->invokeArgs($controllerInstance, $params);
         } catch (ReflectionException $e) {
-            return response('erro_501', compact('className', 'method'), Response::HTTP_NOT_IMPLEMENTED);
+            return responseError(Response::HTTP_NOT_IMPLEMENTED);
         }
     }
 }
