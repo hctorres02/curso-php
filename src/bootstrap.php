@@ -4,6 +4,7 @@ use App\Http\Http;
 use Dotenv\Dotenv;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Events\Dispatcher;
 use Symfony\Component\HttpFoundation\Response;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Run;
@@ -40,6 +41,7 @@ tap(new Run, function (Run $runner) {
 // banco de dados
 tap(new Manager, function (Manager $dbManager) {
     $dbManager->addConnection(require PROJECT_ROOT.'/config/database.php');
+    $dbManager->setEventDispatcher(new Dispatcher);
     $dbManager->setAsGlobal();
     $dbManager->bootEloquent();
 });

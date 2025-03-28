@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Atividade;
 use App\Models\Disciplina;
 use App\Models\Periodo;
+use App\Traits\Auditable;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -13,6 +14,7 @@ use Respect\Validation\Validator;
 
 class Agendamento extends Model
 {
+    use Auditable;
     use HasFactory;
 
     protected $fillable = [

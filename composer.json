@@ -11,7 +11,8 @@
         "illuminate/pagination": "^11.41",
         "respect/validation": "^2.4",
         "guzzlehttp/guzzle": "^7.9",
-        "spatie/menu": "^3.2"
+        "spatie/menu": "^3.2",
+        "illuminate/events": "^11.44"
     },
     "require-dev": {
         "pestphp/pest": "^3.7",
