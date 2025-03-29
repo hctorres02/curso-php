@@ -213,7 +213,7 @@ if (! function_exists('resolveParams')) {
             $paramType = $param->getType();
             $paramName = $paramType->getName();
             $routeParam = array_shift($routeParams);
-            $resolvedParams[] = empty($paramType) || $param->isOptional() ? $routeParam : match (true) {
+            $resolvedParams[] = empty($paramType) || $paramType->isBuiltin() || $param->isOptional() ? $routeParam : match (true) {
                 $paramName === Request::class => Request::getInstance(),
                 enum_exists($paramName) => $paramName::tryFrom($routeParam),
                 is_subclass_of($paramName, Model::class) => $paramName::findOrFail($routeParam),
