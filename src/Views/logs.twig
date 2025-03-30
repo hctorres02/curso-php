@@ -1,0 +1,41 @@
+{% extends "base.twig" %}
+{% from "macros.twig" import pagination, select %}
+
+{% block main %}
+<section>
+    <nav>
+        <ul>
+            <li>
+                <hgroup role="heading">
+                    <h3>Logs</h3>
+                    <p>Exibindo os últimos {{ limit }} registros</p>
+                </hgroup>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <form role="search">
+                    {{ select('Level', 'level_name', levels, level_name) }}
+                    {{ select('Mostrar', 'limit', limits, limit) }}
+                    <input type="submit" value="Filtrar" />
+                </form>
+            </li>
+        </ul>
+    </nav>
+</section>
+{% for entry in log %}
+<code style="display: block; margin-bottom: var(--pico-spacing); padding: var(--pico-spacing)">
+    <details {{ attr({
+        name: 'log',
+        style: 'margin-bottom: 0;',
+        open: loop.first,
+    })|raw }}>
+        <summary>{{ entry.datetime }}: <strong>[{{ entry.level_name }}] {{ entry.message }}</strong></summary>
+        <p>{{ entry.context.request.method }} <mark>{{ entry.context.request.uri }}</mark></p>
+        <pre>{{ entry.context.trace }}</pre>
+    </details>
+</code>
+{% else %}
+<p>Não há registros</p>
+{% endfor %}
+{% endblock %}

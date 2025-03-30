@@ -121,6 +121,46 @@ if (! function_exists('logAppend')) {
     }
 }
 
+if (! function_exists('logReader')) {
+    function logReader($limit, ?string $level_name = null)
+    {
+        $config = require PROJECT_ROOT.'/config/log.php';
+        $filename = $config['filename'];
+
+        if (! is_readable($filename)) {
+            return [];
+        }
+
+        $file = new SplFileObject($filename);
+        $file->seek(PHP_INT_MAX);
+
+        $totalLines = $file->key();
+        $seekLine = max(0, $totalLines - $limit);
+        $lines = [];
+
+        for ($i = $seekLine; $i < $totalLines; $i++) {
+            $file->seek($i);
+            $line = trim($file->current());
+
+            if (empty($line)) {
+                continue;
+            }
+
+            $decoded = json_decode($line, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                continue;
+            }
+
+            if ($level_name === null || $level_name === $decoded['level_name']) {
+                $lines[$i] = $decoded;
+            }
+        }
+
+        return array_reverse($lines);
+    }
+}
+
 
 if (! function_exists('migrate')) {
     function migrate(string $migration): void

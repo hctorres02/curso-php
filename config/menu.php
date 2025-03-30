@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\Permission;
+use App\Enums\Role;
 use App\Http\Request;
 use Spatie\Menu\Link;
 use Spatie\Menu\Menu;
@@ -36,6 +37,7 @@ return array_map(fn (Menu $menu) => ! $menu->count() ? null : $menu
             ->linkIf($usuario->hasPermission(Permission::VER_DISCIPLINAS), '/disciplinas', 'Disciplinas')
             ->linkIf($usuario->hasPermission(Permission::VER_ATIVIDADES), '/atividades', 'Atividades')
             ->linkIf($usuario->hasPermission(Permission::VER_USUARIOS), '/usuarios', 'Usuários')
+            ->linkIf($usuario->hasRole(Role::ADMINISTRADOR), '/logs', 'Logs')
         ),
 
     /**
