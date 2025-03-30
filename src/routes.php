@@ -5,6 +5,7 @@ use App\Controllers\AtividadeController;
 use App\Controllers\AuthController;
 use App\Controllers\CadastroController;
 use App\Controllers\DisciplinaController;
+use App\Controllers\LogController;
 use App\Controllers\PeriodoController;
 use App\Controllers\RoleController;
 use App\Controllers\UsuarioController;
@@ -12,6 +13,7 @@ use App\Enums\Permission;
 use App\Http\Router;
 use App\Middlewares\AcessoRestrito;
 use App\Middlewares\NaoPodeEditarAdminOuSiMesmo;
+use App\Middlewares\RequerRoleAdministrador;
 use App\Middlewares\Visitante;
 
 // página inicial
@@ -351,5 +353,24 @@ Router::get(
     middlewares: [
         AcessoRestrito::class,
         Permission::ATRIBUIR_PERMISSOES,
+    ]
+);
+
+// logs
+Router::get(
+    uri: '/logs',
+    action: [LogController::class, 'index'],
+    middlewares: [
+        AcessoRestrito::class,
+        RequerRoleAdministrador::class
+    ]
+);
+
+Router::delete(
+    uri: '/logs/{key}',
+    action: [LogController::class, 'excluir'],
+    middlewares: [
+        AcessoRestrito::class,
+        RequerRoleAdministrador::class
     ]
 );

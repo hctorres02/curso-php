@@ -12,7 +12,8 @@
         "respect/validation": "^2.4",
         "guzzlehttp/guzzle": "^7.9",
         "spatie/menu": "^3.2",
-        "illuminate/events": "^11.44"
+        "illuminate/events": "^11.44",
+        "monolog/monolog": "^3.9"
     },
     "require-dev": {
         "pestphp/pest": "^3.7",
