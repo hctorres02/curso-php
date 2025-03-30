@@ -9,6 +9,10 @@ use Faker\Factory;
 use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Monolog\Formatter\JsonFormatter;
+use Monolog\Handler\StreamHandler;
+use Monolog\Level;
+use Monolog\Logger;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
@@ -87,6 +91,37 @@ if (! function_exists('hello_word')) {
     }
 }
 
+if (! function_exists('logAppend')) {
+    function logAppend(Throwable $exception, Level $level = Level::Error): void
+    {
+        try {
+            $config = require PROJECT_ROOT.'/config/log.php';
+
+            $formatter = new JsonFormatter;
+            $formatter->setDateFormat($config['date_format']);
+
+            $handler = new StreamHandler($config['filename'], $level);
+            $handler->setFormatter($formatter);
+
+            $logger = new Logger($config['channel'], timezone: new DateTimeZone($config['timezone']));
+            $logger->pushHandler($handler);
+            $logger->log($level, $exception->getMessage(), [
+                'key' => sha1(random_bytes(16)),
+                'file' => $exception->getFile(),
+                'line' => $exception->getLine(),
+                'trace' => $exception->getTraceAsString(),
+                'request' => [
+                    'method' => Request::getMethod(),
+                    'uri' => Request::getPathInfo(),
+                ],
+            ]);
+        } catch (Exception $e) {
+            error_log("Falha ao registrar log: ".$e->getMessage());
+        }
+    }
+}
+
+
 if (! function_exists('migrate')) {
     function migrate(string $migration): void
     {
@@ -140,7 +175,7 @@ if (! function_exists('response')) {
 }
 
 if (! function_exists('responseError')) {
-    function responseError(int $status): Response
+    function responseError(int $status, Throwable $exception = null, Level $level = Level::Error): Response
     {
         $data = match ($status) {
             Response::HTTP_BAD_REQUEST => [
@@ -173,6 +208,10 @@ if (! function_exists('responseError')) {
             ]
         };
 
+        if ($exception) {
+            logAppend($exception, $level);
+        }
+
         return response('erro', $data, $status);
     }
 }
@@ -201,7 +240,7 @@ if (! function_exists('resolveCallback')) {
 
             return $reflectionMethod->invokeArgs($controllerInstance, $params);
         } catch (ReflectionException $e) {
-            return responseError(Response::HTTP_NOT_IMPLEMENTED);
+            return responseError(Response::HTTP_NOT_IMPLEMENTED, $e);
         }
     }
 }
