@@ -365,3 +365,12 @@ Router::get(
         RequerRoleAdministrador::class
     ]
 );
+
+Router::delete(
+    uri: '/logs/{key}',
+    action: [LogController::class, 'excluir'],
+    middlewares: [
+        AcessoRestrito::class,
+        RequerRoleAdministrador::class
+    ]
+);

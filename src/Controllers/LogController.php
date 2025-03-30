@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Http\Request;
 use Monolog\Level;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class LogController
@@ -21,5 +22,15 @@ class LogController
         flash()->set('filter:log', compact('level_name', 'limit'));
 
         return response('logs', compact('levels', 'level_name', 'limits', 'limit', 'log'));
+    }
+
+    public function excluir(?string $key): RedirectResponse
+    {
+        if ($key && logRemoveLine($key)) {
+            session()->remove('csrf_token');
+            session()->migrate();
+        }
+
+        return redirect(url('/logs', flash()->get('filter:log')));
     }
 }

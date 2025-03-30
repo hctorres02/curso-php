@@ -161,6 +161,51 @@ if (! function_exists('logReader')) {
     }
 }
 
+if (! function_exists('logRemoveLine')) {
+    function logRemoveLine(string $key): bool
+    {
+        $config = require PROJECT_ROOT.'/config/log.php';
+        $filename = $config['filename'];
+
+        if (! is_writable($filename)) {
+            return false;
+        }
+
+        $tempFile = tempnam(dirname($filename), '');
+        $inputFile = new SplFileObject($filename, 'r');
+        $outputFile = new SplFileObject($tempFile, 'w');
+        $removed = false;
+
+        while (! $inputFile->eof()) {
+            $line = trim($inputFile->fgets());
+
+            if (empty($line)) {
+                continue;
+            }
+
+            if (str_contains($line, "\"key\":\"{$key}\"")) {
+                $removed = true;
+
+                continue;
+            }
+
+            $outputFile->fwrite($line.PHP_EOL);
+        }
+
+        $inputFile = null;
+        $outputFile = null;
+
+        if (! $removed) {
+            unlink($tempFile);
+
+            return false;
+        }
+
+        rename($tempFile, $filename);
+
+        return true;
+    }
+}
 
 if (! function_exists('migrate')) {
     function migrate(string $migration): void
