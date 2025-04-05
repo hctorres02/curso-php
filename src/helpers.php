@@ -3,6 +3,7 @@
 use App\Enums\Permission;
 use App\Enums\Role;
 use App\Http\Request;
+use App\Http\Router;
 use App\Http\View;
 use App\Models\Usuario;
 use Faker\Factory;
@@ -399,20 +400,8 @@ if (! function_exists('today')) {
 }
 
 if (! function_exists('url')) {
-    function url(string $path, array $params = []): string
+    function url(string $path, mixed ...$params): string
     {
-        $params = collect($params)->reduce(function ($params, $value, $key) use (&$path) {
-            $newPath = preg_replace('/\{'.preg_quote($key, '/').'\}/', $value, $path);
-
-            if ($newPath === $path) {
-                $params[$key] = $value;
-            }
-
-            $path = $newPath;
-
-            return $params;
-        }, []);
-
-        return implode('?', array_filter([$path, http_build_query($params)]));
+        return Router::createUrl($path, $params);
     }
 }

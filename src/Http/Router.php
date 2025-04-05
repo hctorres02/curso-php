@@ -53,6 +53,39 @@ class Router
         static::getInstance()->register($name, ...$arguments);
     }
 
+    public static function createUrl(string $path, array $params = []): string
+    {
+        if ($params && is_array($params[0])) {
+            $params = $params[0];
+        }
+
+        foreach ($params as $key => $value) {
+            if (is_array($value)) {
+                continue;
+            }
+
+            $newPath = $path;
+            $isNumericKey = is_numeric($key);
+            $pattern = $isNumericKey ? '/\{(.*?)\}/' : '/\{'.preg_quote($key, '/').'\}/';
+            $limit = intval($isNumericKey ?: -1);
+            $value = strval($value);
+            $path = preg_replace($pattern, $value, $path, $limit);
+
+            if ($path != $newPath) {
+                unset($params[$key]);
+            }
+        }
+
+        if ($params) {
+            $path .= '?'.http_build_query($params);
+        }
+
+        if (! str_starts_with($path, '/')) {
+            $path = "/{$path}";
+        }
+
+        return $path;
+    }
     /**
      * Dispara o roteador, resolvendo a rota correspondente à requisição e retornando a resposta.
      *
