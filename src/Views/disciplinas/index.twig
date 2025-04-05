@@ -26,7 +26,7 @@
         <ul>
             {% if hasPermission('cadastrar_disciplinas') %}
             <li>
-                <a href="{{ url('/disciplinas/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
+                <a href="{{ route('cadastrar_disciplina') }}" role="button">&CirclePlus; Cadastrar</a>
             </li>
             {% endif %}
         </ul>
@@ -44,14 +44,14 @@
             <li>
                 <strong>{{ disciplina.nome }}</strong>
                 {% if hasPermission('editar_disciplinas') %}
-                <a href="{{ url('/disciplinas/{id}/editar', {id: disciplina.id}) }}"
+                <a href="{{ route('editar_disciplina', disciplina.id) }}"
                     title="Editar disciplina">&#9998;</a>
                 {% endif %}
                 <br />
                 {% if periodo_id %}
                 <small>{{ disciplina.periodo.ano }}.{{ disciplina.periodo.semestre }}</small>
                 {% else %}
-                <a href="{{ url('/disciplinas', {periodo_id: disciplina.periodo_id}) }}">
+                <a href="{{ route('disciplinas', { periodo_id: disciplina.periodo_id }) }}">
                     <small>{{ disciplina.periodo.ano }}.{{ disciplina.periodo.semestre }}</small>
                 </a>
                 {% endif %}

@@ -27,7 +27,7 @@
         <ul>
             {% if hasPermission('cadastrar_agendamentos') %}
             <li>
-                <a href="{{ url('/agendamentos/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
+                <a href="{{ route('cadastrar_agendamento') }}" role="button">&CirclePlus; Cadastrar</a>
             </li>
             {% endif %}
         </ul>
@@ -51,7 +51,7 @@
             <td>
                 {{ agendamento.conteudo }}<br />
                 {% if hasPermission('editar_agendamentos') %}
-                <a href="{{ url('/agendamentos/{id}/editar', {id: agendamento.id}) }}">
+                <a href="{{ route('editar_agendamento', agendamento.id) }}">
                     <small>&#9998; Editar</small>
                 </a>
                 {% endif %}

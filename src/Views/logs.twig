@@ -33,7 +33,7 @@
         <summary>{{ entry.datetime }}: <strong>[{{ entry.level_name }}] {{ entry.message }}</strong></summary>
         <p>{{ entry.context.request.method }} <mark>{{ entry.context.request.uri }}</mark></p>
         <pre>{{ entry.context.trace }}</pre>
-        <form action="{{ url('/logs/{key}', { key: entry.context.key }) }}" method="post">
+        <form action="{{ route('excluir_log', entry.context.key) }}" method="post">
             <input type="hidden" name="_method" value="delete">
             <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />
             <a href="javascript:;" onclick="if (confirm('Deseja marcar este item como resolvido?')) this.closest('form').submit()">

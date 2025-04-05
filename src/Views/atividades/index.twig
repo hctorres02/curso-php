@@ -25,7 +25,7 @@
         <ul>
             {% if hasPermission('cadastrar_atividades') %}
             <li>
-                <a href="{{ url('/atividades/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
+                <a href="{{ route('cadastrar_atividade') }}" role="button">&CirclePlus; Cadastrar</a>
             </li>
             {% endif %}
         </ul>
@@ -39,7 +39,7 @@
     <li>
         {{ atividade.nome }}
         {% if hasPermission('editar_atividades') %}
-        <a href="{{ url('/atividades/{id}/editar', {id: atividade.id}) }}" title="Editar atividade">&#9998;</a>
+        <a href="{{ route('editar_atividade', atividade.id) }}" title="Editar atividade">&#9998;</a>
         {% endif %}
     </li>
     {% endfor %}

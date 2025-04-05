@@ -12,7 +12,7 @@
         </ul>
     </nav>
 </section>
-<form action="{{ url('/cadastro/editar') }}" method="post">
+<form action="{{ route('editar_cadastro') }}" method="post">
     {% include "usuarios/fieldset.twig" %}
     <input type="hidden" name="_method" value="put" />
     <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />

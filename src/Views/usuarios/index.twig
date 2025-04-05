@@ -26,7 +26,7 @@
         <ul>
             {% if hasPermission('cadastrar_usuarios') %}
             <li>
-                <a href="{{ url('/usuarios/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
+                <a href="{{ route('cadastrar_usuario') }}" role="button">&CirclePlus; Cadastrar</a>
             </li>
             {% endif %}
         </ul>
@@ -50,7 +50,7 @@
             <td>{{ usuario.email|lower }}</td>
             <td>
                 {% if hasPermission('editar_usuarios') %}
-                <a href="{{ url('/usuarios/{id}/editar', {id: usuario.id}) }}">editar</a>
+                <a href="{{ route('editar_usuario', usuario.id) }}">editar</a>
                 {% endif %}
             </td>
         </tr>

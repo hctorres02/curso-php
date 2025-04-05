@@ -25,7 +25,7 @@
         <ul>
             {% if hasPermission('cadastrar_periodos') %}
             <li>
-                <a href="{{ url('/periodos/cadastrar') }}" role="button">&CirclePlus; Cadastrar</a>
+                <a href="{{ route('cadastrar_periodo') }}" role="button">&CirclePlus; Cadastrar</a>
             </li>
             {% endif %}
         </ul>
@@ -46,7 +46,7 @@
                 <ul>
                     {% if hasPermission('editar_periodos') %}
                     <li>
-                        <a href="{{ url('/periodos/{id}/editar', {id: periodo.id}) }}">
+                        <a href="{{ route('editar_periodo', periodo.id) }}">
                             <small>&#9998; Editar</small>
                         </a>
                     </li>
@@ -57,7 +57,7 @@
         </header>
         <ul>
             <li>
-                <a href="{{ url('/agendamentos', {periodo_id: periodo.id}) }}" title="Ver agendamentos do período">
+                <a href="{{ route('agendamentos', { periodo_id: periodo.id }) }}" title="Ver agendamentos do período">
                     {{ periodo.agendamentos_count }} agendamentos
                 </a>
             </li>

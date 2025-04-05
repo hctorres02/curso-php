@@ -17,12 +17,12 @@ class CadastroController
     public function salvar(Request $request): RedirectResponse
     {
         if (! $request->validate(Usuario::rules(), ['nome', 'email', 'senha'])) {
-            return redirect('/cadastro');
+            return redirect(route('cadastro'));
         }
 
         Usuario::create($request->validated);
 
-        return redirect('/login');
+        return redirect(route('login'));
     }
 
     public function editar(): Response
@@ -35,12 +35,12 @@ class CadastroController
     public function atualizar(Request $request): RedirectResponse
     {
         if (! $request->validate(Usuario::rules(), ['nome', 'email'])) {
-            return redirect('/cadastro/editar');
+            return redirect(route('editar_cadastro'));
         }
 
         session()->get('usuario')->update($request->validated);
         session()->migrate(true);
 
-        return redirect('/cadastro/editar');
+        return redirect(route('editar_cadastro'));
     }
 }

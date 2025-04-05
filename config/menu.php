@@ -33,11 +33,11 @@ return array_map(fn (Menu $menu) => ! $menu->count() ? null : $menu
         ->if($isAuthenticated, fn (Menu $menu) => $menu
             ->wrap('nav', ['class' => 'container'])
             ->link('/agendamentos', 'Agendamentos')
-            ->linkIf($usuario->hasPermission(Permission::VER_PERIODOS), '/periodos', 'Períodos')
-            ->linkIf($usuario->hasPermission(Permission::VER_DISCIPLINAS), '/disciplinas', 'Disciplinas')
-            ->linkIf($usuario->hasPermission(Permission::VER_ATIVIDADES), '/atividades', 'Atividades')
-            ->linkIf($usuario->hasPermission(Permission::VER_USUARIOS), '/usuarios', 'Usuários')
-            ->linkIf($usuario->hasRole(Role::ADMINISTRADOR), '/logs', 'Logs')
+            ->linkIf($usuario->hasPermission(Permission::VER_PERIODOS), route('periodos'), 'Períodos')
+            ->linkIf($usuario->hasPermission(Permission::VER_DISCIPLINAS), route('disciplinas'), 'Disciplinas')
+            ->linkIf($usuario->hasPermission(Permission::VER_ATIVIDADES), route('atividades'), 'Atividades')
+            ->linkIf($usuario->hasPermission(Permission::VER_USUARIOS), route('usuarios'), 'Usuários')
+            ->linkIf($usuario->hasRole(Role::ADMINISTRADOR), route('logs'), 'Logs')
         ),
 
     /**
@@ -49,12 +49,12 @@ return array_map(fn (Menu $menu) => ! $menu->count() ? null : $menu
             ->submenu(fn (Menu $submenu) => $submenu
                 ->wrap('details', ['class' => 'dropdown', 'dir' => 'rtl'])
                 ->prepend("<summary>{$usuario->email}</summary>")
-                ->link('/cadastro/editar', 'Editar perfil')
-                ->link('/logout', 'Logout')
+                ->link(route('editar_cadastro'), 'Editar perfil')
+                ->link(route('logout'), 'Logout')
             )
         )
         ->if(! $isAuthenticated, fn (Menu $menu) => $menu
-            ->link('/login', 'Login')
-            ->link('/cadastro', 'Cadastro')
+            ->link(route('login'), 'Login')
+            ->link(route('cadastro'), 'Cadastro')
         ),
 ]);

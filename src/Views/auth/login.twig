@@ -16,12 +16,12 @@
     <nav>
         <ul>
             <li>
-                <a href="{{ url('/agendamentos') }}">&larr; Voltar para agendamentos</a>
+                <a href="{{ route('agendamentos') }}">&larr; Voltar para agendamentos</a>
             </li>
         </ul>
     </nav>
 </section>
-<form action="{{ url('/login') }}" method="post">
+<form action="{{ route('submit_login') }}" method="post">
     <fieldset class="grid">
         <label>
             Email
@@ -37,6 +37,6 @@
 </form>
 <p>
     Não tem cadastro?
-    <a href="{{ url('/cadastro')}}">Cadastre-se</a>
+    <a href="{{ route('cadastro')}}">Cadastre-se</a>
 </p>
 {% endblock %}

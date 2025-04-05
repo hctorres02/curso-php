@@ -35,8 +35,7 @@
 
         if (inputRole) {
             inputRole.addEventListener('change', async function () {
-                const uri = '{{ url("/roles/{role}/permissions", {role:":role"}) }}'
-                const response = await fetch(uri.replace(':role', this.value))
+                const response = await fetch(`{{ route("role_permissions", "${this.value}") }}`)
                 const defaultPermissions = await response.json()
                 const userPermissions = JSON.parse('{{ (usuario.permissions ?? [])|json_encode|raw }}')
                 const inputPermissions = document.querySelectorAll('input[name="permissions[]"]')

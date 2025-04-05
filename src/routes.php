@@ -17,10 +17,11 @@ use App\Middlewares\RequerRoleAdministrador;
 use App\Middlewares\Visitante;
 
 // página inicial
-Router::redirect('/', '/agendamentos');
+Router::redirect('/', '/agendamentos', name: 'home');
 
 // autenticação
 Router::get(
+    name: 'login',
     uri: '/login',
     action: [AuthController::class, 'index'],
     middlewares: [
@@ -29,6 +30,7 @@ Router::get(
 );
 
 Router::post(
+    name: 'submit_login',
     uri: '/login',
     action: [AuthController::class, 'login'],
     middlewares: [
@@ -37,12 +39,14 @@ Router::post(
 );
 
 Router::get(
+    name: 'logout',
     uri: '/logout',
     action: [AuthController::class, 'logout']
 );
 
 // cadastro
 Router::get(
+    name: 'cadastro',
     uri: '/cadastro',
     action: [CadastroController::class, 'cadastrar'],
     middlewares: [
@@ -51,6 +55,7 @@ Router::get(
 );
 
 Router::post(
+    name: 'salvar_cadastro',
     uri: '/cadastro',
     action: [CadastroController::class, 'salvar'],
     middlewares: [
@@ -59,6 +64,7 @@ Router::post(
 );
 
 Router::get(
+    name: 'editar_cadastro',
     uri: '/cadastro/editar',
     action: [CadastroController::class, 'editar'],
     middlewares: [
@@ -67,6 +73,7 @@ Router::get(
 );
 
 Router::put(
+    name: 'atualizar_cadastro',
     uri: '/cadastro/editar',
     action: [CadastroController::class, 'atualizar'],
     middlewares: [
@@ -76,6 +83,7 @@ Router::put(
 
 // usuários
 Router::get(
+    name: 'usuarios',
     uri: '/usuarios',
     action: [UsuarioController::class, 'index'],
     middlewares: [
@@ -85,6 +93,7 @@ Router::get(
 );
 
 Router::get(
+    name: 'cadastrar_usuario',
     uri: '/usuarios/cadastrar',
     action: [UsuarioController::class, 'cadastrar'],
     middlewares: [
@@ -94,6 +103,7 @@ Router::get(
 );
 
 Router::post(
+    name: 'salvar_usuario',
     uri: '/usuarios',
     action: [UsuarioController::class, 'salvar'],
     middlewares: [
@@ -103,6 +113,7 @@ Router::post(
 );
 
 Router::get(
+    name: 'editar_usuario',
     uri: '/usuarios/{usuario}/editar',
     action: [UsuarioController::class, 'editar'],
     middlewares: [
@@ -113,6 +124,7 @@ Router::get(
 );
 
 Router::put(
+    name: 'atualizar_usuario',
     uri: '/usuarios/{usuario}',
     action: [UsuarioController::class, 'atualizar'],
     middlewares: [
@@ -123,11 +135,13 @@ Router::put(
 );
 
 Router::get(
+    name: 'agendamentos',
     uri: '/agendamentos',
     action: [AgendamentoController::class, 'index']
 );
 
 Router::get(
+    name: 'cadastrar_agendamento',
     uri: '/agendamentos/cadastrar',
     action: [AgendamentoController::class, 'cadastrar'],
     middlewares: [
@@ -137,6 +151,7 @@ Router::get(
 );
 
 Router::post(
+    name: 'salvar_agendamento',
     uri: '/agendamentos',
     action: [AgendamentoController::class, 'salvar'],
     middlewares: [
@@ -146,6 +161,7 @@ Router::post(
 );
 
 Router::get(
+    name: 'ver_agendamento',
     uri: '/agendamentos/{agendamento}',
     action: [AgendamentoController::class, 'ver'],
     middlewares: [
@@ -155,6 +171,7 @@ Router::get(
 );
 
 Router::get(
+    name: 'editar_agendamento',
     uri: '/agendamentos/{agendamento}/editar',
     action: [AgendamentoController::class, 'editar'],
     middlewares: [
@@ -164,6 +181,7 @@ Router::get(
 );
 
 Router::put(
+    name: 'atualizar_agendamento',
     uri: '/agendamentos/{agendamento}',
     action: [AgendamentoController::class, 'atualizar'],
     middlewares: [
@@ -173,6 +191,7 @@ Router::put(
 );
 
 Router::delete(
+    name: 'excluir_agendamento',
     uri: '/agendamentos/{agendamento}',
     action: [AgendamentoController::class, 'excluir'],
     middlewares: [
@@ -183,6 +202,7 @@ Router::delete(
 
 // períodos
 Router::get(
+    name: 'periodos',
     uri: '/periodos',
     action: [PeriodoController::class, 'index'],
     middlewares: [
@@ -192,6 +212,7 @@ Router::get(
 );
 
 Router::get(
+    name: 'cadastrar_periodo',
     uri: '/periodos/cadastrar',
     action: [PeriodoController::class, 'cadastrar'],
     middlewares: [
@@ -201,6 +222,7 @@ Router::get(
 );
 
 Router::post(
+    name: 'salvar_periodo',
     uri: '/periodos',
     action: [PeriodoController::class, 'salvar'],
     middlewares: [
@@ -210,6 +232,7 @@ Router::post(
 );
 
 Router::get(
+    name: 'editar_periodo',
     uri: '/periodos/{periodo}/editar',
     action: [PeriodoController::class, 'editar'],
     middlewares: [
@@ -219,6 +242,7 @@ Router::get(
 );
 
 Router::put(
+    name: 'atualizar_periodo',
     uri: '/periodos/{periodo}',
     action: [PeriodoController::class, 'atualizar'],
     middlewares: [
@@ -228,6 +252,7 @@ Router::put(
 );
 
 Router::delete(
+    name: 'excluir_periodo',
     uri: '/periodos/{periodo}',
     action: [PeriodoController::class, 'excluir'],
     middlewares: [
@@ -238,6 +263,7 @@ Router::delete(
 
 // disciplinas
 Router::get(
+    name: 'disciplinas',
     uri: '/disciplinas',
     action: [DisciplinaController::class, 'index'],
     middlewares: [
@@ -247,6 +273,7 @@ Router::get(
 );
 
 Router::get(
+    name: 'cadastrar_disciplina',
     uri: '/disciplinas/cadastrar',
     action: [DisciplinaController::class, 'cadastrar'],
     middlewares: [
@@ -256,6 +283,7 @@ Router::get(
 );
 
 Router::post(
+    name: 'salvar_disciplina',
     uri: '/disciplinas',
     action: [DisciplinaController::class, 'salvar'],
     middlewares: [
@@ -265,6 +293,7 @@ Router::post(
 );
 
 Router::get(
+    name: 'editar_disciplina',
     uri: '/disciplinas/{disciplina}/editar',
     action: [DisciplinaController::class, 'editar'],
     middlewares: [
@@ -274,6 +303,7 @@ Router::get(
 );
 
 Router::put(
+    name: 'atualizar_disciplina',
     uri: '/disciplinas/{disciplina}',
     action: [DisciplinaController::class, 'atualizar'],
     middlewares: [
@@ -283,6 +313,7 @@ Router::put(
 );
 
 Router::delete(
+    name: 'excluir_disciplina',
     uri: '/disciplinas/{disciplina}',
     action: [DisciplinaController::class, 'excluir'],
     middlewares: [
@@ -293,6 +324,7 @@ Router::delete(
 
 // atividades
 Router::get(
+    name: 'atividades',
     uri: '/atividades',
     action: [AtividadeController::class, 'index'],
     middlewares: [
@@ -302,6 +334,7 @@ Router::get(
 );
 
 Router::get(
+    name: 'cadastrar_atividade',
     uri: '/atividades/cadastrar',
     action: [AtividadeController::class, 'cadastrar'],
     middlewares: [
@@ -311,6 +344,7 @@ Router::get(
 );
 
 Router::post(
+    name: 'salvar_atividade',
     uri: '/atividades',
     action: [AtividadeController::class, 'salvar'],
     middlewares: [
@@ -320,6 +354,7 @@ Router::post(
 );
 
 Router::get(
+    name: 'editar_atividade',
     uri: '/atividades/{atividade}/editar',
     action: [AtividadeController::class, 'editar'],
     middlewares: [
@@ -329,6 +364,7 @@ Router::get(
 );
 
 Router::put(
+    name: 'atualizar_atividade',
     uri: '/atividades/{atividade}',
     action: [AtividadeController::class, 'atualizar'],
     middlewares: [
@@ -338,6 +374,7 @@ Router::put(
 );
 
 Router::delete(
+    name: 'excluir_atividade',
     uri: '/atividades/{atividade}',
     action: [AtividadeController::class, 'excluir'],
     middlewares: [
@@ -348,6 +385,7 @@ Router::delete(
 
 // roles
 Router::get(
+    name: 'role_permissions',
     uri: '/roles/{role}/permissions',
     action: [RoleController::class, 'permissions'],
     middlewares: [
@@ -358,6 +396,7 @@ Router::get(
 
 // logs
 Router::get(
+    name: 'logs',
     uri: '/logs',
     action: [LogController::class, 'index'],
     middlewares: [
@@ -367,6 +406,7 @@ Router::get(
 );
 
 Router::delete(
+    name: 'excluir_log',
     uri: '/logs/{key}',
     action: [LogController::class, 'excluir'],
     middlewares: [

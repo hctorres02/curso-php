@@ -1,4 +1,4 @@
-<form action="{{ url('/atividades/{id}', {id: atividade.id}) }}" method="post">
+<form action="{{ route('excluir_atividade', atividade.id) }}" method="post">
     <input type="hidden" name="_method" value="delete">
     <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />
     <a href="javascript:;" onclick="if (confirm('Deseja excluir este item?')) this.closest('form').submit()">

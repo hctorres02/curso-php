@@ -14,12 +14,12 @@
     <nav>
         <ul>
             <li>
-                <a href="{{ url('/periodos') }}">&larr; Voltar para listagem</a>
+                <a href="{{ route('periodos') }}">&larr; Voltar para listagem</a>
             </li>
         </ul>
     </nav>
 </section>
-<form action="{{ url('/periodos') }}" method="post">
+<form action="{{ route('salvar_periodo') }}" method="post">
     {% include "periodos/fieldset.twig" %}
     <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />
     <input type="submit" value="&#128190; Cadastrar">

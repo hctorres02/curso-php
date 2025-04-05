@@ -14,12 +14,12 @@
     <nav>
         <ul>
             <li>
-                <a href="{{ url('/agendamentos') }}">&larr; Voltar para agendamentos</a>
+                <a href="{{ route('agendamentos') }}">&larr; Voltar para agendamentos</a>
             </li>
         </ul>
     </nav>
 </section>
-<form action="{{ url('/cadastro') }}" method="post">
+<form action="{{ route('salvar_cadastro') }}" method="post">
     {% include "usuarios/fieldset.twig" %}
     <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />
     <input type="submit" value="&#128190; Cadastrar">

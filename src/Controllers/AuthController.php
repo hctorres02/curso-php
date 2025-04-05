@@ -21,16 +21,16 @@ class AuthController
             $request->validate(Usuario::rules(), ['email', 'senha']) &&
             Auth::attempt($request->validated)
         ) {
-            return redirect($request->attemptedUri('/agendamentos'));
+            return redirect($request->attemptedUri(route('agendamentos')));
         }
 
-        return redirect('/login');
+        return redirect(route('login'));
     }
 
     public function logout(): RedirectResponse
     {
         session()->invalidate();
 
-        return redirect('/login');
+        return redirect(route('login'));
     }
 }

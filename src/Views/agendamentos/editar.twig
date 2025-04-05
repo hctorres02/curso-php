@@ -15,7 +15,7 @@
     <nav>
         <ul>
             <li>
-                <a href="{{ url('/agendamentos') }}">&larr; Voltar para listagem</a>
+                <a href="{{ route('agendamentos') }}">&larr; Voltar para listagem</a>
             </li>
         </ul>
         <ul>
@@ -23,7 +23,7 @@
         </ul>
     </nav>
 </section>
-<form action="{{ url('/agendamentos/{id}', {id: agendamento.id}) }}" method="post">
+<form action="{{ route('atualizar_agendamento', agendamento.id) }}" method="post">
     {% include "agendamentos/fieldset.twig" %}
     <input type="hidden" name="_method" value="put">
     <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />

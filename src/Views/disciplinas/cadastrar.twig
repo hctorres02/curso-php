@@ -14,12 +14,12 @@
     <nav>
         <ul>
             <li>
-                <a href="{{ url('/disciplinas') }}">&larr; Voltar para listagem</a>
+                <a href="{{ route('disciplinas') }}">&larr; Voltar para listagem</a>
             </li>
         </ul>
     </nav>
 </section>
-<form action="{{ url('/disciplinas') }}" method="post">
+<form action="{{ route('salvar_disciplina') }}" method="post">
     {% include "disciplinas/fieldset.twig" %}
     <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />
     <input type="submit" value="&#128190; Cadastrar">

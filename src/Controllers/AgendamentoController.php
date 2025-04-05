@@ -33,12 +33,12 @@ class AgendamentoController
     public function salvar(Request $request): RedirectResponse
     {
         if (! $request->validate(Agendamento::rules())) {
-            return redirect('/agendamentos/cadastrar');
+            return redirect(route('cadastrar_agendamento'));
         }
 
         $agendamento = Agendamento::create($request->validated);
 
-        return redirect('/agendamentos');
+        return redirect(route('agendamentos'));
     }
 
     public function ver(Agendamento $agendamento): Response
@@ -57,18 +57,18 @@ class AgendamentoController
     public function atualizar(Request $request, Agendamento $agendamento): RedirectResponse
     {
         if (! $request->validate(Agendamento::rules())) {
-            return redirect("/agendamentos/{$agendamento->id}/editar");
+            return redirect(route('editar_agendamento', $agendamento->id));
         }
 
         $agendamento->update($request->validated);
 
-        return redirect('/agendamentos');
+        return redirect(route('agendamentos'));
     }
 
     public function excluir(Agendamento $agendamento): RedirectResponse
     {
         $agendamento->delete();
 
-        return redirect('/agendamentos');
+        return redirect(route('agendamentos'));
     }
 }

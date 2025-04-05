@@ -31,6 +31,6 @@ class LogController
             session()->migrate();
         }
 
-        return redirect(url('/logs', flash()->get('filter:log')));
+        return redirect(route('logs', flash()->get('filter:log')));
     }
 }
