@@ -350,6 +350,13 @@ if (! function_exists('resolveParams')) {
     }
 }
 
+if (! function_exists('route')) {
+    function route(string $name, mixed ...$params): string
+    {
+        return Router::createUrlFromName($name, $params);
+    }
+}
+
 if (! function_exists('runServer')) {
     function runServer(bool $keepOn = false): string
     {

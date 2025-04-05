@@ -16,10 +16,10 @@ use Symfony\Component\HttpFoundation\Response;
  * métodos explícitos na classe. Eles são interceptados pelo método mágico `__callStatic`,
  * que direciona a chamada para o método `register` para efetuar o registro da rota.
  *
- * @method static void get(string $uri, mixed $action, array $middlewares = []) Registra uma rota do tipo GET.
- * @method static void post(string $uri, mixed $action, array $middlewares = []) Registra uma rota do tipo POST.
- * @method static void put(string $uri, mixed $action, array $middlewares = []) Registra uma rota do tipo PUT.
- * @method static void delete(string $uri, mixed $action, array $middlewares = []) Registra uma rota do tipo DELETE.
+ * @method static void get(string $uri, mixed $action, array $middlewares = [], string $name = null) Registra uma rota do tipo GET.
+ * @method static void post(string $uri, mixed $action, array $middlewares = [], string $name = null) Registra uma rota do tipo POST.
+ * @method static void put(string $uri, mixed $action, array $middlewares = [], string $name = null) Registra uma rota do tipo PUT.
+ * @method static void delete(string $uri, mixed $action, array $middlewares = [], string $name = null) Registra uma rota do tipo DELETE.
  */
 class Router
 {
@@ -86,6 +86,20 @@ class Router
 
         return $path;
     }
+
+    public static function createUrlFromName(string $name, mixed $params): string
+    {
+        foreach (static::getInstance()->routes as $group) {
+            foreach ($group as $uri => $definition) {
+                if ($definition['name'] === $name) {
+                    return static::createUrl($uri, $params);
+                }
+            }
+        }
+
+        throw new \Exception("A rota '{$name}' não foi definida");
+    }
+
     /**
      * Dispara o roteador, resolvendo a rota correspondente à requisição e retornando a resposta.
      *
@@ -108,12 +122,13 @@ class Router
      * @param string $from URL de origem.
      * @param string $to URL de destino.
      * @param int $status Código de status HTTP (default: 302).
+     * @param string $name
      *
      * @return void
      */
-    public static function redirect(string $from, string $to, int $status = Response::HTTP_FOUND): void
+    public static function redirect(string $from, string $to, int $status = Response::HTTP_FOUND, string $name = null): void
     {
-        static::get($from, fn () => redirect($to, $status));
+        static::get($from, fn () => redirect($to, $status), name: $name);
     }
 
     /**
@@ -160,12 +175,13 @@ class Router
      * @param string $uri URI da rota.
      * @param mixed $action Será executado quando a rota for acionada.
      * @param array $middlewares Middlewares locais.
+     * @param string $name
      *
      * @return void
      */
-    private function register(string $method, string $uri, mixed $action, array $middlewares = []): void
+    private function register(string $method, string $uri, mixed $action, array $middlewares = [], string $name = null): void
     {
-        $this->routes[strtoupper($method)][$uri] = compact('action', 'middlewares');
+        $this->routes[strtoupper($method)][$uri] = compact('action', 'middlewares', 'name');
     }
 
     /**

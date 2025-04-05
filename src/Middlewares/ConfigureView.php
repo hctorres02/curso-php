@@ -19,6 +19,7 @@ class ConfigureView
         View::addFunction('attr', attr(...));
         View::addFunction('hasPermission', hasPermission(...));
         View::addFunction('hasRole', hasRole(...));
+        View::addFunction('route', route(...));
         View::addFunction('url', url(...));
 
         View::addGlobals([
