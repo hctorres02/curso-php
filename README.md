@@ -58,5 +58,6 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [ ] Autorização
 - [x] Auditoria
 - [x] Logs
+- [ ] Notificações
 - [x] Resposta
 - [x] Testes
