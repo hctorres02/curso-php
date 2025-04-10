@@ -81,6 +81,42 @@ Router::put(
     ]
 );
 
+Router::get(
+    name: 'recuperar_senha',
+    uri: '/cadastro/recuperar-senha',
+    action: [CadastroController::class, 'recuperarSenha'],
+    middlewares: [
+        Visitante::class,
+    ]
+);
+
+Router::post(
+    name: 'submit_recuperar_senha',
+    uri: '/cadastro/recuperar-senha',
+    action: [CadastroController::class, 'submitRecuperarSenha'],
+    middlewares: [
+        Visitante::class,
+    ]
+);
+
+Router::get(
+    name: 'redefinir_senha',
+    uri: '/cadastro/redefinir-senha',
+    action: [CadastroController::class, 'redefinirSenha'],
+    middlewares: [
+        Visitante::class,
+    ]
+);
+
+Router::post(
+    name: 'submit_redefinir_senha',
+    uri: '/cadastro/redefinir-senha',
+    action: [CadastroController::class, 'submitRedefinirSenha'],
+    middlewares: [
+        Visitante::class,
+    ]
+);
+
 // usuários
 Router::get(
     name: 'usuarios',

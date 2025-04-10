@@ -5,6 +5,8 @@ namespace App\Models;
 use App\Enums\Permission;
 use App\Enums\Role;
 use App\Traits\Auditable;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -37,6 +39,8 @@ class Usuario extends Model
             'senha' => Validator::notEmpty()->length(8),
             'role' => Validator::notEmpty()->in(Role::values()),
             'permissions' => Validator::nullable(Validator::arrayType()->each(Validator::in(Permission::values()))),
+            'signature' => Validator::notEmpty()->length(64),
+            'expires' => Validator::notEmpty()->intVal()->greaterThan(time()),
         ];
     }
 
@@ -96,5 +100,13 @@ class Usuario extends Model
         }
 
         return in_array($this->role, $roles, true);
+    }
+
+    public function scopeOutdatedBefore(Builder $query, int $expires): Builder
+    {
+        $expires_in = env('SIGNED_URL_EXPIRES_IN');
+        $expiration = Carbon::createFromTimestamp($expires)->subMinutes($expires_in);
+
+        return $query->where('updated_at', '<=', $expiration);
     }
 }

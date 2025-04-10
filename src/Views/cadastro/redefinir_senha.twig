@@ -1,0 +1,34 @@
+{% extends "base.twig" %}
+{% from "macros.twig" import input %}
+
+{% block main %}
+<section>
+    <nav>
+        <ul>
+            <li>
+                <hgroup role="heading">
+                    <h3>Redefinir senha</h3>
+                    <p>Preencha o formulário abaixo para continuar.</p>
+                </hgroup>
+            </li>
+        </ul>
+    </nav>
+    <nav>
+        <ul>
+            <li>
+                <a href="{{ route('login') }}">&larr; Voltar para login</a>
+            </li>
+        </ul>
+    </nav>
+</section>
+<form method="post">
+    <fieldset class="grid">
+        <label>
+            Nova senha
+            {{ input('password', 'Nova senha', 'senha') }}
+        </label>
+    </fieldset>
+    <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />
+    <input type="submit" value="Redefinir senha">
+</form>
+{% endblock %}
