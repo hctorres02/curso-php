@@ -222,6 +222,17 @@ if (! function_exists('migrate')) {
     }
 }
 
+if (! function_exists('notify')) {
+    function notify(int|usuario $recipient, string $notifiable): void
+    {
+        if ($recipient instanceof Usuario) {
+            $recipient = $recipient->id;
+        }
+
+        resolveCallback($notifiable, compact('recipient'));
+    }
+}
+
 if (! function_exists('refreshDatabase')) {
     function refreshDatabase(): void
     {

@@ -13,7 +13,8 @@
         "guzzlehttp/guzzle": "^7.9",
         "spatie/menu": "^3.2",
         "illuminate/events": "^11.44",
-        "monolog/monolog": "^3.9"
+        "monolog/monolog": "^3.9",
+        "symfony/mailer": "^7.2"
     },
     "require-dev": {
         "pestphp/pest": "^3.7",
