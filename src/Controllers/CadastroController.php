@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Http\Request;
 use App\Models\Usuario;
+use App\Notifications\UsuarioCadastrado;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,7 +21,9 @@ class CadastroController
             return redirect(route('cadastro'));
         }
 
-        Usuario::create($request->validated);
+        $usuario = Usuario::create($request->validated);
+
+        notify($usuario, UsuarioCadastrado::class);
 
         return redirect(route('login'));
     }
