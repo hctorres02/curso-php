@@ -399,6 +399,20 @@ if (! function_exists('session')) {
     }
 }
 
+if (! function_exists('signedRoute')) {
+    function signedRoute(string $name, array $params = []): string
+    {
+        return Router::createSignedUrlFromName($name, $params);
+    }
+}
+
+if (! function_exists('signedUrl')) {
+    function signedUrl(string $path, mixed ...$params): string
+    {
+        return Router::createSignedUrl($path, $params);
+    }
+}
+
 if (! function_exists('stopServer')) {
     function stopServer(): void
     {

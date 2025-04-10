@@ -55,7 +55,7 @@ class Router
 
     public static function createUrl(string $path, array $params = []): string
     {
-        if ($params && is_array($params[0])) {
+        if ($params && array_key_exists(0, $params) && is_array($params[0])) {
             $params = $params[0];
         }
 
@@ -80,24 +80,33 @@ class Router
             $path .= '?'.http_build_query($params);
         }
 
-        if (! str_starts_with($path, '/')) {
-            $path = "/{$path}";
-        }
+        $protocol = (! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $host = env('APP_URL');
+        $path = ltrim($path, '/');
 
-        return $path;
+        return rtrim("{$protocol}://{$host}/{$path}", '/');
     }
 
-    public static function createUrlFromName(string $name, mixed $params): string
+    public static function createUrlFromName(string $name, array $params = []): string
     {
-        foreach (static::getInstance()->routes as $group) {
-            foreach ($group as $uri => $definition) {
-                if ($definition['name'] === $name) {
-                    return static::createUrl($uri, $params);
-                }
-            }
-        }
+        return static::createUrl(static::getRouteUri($name), $params);
+    }
 
-        throw new \Exception("A rota '{$name}' não foi definida");
+    public static function createSignedUrl(string $path, array $params = []): string
+    {
+        $params['expires'] ??= strtotime('+5 minutes');
+
+        unset($params['signature'], $params['senha']);
+        ksort($params);
+
+        $params['signature'] = hash_hmac('sha256', http_build_query($params), env('APP_KEY'));
+
+        return static::createUrl($path, $params);
+    }
+
+    public static function createSignedUrlFromName(string $name, array $params = []): string
+    {
+        return static::createSignedUrl(static::getRouteUri($name), $params);
     }
 
     /**
@@ -114,6 +123,19 @@ class Router
         $router->request = $request;
 
         return $router->getResponse($middlewares, $router->resolveRoute(...));
+    }
+
+    private static function getRouteUri(string $name): string
+    {
+        foreach (static::getInstance()->routes as $group) {
+            foreach ($group as $uri => $definition) {
+                if ($definition['name'] === $name) {
+                    return $uri;
+                }
+            }
+        }
+
+        throw new \Exception("A rota '{$name}' não foi definida");
     }
 
     /**
