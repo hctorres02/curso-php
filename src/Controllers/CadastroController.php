@@ -5,6 +5,8 @@ namespace App\Controllers;
 use App\Http\Request;
 use App\Models\Usuario;
 use App\Notifications\RecuperarSenha;
+use App\Notifications\SenhaRedefinida;
+use App\Notifications\SenhaRestaurada;
 use App\Notifications\UsuarioCadastrado;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -94,6 +96,31 @@ class CadastroController
         }
 
         $usuario->update($request->validated);
+
+        notify($usuario, SenhaRedefinida::class);
+
+        return redirect(route('login'));
+    }
+
+    public function restaurarSenha(Request $request): RedirectResponse|Response
+    {
+        if (
+            ! $request->validate(Usuario::rules(), ['email', 'expires', 'signature']) ||
+            ! hash_equals($request->getUri(), signedRoute('restaurar_senha', $request->validated)) ||
+            ! ($usuario = Usuario::firstWhere('email', $request->validated['email'])) ||
+            ! ($audit = $usuario->audits()
+                ->latest()
+                ->whereRaw("json_extract(new_values, '$.senha')=?", $usuario->senha)
+                ->first())
+        ) {
+            return responseError(Response::HTTP_FORBIDDEN);
+        }
+
+        if ($audit->old_values) {
+            $usuario->update(['senha' => $audit->old_values->senha]);
+
+            notify($usuario, SenhaRestaurada::class);
+        }
 
         return redirect(route('login'));
     }

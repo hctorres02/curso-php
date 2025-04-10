@@ -117,6 +117,15 @@ Router::post(
     ]
 );
 
+Router::get(
+    name: 'restaurar_senha',
+    uri: '/cadastro/restaurar_senha',
+    action: [CadastroController::class, 'restaurarSenha'],
+    middlewares: [
+        Visitante::class,
+    ]
+);
+
 // usuários
 Router::get(
     name: 'usuarios',

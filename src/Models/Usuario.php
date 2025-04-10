@@ -74,7 +74,15 @@ class Usuario extends Model
 
     public function senha(): Attribute
     {
-        return Attribute::make(set: fn (string $senha) => password_hash($senha, constant(env('PASSWORD_ALGO'))));
+        return Attribute::make(set: function (string $senha) {
+            $info = password_get_info($senha);
+
+            if (! $info['algo']) {
+                $senha = password_hash($senha, constant(env('PASSWORD_ALGO')));
+            }
+
+            return $senha;
+        });
     }
 
     public function permissions(): Attribute
