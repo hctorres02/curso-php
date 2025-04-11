@@ -43,7 +43,13 @@
                 <span title="{{ job.updated_at }}">{{ job.updated_at|date('d/m/Y H:i:s') }}</span>
             </td>
             <td>{{ job.type|title }}</td>
-            <td>{{ job.status|title }}</td>
+            <td>
+                {% if job.is_done %}
+                {{ job.status|title }}
+                {% else %}
+                {% include "jobs/executar.twig" %}
+                {% endif %}
+            </td>
         </tr>
         {% else %}
         <tr>
