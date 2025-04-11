@@ -14,7 +14,8 @@
         "spatie/menu": "^3.2",
         "illuminate/events": "^11.44",
         "monolog/monolog": "^3.9",
-        "symfony/mailer": "^7.2"
+        "symfony/mailer": "^7.2",
+        "voku/html-min": "^4.5"
     },
     "require-dev": {
         "pestphp/pest": "^3.7",

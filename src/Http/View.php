@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Traits\IsSingleton;
 use Twig\Environment;
 use Twig\TwigFunction;
+use voku\helper\HtmlMin;
 
 class View
 {
@@ -23,7 +24,13 @@ class View
             $name = "{$name}.twig";
         }
 
-        return static::getInstance()->twig->render($name, $data);
+        $content = static::getInstance()->twig->render($name, $data);
+
+        if (! env('APP_DEBUG')) {
+            $content = (new HtmlMin)->doRemoveOmittedQuotes(false)->minify($content);
+        }
+
+        return $content;
     }
 
     public static function addGlobals(array $data): void
