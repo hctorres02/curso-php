@@ -8,7 +8,7 @@ use Spatie\Menu\Menu;
 
 $usuario = session()->get('usuario');
 $isAuthenticated = boolval($usuario);
-$currentUri = Request::getPathInfo();
+$currentUri = Request::getUri();
 
 return array_map(fn (Menu $menu) => ! $menu->count() ? null : $menu
     // Define como ativo o link correspondente à URI atual
@@ -32,7 +32,7 @@ return array_map(fn (Menu $menu) => ! $menu->count() ? null : $menu
     'MAIN' => Menu::new()
         ->if($isAuthenticated, fn (Menu $menu) => $menu
             ->wrap('nav', ['class' => 'container'])
-            ->link('/agendamentos', 'Agendamentos')
+            ->link(route('agendamentos'), 'Agendamentos')
             ->linkIf($usuario->hasPermission(Permission::VER_PERIODOS), route('periodos'), 'Períodos')
             ->linkIf($usuario->hasPermission(Permission::VER_DISCIPLINAS), route('disciplinas'), 'Disciplinas')
             ->linkIf($usuario->hasPermission(Permission::VER_ATIVIDADES), route('atividades'), 'Atividades')
