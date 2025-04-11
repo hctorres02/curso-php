@@ -463,6 +463,16 @@ Router::delete(
 );
 
 // jobs
+Router::get(
+    name: 'jobs',
+    uri: '/jobs',
+    action: [JobController::class, 'index'],
+    middlewares: [
+        AcessoRestrito::class,
+        RequerRoleAdministrador::class,
+    ]
+);
+
 Router::post(
     name: 'executar_job',
     uri: '/jobs/{job}/executar',

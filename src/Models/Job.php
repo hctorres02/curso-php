@@ -34,11 +34,13 @@ class Job extends Model
     {
         $data = static::query()
             ->when($params['status'], fn ($query, $status) => $query->where('status', $status))
+            ->when($params['type'], fn ($query, $type) => $query->where('type', $type))
             ->paginate(10)
             ->appends(array_filter($params))
             ->toArray();
 
         $data['statuses'] = JobStatus::toArray();
+        $data['types'] = JobType::toArray();
 
         return array_merge($params, $data);
     }

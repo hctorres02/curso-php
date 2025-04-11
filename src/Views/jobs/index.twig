@@ -1,0 +1,56 @@
+{% extends "base.twig" %}
+{% from "macros.twig" import pagination, select %}
+
+{% block main %}
+<section>
+    <nav>
+        <ul>
+            <li>
+                <hgroup role="heading">
+                    <h3>Jobs</h3>
+                    <p>Total: {{ total }} jobs</p>
+                </hgroup>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <form role="search" style="margin-bottom: 0.5rem;">
+                    {{ select('Status', 'status', statuses, status) }}
+                    {{ select('Type', 'type', types, type) }}
+                    <input type="submit" value="Buscar">
+                </form>
+            </li>
+        </ul>
+    </nav>
+</section>
+<table class="striped">
+    <thead>
+        <tr>
+            <th scope="col" width="880px">Job</th>
+            <th scope="col">Data</th>
+            <th scope="col">Type</th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for job in data %}
+        <tr style="vertical-align: top">
+            <td>
+                {{ job.callable }}
+                {{ job.params|json_encode }}
+            </td>
+            <td>
+                <span title="{{ job.updated_at }}">{{ job.updated_at|date('d/m/Y H:i:s') }}</span>
+            </td>
+            <td>{{ job.type|title }}</td>
+            <td>{{ job.status|title }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="2">Não há jobs</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{{ pagination(links) }}
+{% endblock %}
