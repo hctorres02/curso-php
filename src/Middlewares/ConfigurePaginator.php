@@ -9,7 +9,7 @@ class ConfigurePaginator
 {
     public function __invoke(Request $request): bool
     {
-        Paginator::currentPathResolver(fn () => $request->getPathInfo());
+        Paginator::currentPathResolver(fn () => $request->getUri());
         Paginator::currentPageResolver(fn ($pageName) => $request->get($pageName));
 
         return true;
