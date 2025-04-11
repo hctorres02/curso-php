@@ -5,6 +5,7 @@ use App\Controllers\AtividadeController;
 use App\Controllers\AuthController;
 use App\Controllers\CadastroController;
 use App\Controllers\DisciplinaController;
+use App\Controllers\JobController;
 use App\Controllers\LogController;
 use App\Controllers\PeriodoController;
 use App\Controllers\RoleController;
@@ -13,6 +14,7 @@ use App\Enums\Permission;
 use App\Http\Router;
 use App\Middlewares\AcessoRestrito;
 use App\Middlewares\NaoPodeEditarAdminOuSiMesmo;
+use App\Middlewares\NaoPodeExecutarJobsExecutados;
 use App\Middlewares\RequerRoleAdministrador;
 use App\Middlewares\Visitante;
 
@@ -458,4 +460,26 @@ Router::delete(
         AcessoRestrito::class,
         RequerRoleAdministrador::class
     ]
+);
+
+// jobs
+Router::get(
+    name: 'jobs',
+    uri: '/jobs',
+    action: [JobController::class, 'index'],
+    middlewares: [
+        AcessoRestrito::class,
+        RequerRoleAdministrador::class,
+    ]
+);
+
+Router::post(
+    name: 'executar_job',
+    uri: '/jobs/{job}/executar',
+    action: [JobController::class, 'executar'],
+    middlewares: [
+        AcessoRestrito::class,
+        RequerRoleAdministrador::class,
+        NaoPodeExecutarJobsExecutados::class,
+    ],
 );

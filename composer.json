@@ -32,6 +32,7 @@
         ],
         "db:rollback": "./bin/rollback",
         "db:seed": "./bin/seed",
+        "execute-jobs": "./bin/execute-jobs",
         "server": [
             "Composer\\Config::disableProcessTimeout",
             "@putenv PHP_CLI_SERVER_WORKERS=4",

@@ -1,10 +1,12 @@
 <?php
 
+use App\Enums\JobType;
 use App\Enums\Permission;
 use App\Enums\Role;
 use App\Http\Request;
 use App\Http\Router;
 use App\Http\View;
+use App\Models\Job;
 use App\Models\Usuario;
 use Faker\Factory;
 use Illuminate\Database\Capsule\Manager as DB;
@@ -229,7 +231,11 @@ if (! function_exists('notify')) {
             $recipient = $recipient->id;
         }
 
-        resolveCallback($notifiable, compact('recipient'));
+        Job::create([
+            'callable' => $notifiable,
+            'params' => compact('recipient'),
+            'type' => JobType::NOTIFICATION,
+        ]);
     }
 }
 

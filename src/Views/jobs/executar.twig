@@ -1,0 +1,6 @@
+<form action="{{ route('executar_job', job.id) }}" method="post">
+    <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />
+    <a href="javascript:;" onclick="if (confirm('Deseja executar este job?')) this.closest('form').submit()">{{
+        job.status|title
+    }}</a>
+</form>

@@ -38,6 +38,7 @@ return array_map(fn (Menu $menu) => ! $menu->count() ? null : $menu
             ->linkIf($usuario->hasPermission(Permission::VER_ATIVIDADES), route('atividades'), 'Atividades')
             ->linkIf($usuario->hasPermission(Permission::VER_USUARIOS), route('usuarios'), 'Usuários')
             ->linkIf($usuario->hasRole(Role::ADMINISTRADOR), route('logs'), 'Logs')
+            ->linkIf($usuario->hasRole(Role::ADMINISTRADOR), route('jobs'), 'Jobs')
         ),
 
     /**
