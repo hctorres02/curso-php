@@ -6,6 +6,7 @@ use App\Enums\Permission;
 use App\Enums\Role;
 use App\Http\Request;
 use App\Models\Usuario;
+use App\Notifications\UsuarioCadastrado;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -42,6 +43,8 @@ class UsuarioController
         }
 
         $usuario = Usuario::create($request->validated);
+
+        notify($usuario, UsuarioCadastrado::class);
 
         return redirect(route('editar_usuario', $usuario->id));
     }
