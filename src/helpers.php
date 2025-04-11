@@ -233,6 +233,13 @@ if (! function_exists('notify')) {
     }
 }
 
+if (! function_exists('now')) {
+    function now(): Carbon
+    {
+        return Carbon::now(env('APP_TIMEZONE'));
+    }
+}
+
 if (! function_exists('refreshDatabase')) {
     function refreshDatabase(): void
     {
@@ -427,7 +434,7 @@ if (! function_exists('stopServer')) {
 if (! function_exists('today')) {
     function today(): string
     {
-        return Carbon::today();
+        return Carbon::today(env('APP_TIMEZONE'));
     }
 }
 

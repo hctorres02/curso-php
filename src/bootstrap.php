@@ -22,6 +22,9 @@ require PROJECT_ROOT.'/vendor/autoload.php';
 // variáveis de ambiente
 Dotenv::createImmutable(PROJECT_ROOT)->load();
 
+// timezone
+date_default_timezone_set(env('APP_TIMEZONE'));
+
 // coletor de erros
 tap(new Run, function (Run $runner) {
     $handler = env('APP_DEBUG') ? new PrettyPageHandler : function (Throwable $exception) {
