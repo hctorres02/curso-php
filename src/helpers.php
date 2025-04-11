@@ -222,6 +222,17 @@ if (! function_exists('migrate')) {
     }
 }
 
+if (! function_exists('notify')) {
+    function notify(int|usuario $recipient, string $notifiable): void
+    {
+        if ($recipient instanceof Usuario) {
+            $recipient = $recipient->id;
+        }
+
+        resolveCallback($notifiable, compact('recipient'));
+    }
+}
+
 if (! function_exists('refreshDatabase')) {
     function refreshDatabase(): void
     {
@@ -385,6 +396,20 @@ if (! function_exists('session')) {
     function session(): Session
     {
         return Request::getSession();
+    }
+}
+
+if (! function_exists('signedRoute')) {
+    function signedRoute(string $name, array $params = []): string
+    {
+        return Router::createSignedUrlFromName($name, $params);
+    }
+}
+
+if (! function_exists('signedUrl')) {
+    function signedUrl(string $path, mixed ...$params): string
+    {
+        return Router::createSignedUrl($path, $params);
     }
 }
 

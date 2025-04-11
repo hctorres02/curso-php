@@ -1,0 +1,34 @@
+{% extends "base.twig" %}
+{% from "macros.twig" import input %}
+
+{% block main %}
+<section>
+    <nav>
+        <ul>
+            <li>
+                <hgroup role="heading">
+                    <h3>Recuperar senha</h3>
+                    <p>Insira seus dados para iniciar a recuperação de senha.</p>
+                </hgroup>
+            </li>
+        </ul>
+    </nav>
+    <nav>
+        <ul>
+            <li>
+                <a href="{{ route('login') }}">&larr; Voltar para login</a>
+            </li>
+        </ul>
+    </nav>
+</section>
+<form method="post">
+    <fieldset class="grid">
+        <label>
+            Email
+            {{ input('email', 'Email', 'email') }}
+        </label>
+    </fieldset>
+    <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />
+    <input type="submit" value="Enviar e-mail de redefinição">
+</form>
+{% endblock %}
