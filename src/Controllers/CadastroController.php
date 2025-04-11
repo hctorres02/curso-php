@@ -59,8 +59,13 @@ class CadastroController
     {
         if (
             ! $request->validate(Usuario::rules(), ['email']) ||
-            ! $usuario = Usuario::firstWhere('email', $request->validated['email'])
+            ! $usuario = Usuario::firstWhere([['id', '!=', 1], ['email', $request->validated['email']]])
         ) {
+            flash()->setAll([
+                'err' => ['email' => null],
+                'old' => ['email' => $request->get('email')],
+            ]);
+
             return redirect(route('recuperar_senha'));
         }
 
@@ -75,7 +80,7 @@ class CadastroController
             ! $request->validate(Usuario::rules(), ['email', 'expires', 'signature']) ||
             ! hash_equals($request->getUri(), signedRoute('redefinir_senha', $request->validated)) ||
             ! Usuario::outdatedBefore($request->validated['expires'])
-                ->where('email', $request->validated['email'])
+                ->where([['id', '!=', 1], ['email', $request->validated['email']]])
                 ->exists()
         ) {
             return responseError(Response::HTTP_FORBIDDEN);
@@ -90,7 +95,7 @@ class CadastroController
             ! $request->validate(Usuario::rules(), ['email', 'expires', 'signature', 'senha']) ||
             ! hash_equals($request->getUri(), signedRoute('redefinir_senha', $request->validated)) ||
             ! $usuario = Usuario::outdatedBefore($request->validated['expires'])
-                ->firstWhere('email', $request->validated['email'])
+                ->firstWhere([['id', '!=', 1], ['email', $request->validated['email']]])
         ) {
             return responseError(Response::HTTP_FORBIDDEN);
         }
@@ -107,7 +112,7 @@ class CadastroController
         if (
             ! $request->validate(Usuario::rules(), ['email', 'expires', 'signature']) ||
             ! hash_equals($request->getUri(), signedRoute('restaurar_senha', $request->validated)) ||
-            ! ($usuario = Usuario::firstWhere('email', $request->validated['email'])) ||
+            ! ($usuario = Usuario::firstWhere([['id', '!=', 1], ['email', $request->validated['email']]])) ||
             ! ($audit = $usuario->audits()
                 ->latest()
                 ->whereRaw("json_extract(new_values, '$.senha')=?", $usuario->senha)
