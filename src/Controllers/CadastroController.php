@@ -21,14 +21,14 @@ class CadastroController
     public function salvar(Request $request): RedirectResponse
     {
         if (! $request->validate(Usuario::rules(), ['nome', 'email', 'senha'])) {
-            return redirect(route('cadastro'));
+            return redirectRoute('cadastro');
         }
 
         $usuario = Usuario::create($request->validated);
 
         notify($usuario, UsuarioCadastrado::class);
 
-        return redirect(route('login'));
+        return redirectRoute('login');
     }
 
     public function editar(): Response
@@ -41,13 +41,13 @@ class CadastroController
     public function atualizar(Request $request): RedirectResponse
     {
         if (! $request->validate(Usuario::rules(), ['nome', 'email'])) {
-            return redirect(route('editar_cadastro'));
+            return redirectRoute('editar_cadastro');
         }
 
         session()->get('usuario')->update($request->validated);
         session()->migrate(true);
 
-        return redirect(route('editar_cadastro'));
+        return redirectRoute('editar_cadastro');
     }
 
     public function recuperarSenha(): Response
@@ -66,12 +66,12 @@ class CadastroController
                 'old' => ['email' => $request->get('email')],
             ]);
 
-            return redirect(route('recuperar_senha'));
+            return redirectRoute('recuperar_senha');
         }
 
         notify($usuario, RecuperarSenha::class);
 
-        return redirect(route('login'));
+        return redirectRoute('login');
     }
 
     public function redefinirSenha(Request $request): Response
@@ -102,7 +102,7 @@ class CadastroController
 
         notify($usuario, SenhaRedefinida::class);
 
-        return redirect(route('login'));
+        return redirectRoute('login');
     }
 
     public function restaurarSenha(Request $request): RedirectResponse|Response
@@ -124,6 +124,6 @@ class CadastroController
             notify($usuario, SenhaRestaurada::class);
         }
 
-        return redirect(route('login'));
+        return redirectRoute('login');
     }
 }

@@ -34,6 +34,6 @@ class JobController
             $job->update(['status' => JobStatus::FAILED]);
         }
 
-        return redirect(route('jobs'));
+        return redirectRoute('jobs');
     }
 }

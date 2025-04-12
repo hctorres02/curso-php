@@ -15,6 +15,6 @@ class AcessoRestrito
 
         session()->set('attempted_uri', $request->getRequestUri());
 
-        return redirect(route('login'));
+        return redirectRoute('login');
     }
 }

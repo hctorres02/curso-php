@@ -26,12 +26,12 @@ class AtividadeController
     public function salvar(Request $request): RedirectResponse
     {
         if (! $request->validate(Atividade::rules())) {
-            return redirect(route('cadastrar_atividade'));
+            return redirectRoute('cadastrar_atividade');
         }
 
         $atividade = Atividade::create($request->validated);
 
-        return redirect(route('atividades'));
+        return redirectRoute('atividades');
     }
 
     public function editar(Atividade $atividade): Response
@@ -42,12 +42,12 @@ class AtividadeController
     public function atualizar(Request $request, Atividade $atividade): RedirectResponse
     {
         if (! $request->validate(Atividade::rules())) {
-            return redirect(route('editar_atividade', $atividade->id));
+            return redirectRoute('editar_atividade', $atividade->id);
         }
 
         $atividade->update($request->validated);
 
-        return redirect(route('atividades'));
+        return redirectRoute('atividades');
     }
 
     public function excluir(Atividade $atividade): RedirectResponse
@@ -55,6 +55,6 @@ class AtividadeController
         $atividade->agendamentos()->delete();
         $atividade->delete();
 
-        return redirect(route('atividades'));
+        return redirectRoute('atividades');
     }
 }

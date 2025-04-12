@@ -26,12 +26,12 @@ class PeriodoController
     public function salvar(Request $request): RedirectResponse
     {
         if (! $request->validate(Periodo::rules())) {
-            return redirect(route('cadastrar_periodo'));
+            return redirectRoute('cadastrar_periodo');
         }
 
         $periodo = Periodo::create($request->validated);
 
-        return redirect(route('periodos'));
+        return redirectRoute('periodos');
     }
 
     public function editar(Periodo $periodo): Response
@@ -42,12 +42,12 @@ class PeriodoController
     public function atualizar(Request $request, Periodo $periodo): RedirectResponse
     {
         if (! $request->validate(Periodo::rules())) {
-            return redirect(route('editar_periodo', $periodo->id));
+            return redirectRoute('editar_periodo', $periodo->id);
         }
 
         $periodo->update($request->validated);
 
-        return redirect(route('periodos'));
+        return redirectRoute('periodos');
     }
 
     public function excluir(Periodo $periodo): RedirectResponse
@@ -56,6 +56,6 @@ class PeriodoController
         $periodo->disciplinas()->delete();
         $periodo->delete();
 
-        return redirect(route('periodos'));
+        return redirectRoute('periodos');
     }
 }

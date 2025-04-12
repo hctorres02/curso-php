@@ -24,13 +24,13 @@ class AuthController
             return redirect($request->attemptedUri(route('agendamentos')));
         }
 
-        return redirect(route('login'));
+        return redirectRoute('login');
     }
 
     public function logout(): RedirectResponse
     {
         session()->invalidate();
 
-        return redirect(route('login'));
+        return redirectRoute('login');
     }
 }

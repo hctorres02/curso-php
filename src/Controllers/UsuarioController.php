@@ -39,14 +39,14 @@ class UsuarioController
             'role' => Permission::ATRIBUIR_ROLE,
             'permissions' => Permission::ATRIBUIR_PERMISSOES,
         ])) {
-            return redirect(route('cadastrar_usuario'));
+            return redirectRoute('cadastrar_usuario');
         }
 
         $usuario = Usuario::create($request->validated);
 
         notify($usuario, UsuarioCadastrado::class);
 
-        return redirect(route('editar_usuario', $usuario->id));
+        return redirectRoute('editar_usuario', $usuario->id);
     }
 
     public function editar(Usuario $usuario): Response
@@ -69,6 +69,6 @@ class UsuarioController
         }
 
 
-        return redirect('editar_usuario', $usuario->id);
+        return redirectRoute('editar_usuario', $usuario->id);
     }
 }

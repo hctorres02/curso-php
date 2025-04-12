@@ -34,12 +34,12 @@ class DisciplinaController
     public function salvar(Request $request): RedirectResponse
     {
         if (! $request->validate(Disciplina::rules())) {
-            return redirect(route('cadastrar_disciplina'));
+            return redirectRoute('cadastrar_disciplina');
         }
 
         $disciplina = Disciplina::create($request->validated);
 
-        return redirect(route('disciplinas'));
+        return redirectRoute('disciplinas');
     }
 
     public function editar(Disciplina $disciplina): Response
@@ -56,7 +56,7 @@ class DisciplinaController
     public function atualizar(Request $request, Disciplina $disciplina): RedirectResponse
     {
         if (! $request->validate(Disciplina::rules())) {
-            return redirect(route('editar_disciplina', $disciplina->id));
+            return redirectRoute('editar_disciplina', $disciplina->id);
         }
 
         $disciplina->update([
@@ -65,7 +65,7 @@ class DisciplinaController
             'cor' => $request->get('cor'),
         ]);
 
-        return redirect(route('disciplinas'));
+        return redirectRoute('disciplinas');
     }
 
     public function excluir(Disciplina $disciplina): RedirectResponse
@@ -73,6 +73,6 @@ class DisciplinaController
         $disciplina->agendamentos()->delete();
         $disciplina->delete();
 
-        return redirect(route('disciplinas'));
+        return redirectRoute('disciplinas');
     }
 }

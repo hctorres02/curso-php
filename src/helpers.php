@@ -298,6 +298,13 @@ if (! function_exists('redirect')) {
     }
 }
 
+if (! function_exists('redirectRoute')) {
+    function redirectRoute(string $name, array $params = [], int $status = Response::HTTP_FOUND): RedirectResponse
+    {
+        return redirect(route($name, $params), $status);
+    }
+}
+
 if (! function_exists('response')) {
     function response(string $viewName, array $data = [], int $status = Response::HTTP_OK): Response
     {
