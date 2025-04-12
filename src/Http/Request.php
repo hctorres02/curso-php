@@ -5,6 +5,7 @@ namespace App\Http;
 use App\Models\Usuario;
 use App\Traits\IsSingleton;
 use Respect\Validation\Exceptions\ValidationException;
+use Respect\Validation\Validator;
 use Symfony\Component\HttpFoundation\Request as BaseRequest;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -99,6 +100,23 @@ class Request
 
         return true;
     }
+    public function validateSignedUrl(string $uri, array $rules, array $only): bool
+    {
+        $rules = array_merge($rules, $this->rules());
+        $only = array_merge($only, array_keys($this->rules()));
+
+        return $this->validate($rules, $only)
+            && hash_equals($this->getUri(), signedUrl($uri, $this->validated));
+    }
+
+    public function validateSignedRoute(string $route, array $rules, array $only): bool
+    {
+        $rules = array_merge($rules, $this->rules());
+        $only = array_merge($only, array_keys($this->rules()));
+
+        return $this->validate($rules, $only)
+            && hash_equals($this->getUri(), signedRoute($route, $this->validated));
+    }
 
     /**
      * Gera um token CSRF único e o armazena na sessão, caso ainda não exista.
@@ -140,5 +158,14 @@ class Request
 
         // Verifica se os tokens são iguais
         return hash_equals($sessionToken, $csrfToken);
+    }
+
+
+    private static function rules(): array
+    {
+        return [
+            'expires' => Validator::notEmpty()->intVal()->greaterThan(time()),
+            'signature' => Validator::notEmpty()->length(64),
+        ];
     }
 }

@@ -77,8 +77,7 @@ class CadastroController
     public function redefinirSenha(Request $request): Response
     {
         if (
-            ! $request->validate(Usuario::rules(), ['email', 'expires', 'signature']) ||
-            ! hash_equals($request->getUri(), signedRoute('redefinir_senha', $request->validated)) ||
+            ! $request->validateSignedRoute('redefinir_senha', Usuario::rules(), ['email']) ||
             ! Usuario::outdatedBefore($request->validated['expires'])
                 ->where([['id', '!=', 1], ['email', $request->validated['email']]])
                 ->exists()
@@ -92,8 +91,7 @@ class CadastroController
     public function submitRedefinirSenha(Request $request): RedirectResponse|Response
     {
         if (
-            ! $request->validate(Usuario::rules(), ['email', 'expires', 'signature', 'senha']) ||
-            ! hash_equals($request->getUri(), signedRoute('redefinir_senha', $request->validated)) ||
+            ! $request->validateSignedRoute('redefinir_senha', Usuario::rules(), ['email', 'senha']) ||
             ! $usuario = Usuario::outdatedBefore($request->validated['expires'])
                 ->firstWhere([['id', '!=', 1], ['email', $request->validated['email']]])
         ) {
@@ -110,8 +108,7 @@ class CadastroController
     public function restaurarSenha(Request $request): RedirectResponse|Response
     {
         if (
-            ! $request->validate(Usuario::rules(), ['email', 'expires', 'signature']) ||
-            ! hash_equals($request->getUri(), signedRoute('restaurar_senha', $request->validated)) ||
+            ! $request->validateSignedRoute('restaurar_senha', Usuario::rules(), ['email']) ||
             ! ($usuario = Usuario::firstWhere([['id', '!=', 1], ['email', $request->validated['email']]])) ||
             ! ($audit = $usuario->audits()
                 ->latest()
