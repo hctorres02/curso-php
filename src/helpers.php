@@ -225,7 +225,7 @@ if (! function_exists('migrate')) {
 }
 
 if (! function_exists('notify')) {
-    function notify(int|usuario $recipient, string $notifiable): void
+    function notify(int|Usuario $recipient, string $notifiable, array $context = []): void
     {
         if ($recipient instanceof Usuario) {
             $recipient = $recipient->id;
@@ -233,7 +233,7 @@ if (! function_exists('notify')) {
 
         Job::create([
             'callable' => $notifiable,
-            'params' => compact('recipient'),
+            'params' => json_encode(array_merge($context, compact('recipient'))),
             'type' => JobType::NOTIFICATION,
         ]);
     }
