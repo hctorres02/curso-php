@@ -379,18 +379,21 @@ if (! function_exists('resolveCallback')) {
 if (! function_exists('resolveParams')) {
     function resolveParams(array $reflectionParams, array $routeParams = []): array
     {
-        return array_reduce($reflectionParams, function (array $resolvedParams, ReflectionParameter $param) use ($routeParams) {
-            $paramType = $param->getType();
-            $paramName = $paramType->getName();
-            $routeParam = array_shift($routeParams);
-            $resolvedParams[] = empty($paramType) || $paramType->isBuiltin() || $param->isOptional() ? $routeParam : match (true) {
-                $paramName === Request::class => Request::getInstance(),
-                enum_exists($paramName) => $paramName::tryFrom($routeParam),
-                is_subclass_of($paramName, Model::class) => $paramName::findOrFail($routeParam),
-                default => new $paramName
+        return array_reduce($reflectionParams, function (array $resolved, ReflectionParameter $param) use ($routeParams) {
+            $name = $param->getName();
+            $type = $param->getType();
+            $typeName = $type?->getName();
+            $value = $routeParams[$name] ?? array_shift($routeParams);
+            $resolved[] = empty($type) || $type->isBuiltin() || $param->isOptional() ? $value : match (true) {
+                $typeName === Request::class => Request::getInstance(),
+                enum_exists($typeName) => $typeName::tryFrom($value),
+                is_subclass_of($typeName, Model::class) => $typeName::findOrFail($value),
+                default => new $typeName
             };
 
-            return $resolvedParams;
+            unset($routeParams[$name]);
+
+            return $resolved;
         }, []);
     }
 }
