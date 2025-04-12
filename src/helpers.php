@@ -227,15 +227,36 @@ if (! function_exists('migrate')) {
 if (! function_exists('notify')) {
     function notify(int|Usuario $recipient, string $notifiable, array $context = []): void
     {
-        if ($recipient instanceof Usuario) {
-            $recipient = $recipient->id;
+        notifyMany([$recipient], $notifiable, $context);
+    }
+}
+
+if (! function_exists('notifyMany')) {
+    /**
+     * @param array<int|\App\Models\Usuario> $recipients
+     * @param string $notifiable
+     * @param array $context
+     */
+    function notifyMany(array $recipients, string $notifiable, array $context = []): void
+    {
+        $now = now();
+        $jobs = [];
+
+        foreach ($recipients as $recipient) {
+            if ($recipient instanceof Usuario) {
+                $recipient = $recipient->id;
+            }
+
+            $jobs[] = [
+                'created_at' => $now,
+                'updated_at' => $now,
+                'callable' => $notifiable,
+                'params' => json_encode(array_merge($context, compact('recipient'))),
+                'type' => JobType::NOTIFICATION,
+            ];
         }
 
-        Job::create([
-            'callable' => $notifiable,
-            'params' => json_encode(array_merge($context, compact('recipient'))),
-            'type' => JobType::NOTIFICATION,
-        ]);
+        Job::upsert($jobs, ['id']);
     }
 }
 
