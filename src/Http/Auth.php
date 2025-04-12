@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Models\Usuario;
+use App\Notifications\LoginRealizado;
 
 class Auth
 {
@@ -27,6 +28,8 @@ class Auth
         session()->set('usuario', $usuario);
         session()->set('usuario_id', $usuario->id);
         session()->migrate(true);
+
+        notify($usuario, LoginRealizado::class);
 
         return $usuario;
     }
