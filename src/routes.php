@@ -13,6 +13,7 @@ use App\Controllers\UsuarioController;
 use App\Enums\Permission;
 use App\Http\Router;
 use App\Middlewares\AcessoRestrito;
+use App\Middlewares\ForcarLogout;
 use App\Middlewares\NaoPodeEditarAdminOuSiMesmo;
 use App\Middlewares\NaoPodeExecutarJobsExecutados;
 use App\Middlewares\RequerRoleAdministrador;
@@ -97,7 +98,7 @@ Router::post(
     uri: '/cadastro/recuperar-senha',
     action: [CadastroController::class, 'submitRecuperarSenha'],
     middlewares: [
-        Visitante::class,
+        ForcarLogout::class,
     ]
 );
 
@@ -106,7 +107,7 @@ Router::get(
     uri: '/cadastro/redefinir-senha',
     action: [CadastroController::class, 'redefinirSenha'],
     middlewares: [
-        Visitante::class,
+        ForcarLogout::class,
     ]
 );
 
@@ -115,7 +116,7 @@ Router::post(
     uri: '/cadastro/redefinir-senha',
     action: [CadastroController::class, 'submitRedefinirSenha'],
     middlewares: [
-        Visitante::class,
+        ForcarLogout::class,
     ]
 );
 
@@ -124,7 +125,7 @@ Router::get(
     uri: '/cadastro/restaurar_senha',
     action: [CadastroController::class, 'restaurarSenha'],
     middlewares: [
-        Visitante::class,
+        ForcarLogout::class,
     ]
 );
 
