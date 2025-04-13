@@ -22,7 +22,7 @@ class AgendamentoController
             'disciplina_id' => $request->get('disciplina_id'),
         ]);
 
-        return response('agendamentos/index', $data);
+        return response('agendamentos/index.twig', $data);
     }
 
     public function cadastrar(): Response
@@ -30,7 +30,7 @@ class AgendamentoController
         $atividades = Atividade::toOptGroup();
         $disciplinas = Disciplina::toOptGroup();
 
-        return response('agendamentos/cadastrar', compact('atividades', 'disciplinas'));
+        return response('agendamentos/cadastrar.twig', compact('atividades', 'disciplinas'));
     }
 
     public function salvar(Request $request): RedirectResponse
@@ -50,7 +50,7 @@ class AgendamentoController
 
     public function ver(Agendamento $agendamento): Response
     {
-        return response('agendamentos/ver', compact('agendamento'));
+        return response('agendamentos/ver.twig', compact('agendamento'));
     }
 
     public function editar(Agendamento $agendamento): Response
@@ -58,7 +58,7 @@ class AgendamentoController
         $atividades = Atividade::toOptGroup();
         $disciplinas = Disciplina::toOptGroup();
 
-        return response('agendamentos/editar', compact('atividades', 'disciplinas', 'agendamento'));
+        return response('agendamentos/editar.twig', compact('atividades', 'disciplinas', 'agendamento'));
     }
 
     public function atualizar(Request $request, Agendamento $agendamento): RedirectResponse

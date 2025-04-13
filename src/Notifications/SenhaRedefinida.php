@@ -18,6 +18,6 @@ class SenhaRedefinida
             'cta' => Link::to(signedRoute('restaurar_senha', $recipient->only('email')), 'Restaurar senha'),
         ];
 
-        $this->viaEmail('notifications/email/senha_redefinida', $data);
+        $this->viaEmail('notifications/email/senha_redefinida.twig', $data);
     }
 }

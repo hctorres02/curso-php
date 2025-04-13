@@ -19,7 +19,7 @@ class JobController
             'type' => $request->get('type'),
         ]);
 
-        return response('jobs/index', $data);
+        return response('jobs/index.twig', $data);
     }
 
     public function executar(Job $job): RedirectResponse

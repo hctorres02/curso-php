@@ -15,12 +15,12 @@ class AtividadeController
             'nome' => $request->get('nome'),
         ]);
 
-        return response('atividades/index', $data);
+        return response('atividades/index.twig', $data);
     }
 
     public function cadastrar(): Response
     {
-        return response('atividades/cadastrar');
+        return response('atividades/cadastrar.twig');
     }
 
     public function salvar(Request $request): RedirectResponse
@@ -36,7 +36,7 @@ class AtividadeController
 
     public function editar(Atividade $atividade): Response
     {
-        return response('atividades/editar', compact('atividade'));
+        return response('atividades/editar.twig', compact('atividade'));
     }
 
     public function atualizar(Request $request, Atividade $atividade): RedirectResponse

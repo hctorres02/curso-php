@@ -12,7 +12,7 @@ class AuthController
 {
     public function index(): Response
     {
-        return response('auth/login');
+        return response('auth/login.twig');
     }
 
     public function login(Request $request): RedirectResponse

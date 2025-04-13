@@ -21,6 +21,6 @@ class AgendaDiaria
             'hoje' => $hoje,
         ];
 
-        $this->viaEmail('notifications/email/agenda_diaria', $data);
+        $this->viaEmail('notifications/email/agenda_diaria.twig', $data);
     }
 }

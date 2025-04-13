@@ -15,7 +15,7 @@ class CadastroController
 {
     public function cadastrar(): Response
     {
-        return response('cadastro/cadastrar');
+        return response('cadastro/cadastrar.twig');
     }
 
     public function salvar(Request $request): RedirectResponse
@@ -35,7 +35,7 @@ class CadastroController
     {
         $usuario = session()->get('usuario');
 
-        return response('cadastro/editar', compact('usuario'));
+        return response('cadastro/editar.twig', compact('usuario'));
     }
 
     public function atualizar(Request $request): RedirectResponse
@@ -52,7 +52,7 @@ class CadastroController
 
     public function recuperarSenha(): Response
     {
-        return response('cadastro/recuperar_senha');
+        return response('cadastro/recuperar_senha.twig');
     }
 
     public function submitRecuperarSenha(Request $request): RedirectResponse
@@ -85,7 +85,7 @@ class CadastroController
             return responseError(Response::HTTP_FORBIDDEN);
         }
 
-        return response('cadastro/redefinir_senha');
+        return response('cadastro/redefinir_senha.twig');
     }
 
     public function submitRedefinirSenha(Request $request): RedirectResponse|Response

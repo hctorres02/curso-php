@@ -27,6 +27,6 @@ class AgendamentoCadastrado
             'dm' => $dm,
         ];
 
-        $this->viaEmail('notifications/email/agendamento', $data);
+        $this->viaEmail('notifications/email/agendamento.twig', $data);
     }
 }

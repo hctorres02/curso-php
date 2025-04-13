@@ -17,7 +17,7 @@ class DisciplinaController
             'periodo_id' => $request->get('periodo_id'),
         ]);
 
-        return response('disciplinas/index', $data);
+        return response('disciplinas/index.twig', $data);
     }
 
     public function cadastrar(): Response
@@ -28,7 +28,7 @@ class DisciplinaController
             ->pluck('nome', 'id')
             ->sortDesc();
 
-        return response('disciplinas/cadastrar', compact('periodos'));
+        return response('disciplinas/cadastrar.twig', compact('periodos'));
     }
 
     public function salvar(Request $request): RedirectResponse
@@ -50,7 +50,7 @@ class DisciplinaController
             ->pluck('nome', 'id')
             ->sortDesc();
 
-        return response('disciplinas/editar', compact('periodos', 'disciplina'));
+        return response('disciplinas/editar.twig', compact('periodos', 'disciplina'));
     }
 
     public function atualizar(Request $request, Disciplina $disciplina): RedirectResponse

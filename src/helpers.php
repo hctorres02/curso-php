@@ -350,7 +350,7 @@ if (! function_exists('responseError')) {
             logAppend($exception, $level);
         }
 
-        return response('erro', $data, $status);
+        return response('erro.twig', $data, $status);
     }
 }
 

@@ -20,10 +20,6 @@ class View
 
     public static function render(string $name, array $data = []): string
     {
-        if (! str_ends_with($name, '.twig')) {
-            $name = "{$name}.twig";
-        }
-
         $content = static::getInstance()->twig->render($name, $data);
 
         if (! env('APP_DEBUG')) {

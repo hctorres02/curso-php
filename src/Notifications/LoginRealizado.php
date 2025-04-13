@@ -22,6 +22,6 @@ class LoginRealizado
             unset($data['cta']);
         }
 
-        $this->viaEmail('notifications/email/login_realizado', $data);
+        $this->viaEmail('notifications/email/login_realizado.twig', $data);
     }
 }

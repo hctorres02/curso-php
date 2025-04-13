@@ -15,12 +15,12 @@ class PeriodoController
             'q' => $request->get('q'),
         ]);
 
-        return response('periodos/index', $data);
+        return response('periodos/index.twig', $data);
     }
 
     public function cadastrar(): Response
     {
-        return response('periodos/cadastrar');
+        return response('periodos/cadastrar.twig');
     }
 
     public function salvar(Request $request): RedirectResponse
@@ -36,7 +36,7 @@ class PeriodoController
 
     public function editar(Periodo $periodo): Response
     {
-        return response('periodos/editar', compact('periodo'));
+        return response('periodos/editar.twig', compact('periodo'));
     }
 
     public function atualizar(Request $request, Periodo $periodo): RedirectResponse

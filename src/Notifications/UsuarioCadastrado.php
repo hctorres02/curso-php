@@ -18,6 +18,6 @@ class UsuarioCadastrado
             'cta' => Link::to(route('login'), 'Fazer login'),
         ];
 
-        $this->viaEmail('notifications/email/usuario_cadastrado', $data);
+        $this->viaEmail('notifications/email/usuario_cadastrado.twig', $data);
     }
 }

@@ -19,7 +19,7 @@ class UsuarioController
             'role' => $request->get('role'),
         ]);
 
-        return response('/usuarios/index', $data);
+        return response('/usuarios/index.twig', $data);
     }
 
     public function cadastrar(): Response
@@ -27,7 +27,7 @@ class UsuarioController
         $roles = Role::toArray();
         $permissions = Permission::toArray();
 
-        return response('usuarios/cadastrar', compact('roles', 'permissions'));
+        return response('usuarios/cadastrar.twig', compact('roles', 'permissions'));
     }
 
     public function salvar(Request $request): RedirectResponse
@@ -54,7 +54,7 @@ class UsuarioController
         $roles = Role::toArray();
         $permissions = Permission::toArray();
 
-        return response('usuarios/editar', compact('usuario', 'roles', 'permissions'));
+        return response('usuarios/editar.twig', compact('usuario', 'roles', 'permissions'));
     }
 
     public function atualizar(Request $request, Usuario $usuario): RedirectResponse

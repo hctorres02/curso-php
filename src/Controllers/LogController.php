@@ -21,7 +21,7 @@ class LogController
 
         flash()->set('filter:log', compact('level_name', 'limit'));
 
-        return response('logs', compact('levels', 'level_name', 'limits', 'limit', 'log'));
+        return response('logs.twig', compact('levels', 'level_name', 'limits', 'limit', 'log'));
     }
 
     public function excluir(?string $key): RedirectResponse

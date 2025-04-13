@@ -16,6 +16,6 @@ class SenhaRestaurada
             'subject' => 'Senha restaurada',
         ];
 
-        $this->viaEmail('notifications/email/senha_restaurada', $data);
+        $this->viaEmail('notifications/email/senha_restaurada.twig', $data);
     }
 }
