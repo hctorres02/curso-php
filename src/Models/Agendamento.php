@@ -24,6 +24,10 @@ class Agendamento extends Model
         'data',
     ];
 
+    protected $casts = [
+        'data' => 'date',
+    ];
+
     public static function rules(): array
     {
         return [
