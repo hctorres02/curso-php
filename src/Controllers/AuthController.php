@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Http\Auth;
 use App\Http\Request;
 use App\Models\Usuario;
+use App\Notifications\LoginRealizado;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,8 +20,13 @@ class AuthController
     {
         if (
             $request->validate(Usuario::rules(), ['email', 'senha']) &&
-            Auth::attempt($request->validated)
+            $usuario = Auth::attempt($request->validated)
         ) {
+            notify($usuario, LoginRealizado::class, [
+                'user_agent' => $request->headers->get('user-agent', 'Não identificado'),
+                'ip' => $request->getClientIp(),
+            ]);
+
             return redirect($request->attemptedUri(route('agendamentos')));
         }
 
