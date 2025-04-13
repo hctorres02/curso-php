@@ -1,0 +1,16 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__.'/../src/bootstrap.php';
+
+use App\Models\Agendamento;
+use App\Models\Usuario;
+use App\Notifications\AgendaDiaria;
+
+Agendamento::whereDate('data', today())
+    ->pluck('id')
+    ->whenNotEmpty(fn ($agendamentos) => notifyMany(
+        Usuario::pluck('id')->toArray(),
+        AgendaDiaria::class,
+        compact('agendamentos')
+    ));

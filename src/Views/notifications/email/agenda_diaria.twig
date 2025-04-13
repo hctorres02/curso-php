@@ -1,0 +1,10 @@
+{% extends "base_email.twig" %}
+
+{% block message %}
+Estes são os agendamentos programados para hoje ({{ hoje }}):<br /><br />
+{% for agendamento in agendamentos %}
+<a href="{{ route('ver_agendamento', agendamento.id) }}">
+    #{{ agendamento.id }} {{ agendamento.atividade.nome }} de {{ agendamento.disciplina.nome }}
+</a><br />
+{% endfor %}
+{% endblock %}

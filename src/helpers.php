@@ -469,7 +469,7 @@ if (! function_exists('stopServer')) {
 }
 
 if (! function_exists('today')) {
-    function today(): string
+    function today(): Carbon
     {
         return Carbon::today(env('APP_TIMEZONE'));
     }
