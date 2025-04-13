@@ -6,21 +6,17 @@ require_once __DIR__.'/../src/bootstrap.php';
 use App\Http\Http;
 use App\Models\Job;
 
-$email = env('ADMIN_EMAIL');
-$senha = env('ADMIN_PWD');
+$_app_key = env('APP_KEY');
 $_csrf_token = Http::getCsrfToken('/login');
 
-// login como administrador
-Http::post('/login', ['form_params' => compact('email', 'senha', '_csrf_token')]);
-
-Job::pending()->get(['id', 'status'])->each(function (Job $job) use ($_csrf_token) {
+Job::pending()->get(['id', 'status'])->each(function (Job $job) use ($_app_key, $_csrf_token) {
     try {
         $at = now()->format('d/m/Y H:i:s');
 
         echo "[{$at}] Job #{$job->id}: Executando...".PHP_EOL;
 
         // executa job
-        Http::post("/jobs/{$job->id}/executar", ['form_params' => compact('_csrf_token')]);
+        Http::post("/jobs/{$job->id}/executar", ['form_params' => compact('_app_key', '_csrf_token')]);
 
         // sincroniza model com banco de dados
         $job->refresh();
