@@ -7,6 +7,7 @@ use App\Models\Agendamento;
 use App\Models\Atividade;
 use App\Models\Disciplina;
 use App\Models\Usuario;
+use App\Notifications\AgendamentoAtualizado;
 use App\Notifications\AgendamentoCadastrado;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,6 +68,11 @@ class AgendamentoController
         }
 
         $agendamento->update($request->validated);
+
+
+        notifyMany(Usuario::pluck('id')->toArray(), AgendamentoAtualizado::class, [
+            'agendamento' => $agendamento->id,
+        ]);
 
         return redirectRoute('agendamentos');
     }
