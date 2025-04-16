@@ -22,7 +22,7 @@
         </ul>
     </nav>
 </section>
-<form action="{{ route('atualizar_disciplina', disciplina) }}" method="post">
+<form action="{{ route('atualizar_disciplina', disciplina.id) }}" method="post">
     {% include "disciplinas/fieldset.twig" %}
     <input type="hidden" name="_method" value="put">
     <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />
