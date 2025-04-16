@@ -25,6 +25,7 @@ class ConfigureView
 
         View::addGlobals([
             'APP_LOCALE' => str_replace('_', '-', env('APP_LOCALE')),
+            'APP_TIMEZONE' => env('APP_TIMEZONE'),
             'CSRF_TOKEN' => session()->get('csrf_token'),
             'CURRENT_URI' => $request->getPathInfo(),
             'ERRORS' => flash()->get('err'),

@@ -33,40 +33,28 @@
         </ul>
     </nav>
 </section>
-<table class="striped">
-    <thead>
-        <tr>
-            <th width="200px" scope="col">Atividade</th>
-            <th width="auto" scope="col">Conteúdo</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for agendamento in data %}
-        <tr style="vertical-align: top">
-            <td>
-                <span title="{{ agendamento.data|date('Y-m-d') }}">{{ agendamento.data|date('d/m') }}</span><br />
-                <strong>{{ agendamento.disciplina.nome|upper }}</strong><br />
-                <small>{{ agendamento.atividade.nome }}</small>
-            </td>
-            <td>
-                {{ agendamento.conteudo }}<br />
-                <a href="{{ route('ver_agendamento', agendamento.id) }}">
-                    <small>&#128065; Ver</small>
-                </a>
-                {% if hasPermission('editar_agendamentos') %}
-                &nbsp;&nbsp;
-                <a href="{{ route('editar_agendamento', agendamento.id) }}">
-                    <small>&#9998; Editar</small>
-                </a>
-                {% endif %}
-            </td>
-        </tr>
-        {% else %}
-        <tr>
-            <td colspan="2">Não há agendamentos previstos</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-{{ pagination(links) }}
+<div id="calendar-container" data-events="{{ agendamentos|json_encode }}">
+    <dialog>
+        <article aria-busy="true"></article>
+    </dialog>
+</div>
+{% endblock %}
+
+{% block styles %}
+<style>
+    #calendar-container table {
+        margin-bottom: 0;
+
+        & .fc-col-header-cell-cushion,
+        & .fc-daygrid-day-number {
+            color: var(--pico-muted-color);
+            text-decoration: none;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6/index.global.min.js"></script>
+<script src="{{ asset('/js/fullcalendar.js') }}"></script>
 {% endblock %}

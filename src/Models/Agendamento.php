@@ -10,6 +10,7 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Respect\Validation\Validator;
 
 class Agendamento extends Model
@@ -48,74 +49,61 @@ class Agendamento extends Model
         return $this->belongsTo(Disciplina::class);
     }
 
+    public function periodo(): HasOneThrough
+    {
+        return $this->hasOneThrough(Periodo::class, Disciplina::class, 'id', 'id', 'disciplina_id', 'periodo_id');
+    }
+
     public function scopePrevistos(Builder $query): void
     {
-        $query->whereDate('data', '>=', today());
+        $today = today();
+        $endOfPeriod = $today->copy()->setMonth($today->month <= 6 ? 6 : 12)->endOfMonth();
+
+        $query->whereBetween('data', [$today, $endOfPeriod]);
     }
 
     public static function toSearch(array $params): array
     {
-        // Cria a consulta base para agendamentos, aplicando o filtro 'previstos'
-        $baseQuery = Periodo::find($params['periodo_id'])?->agendamentos() ?: static::query()->previstos();
+        $baseQuery = static::query()->when(
+            $params['periodo_id'],
+            fn ($query, $periodo_id) => $query->whereHas('periodo', fn ($periodo) => $periodo->where('periodos.id', $periodo_id)),
+            fn ($query) => $query->previstos()
+        );
 
-        // Realiza a consulta de agendamentos com filtros e ordenação, além de paginar os resultados
-        $data = $baseQuery
-            // Clona a consulta base para evitar modificações diretas
+        $data['total'] = $baseQuery?->count() ?: 0;
+
+        $data['agendamentos'] = $baseQuery
             ->clone()
-            // Ordena os agendamentos pela data de forma crescente
-            ->oldest('data')
-            // Inclui as relações com 'atividade' e 'disciplina', trazendo apenas 'id' e 'nome'
-            ->with('atividade:id,nome', 'disciplina:id,nome')
-            // Aplica filtro condicional para 'atividade_id', se o parâmetro for fornecido
+            ->with('atividade:id,nome,cor', 'disciplina:id,nome')
             ->when($params['atividade_id'], fn ($query, $id) => $query->where('atividade_id', $id))
-            // Aplica filtro condicional para 'disciplina_id', se o parâmetro for fornecido
             ->when($params['disciplina_id'], fn ($query, $id) => $query->where('disciplina_id', $id))
-            // Pagina os resultados, limitando a 5 agendamentos por página
-            ->paginate(5)
-            // Mantém os parâmetros originais na URL para navegação entre páginas
-            ->appends(array_filter($params))
-            // Converte o resultado da consulta para um array
+            ->get(['id', 'atividade_id','disciplina_id','data'])
+            ->map(fn (Agendamento $agendamento) => [
+                'title' => "{$agendamento->atividade->nome}: {$agendamento->disciplina->nome}",
+                'start' => $agendamento->data,
+                'color' => $agendamento->atividade->cor,
+                'url' => route('ver_agendamento', $agendamento->id),
+            ])
             ->toArray();
 
-        // Consulta períodos
         $data['periodos'] = Periodo::query()
-            // Seleciona coluna ID
             ->select('id')
-            // Concatena ano e semestre como coluna nome
             ->selectRaw("(ano||'.'||semestre) AS nome")
-            // Extrai nome e IDs dos períodos, retornando array associativo
             ->pluck('nome', 'id')
-            // Ordena os resultados pela chave (ID do período)
             ->sortDesc();
 
-        // Consulta os nomes das atividades associadas aos agendamentos
         $data['atividades'] = $baseQuery
-            // Clona a consulta base novamente
             ->clone()
-            // Faz um right join com a tabela 'atividades' para obter os nomes das atividades
             ->rightJoin('atividades', 'atividades.id', 'agendamentos.atividade_id')
-            // Extrai os nomes e IDs das atividades, retornando um array associativo
             ->pluck('atividades.nome', 'atividades.id')
-            // Ordena os resultados pela chave (ID da atividade)
             ->sort();
 
-        // Consulta os nomes das disciplinas associadas aos agendamentos
         $data['disciplinas'] = $baseQuery
-            // Clona a consulta base novamente
             ->clone()
-            // Faz um right join com a tabela 'disciplinas' para obter os nomes das disciplinas
-            ->when(
-                // Quando não for definido o período...
-                ! $params['periodo_id'],
-                // ...Une a tabela disciplinas à consulta
-                fn ($query) => $query->rightJoin('disciplinas', 'disciplinas.id', 'agendamentos.disciplina_id')
-            )
-            // Extrai os nomes e IDs das disciplinas, retornando um array associativo
+            ->rightJoin('disciplinas', 'disciplinas.id', 'agendamentos.disciplina_id')
             ->pluck('disciplinas.nome', 'disciplinas.id')
-            // Ordena os resultados pela chave (ID da disciplina)
             ->sort();
 
-        // Combina os parâmetros originais com os dados obtidos (agendamentos, atividades, disciplinas)
         return array_merge($params, $data);
     }
 }
