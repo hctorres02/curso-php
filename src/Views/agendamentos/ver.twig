@@ -1,12 +1,34 @@
 {% extends "base.twig" %}
 
 {% block main %}
-<h1>Agendamento #{{ agendamento.id }}</h1>
-<h3>
-    <a href="/agendamentos">&lsaquo; Voltar</a>
-</h3>
-<p>
-    <strong>Agendamento #{{ agendamento.id }}</strong><br />
-    Data: {{ agendamento.data|date('d/m/Y') }}
-</p>
+<section>
+    <nav>
+        <ul>
+            <li>
+                <hgroup role="heading">
+                    <h3>{{ agendamento.atividade.nome }}: {{ agendamento.disciplina.nome }}</h3>
+                    <p>{{ agendamento.data|date('d/m/Y') }}</p>
+                </hgroup>
+            </li>
+        </ul>
+    </nav>
+    <nav>
+        <ul>
+            <li>
+                <a href="{{ route('agendamentos') }}">&larr; Voltar para agendamentos</a>
+            </li>
+        </ul>
+        <ul>
+            {% if hasPermission('editar_agendamentos') %}
+            <li>
+                <a href="{{ route('editar_agendamento', agendamento.id) }}">&#9998; Editar</a>
+            </li>
+            {% endif %}
+            {% if hasPermission('excluir_agendamentos') %}
+            <li>{% include "agendamentos/excluir.twig" %}</li>
+            {% endif %}
+        </ul>
+    </nav>
+</section>
+<section>{{ agendamento.conteudo|markdown_to_html }}</section>
 {% endblock %}
