@@ -306,9 +306,9 @@ if (! function_exists('redirect')) {
 }
 
 if (! function_exists('redirectRoute')) {
-    function redirectRoute(string $name, array $params = [], int $status = Response::HTTP_FOUND): RedirectResponse
+    function redirectRoute(string $name, mixed ...$params): RedirectResponse
     {
-        return redirect(route($name, $params), $status);
+        return redirect(route($name, $params));
     }
 }
 
