@@ -21,6 +21,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBag;
 use Symfony\Component\HttpFoundation\Session\Session;
 
+if (! function_exists('asset')) {
+    function asset(string $path): string
+    {
+        return url("/assets/{$path}", ['v' => filemtime(PROJECT_ROOT."/public/assets/{$path}")]);
+    }
+}
+
 if (! function_exists('attribute')) {
     function attr(array $attributes): string
     {

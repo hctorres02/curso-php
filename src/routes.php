@@ -211,11 +211,7 @@ Router::post(
 Router::get(
     name: 'ver_agendamento',
     uri: '/agendamentos/{agendamento}',
-    action: [AgendamentoController::class, 'ver'],
-    middlewares: [
-        AcessoRestrito::class,
-        Permission::CADASTRAR_AGENDAMENTOS,
-    ]
+    action: [AgendamentoController::class, 'ver']
 );
 
 Router::get(

@@ -50,7 +50,11 @@
             </td>
             <td>
                 {{ agendamento.conteudo }}<br />
+                <a href="{{ route('ver_agendamento', agendamento.id) }}">
+                    <small>&#128065; Ver</small>
+                </a>
                 {% if hasPermission('editar_agendamentos') %}
+                &nbsp;&nbsp;
                 <a href="{{ route('editar_agendamento', agendamento.id) }}">
                     <small>&#9998; Editar</small>
                 </a>

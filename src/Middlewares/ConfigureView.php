@@ -16,6 +16,7 @@ class ConfigureView
             require PROJECT_ROOT.'/config/twig.php'
         ));
 
+        View::addFunction('asset', asset(...));
         View::addFunction('attr', attr(...));
         View::addFunction('hasPermission', hasPermission(...));
         View::addFunction('hasRole', hasRole(...));

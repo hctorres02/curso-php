@@ -4,6 +4,10 @@ namespace App\Http;
 
 use App\Traits\IsSingleton;
 use Twig\Environment;
+use Twig\Extra\Markdown\DefaultMarkdown;
+use Twig\Extra\Markdown\MarkdownExtension;
+use Twig\Extra\Markdown\MarkdownRuntime;
+use Twig\RuntimeLoader\RuntimeLoaderInterface;
 use Twig\TwigFunction;
 use voku\helper\HtmlMin;
 
@@ -15,6 +19,18 @@ class View
 
     public static function boot(Environment $twig): void
     {
+        $twig->addExtension(new MarkdownExtension);
+
+        $twig->addRuntimeLoader(new class implements RuntimeLoaderInterface
+        {
+            public function load($class)
+            {
+                if (MarkdownRuntime::class === $class) {
+                    return new MarkdownRuntime(new DefaultMarkdown);
+                }
+            }
+        });
+
         static::getInstance()->twig = $twig;
     }
 

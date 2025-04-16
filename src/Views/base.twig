@@ -10,6 +10,7 @@
         <meta name="csrf-token" content="{{ CSRF_TOKEN }}">
         <link rel="icon" href="/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+        {% block styles %}{% endblock %}
         <style>
             nav a[aria-current=true] {
                 font-weight: bold;
@@ -43,6 +44,12 @@
                 <p>&copy; 2025</p>
             </div>
         </footer>
+        <script>
+            window.env = {
+                app_locale: '{{ APP_LOCALE }}',
+            }
+        </script>
+        {% block scripts %}{% endblock %}
     </body>
 
 </html>
