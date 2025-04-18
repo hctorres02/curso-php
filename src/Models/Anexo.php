@@ -19,4 +19,35 @@ class Anexo extends Model
     {
         return $this->belongsTo(Agendamento::class);
     }
+
+    public static function allowedExtensions(bool $asString = false): array|string
+    {
+        $extensions = collect(static::allowedMimes())->flatten()->unique()->map(fn ($ext) => ".{$ext}");
+
+        if ($asString) {
+            return $extensions->implode(',');
+        }
+
+        return $extensions->toArray();
+    }
+
+    public static function allowedMimes(): array|string
+    {
+        $config = require PROJECT_ROOT.'/config/uploads.php';
+
+        return $config['mimes'];
+
+    }
+
+    public static function uploadsDir(string $appends = ''): string
+    {
+        $config = require PROJECT_ROOT.'/config/uploads.php';
+        $directory = $config['directory'];
+
+        if ($appends) {
+            $directory .= "/{$appends}";
+        }
+
+        return $directory;
+    }
 }

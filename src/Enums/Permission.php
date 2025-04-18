@@ -13,6 +13,7 @@ enum Permission: string
     case CADASTRAR_AGENDAMENTOS = 'cadastrar_agendamentos';
     case EDITAR_AGENDAMENTOS = 'editar_agendamentos';
     case EXCLUIR_AGENDAMENTOS = 'excluir_agendamentos';
+    case INSERIR_ANEXOS = 'inserir_anexos';
 
     // DISCIPLINAS
     case VER_DISCIPLINAS = 'ver_disciplinas';
