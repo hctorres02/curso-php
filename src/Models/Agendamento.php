@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Anexo;
 use App\Models\Atividade;
 use App\Models\Disciplina;
 use App\Models\Periodo;
@@ -10,8 +11,10 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Respect\Validation\Validator;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class Agendamento extends Model
 {
@@ -37,6 +40,11 @@ class Agendamento extends Model
             'conteudo' => Validator::notEmpty()->length(1, 512),
             'data' => Validator::date('Y-m-d'),
         ];
+    }
+
+    public function anexos(): HasMany
+    {
+        return $this->hasMany(Anexo::class);
     }
 
     public function atividade(): BelongsTo
