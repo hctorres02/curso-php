@@ -61,5 +61,6 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Logs
 - [ ] Notificações
 - [ ] Processamento paralelo
+- [ ] Anexos
 - [x] Resposta
 - [x] Testes
