@@ -103,6 +103,22 @@ class Agendamento extends Model
         $this->anexos()->upsert($anexos, 'id');
     }
 
+    /**
+     * @param ?array<int> $anexos_salvos
+     */
+    public function excluirAnexos(?array $anexos_salvos): void
+    {
+        if (! $anexos_salvos) {
+            return;
+        }
+
+        $anexos = $this->anexos()->whereIn('id', $anexos_salvos)->get(['id', 'caminho']);
+
+        foreach ($anexos as $anexo) {
+            $anexo->delete() && unlink(Anexo::uploadsDir($anexo->caminho));
+        }
+    }
+
     public function scopePrevistos(Builder $query): void
     {
         $today = today();

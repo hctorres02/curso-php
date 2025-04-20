@@ -248,6 +248,15 @@ Router::delete(
 
 // anexos
 Router::get(
+    name: 'anexos',
+    uri: '/anexos',
+    action: [AnexoController::class, 'index'],
+    middlewares: [
+        AcessoRestrito::class,
+    ]
+);
+
+Router::get(
     name: 'ver_anexo',
     uri: '/anexos/{anexo}',
     action: [AnexoController::class, 'ver'],
