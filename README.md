@@ -55,12 +55,12 @@ As aulas serão transmitidas todo domingo (com ressalvas), sempre as 15h, por me
 - [x] Sessão
 - [x] CSRF
 - [x] Validação
-- [ ] Autenticação
-- [ ] Autorização
+- [x] Autenticação
+- [x] Autorização
 - [x] Auditoria
 - [x] Logs
-- [ ] Notificações
-- [ ] Processamento paralelo
-- [ ] Anexos
+- [x] Notificações
+- [x] Processamento paralelo
+- [x] Anexos
 - [x] Resposta
 - [x] Testes
