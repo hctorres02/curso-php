@@ -73,7 +73,7 @@ class AgendamentoController
 
     public function atualizar(Request $request, Agendamento $agendamento): RedirectResponse
     {
-        if (! $request->validate(Agendamento::rules())) {
+        if (! $request->validate(Agendamento::rules($agendamento))) {
             return redirectRoute('editar_agendamento', $agendamento->id);
         }
 
@@ -81,6 +81,7 @@ class AgendamentoController
 
         if (hasPermission(Permission::INSERIR_ANEXOS)) {
             $agendamento->inserirAnexos($request->validated['anexos']);
+            $agendamento->excluirAnexos($request->validated['anexos_salvos']);
         }
 
         notifyMany(Usuario::pluck('id')->toArray(), AgendamentoAtualizado::class, [
@@ -92,6 +93,9 @@ class AgendamentoController
 
     public function excluir(Agendamento $agendamento): RedirectResponse
     {
+        $anexos = $agendamento->anexos()->pluck('id')->toArray();
+
+        $agendamento->excluirAnexos($anexos);
         $agendamento->delete();
 
         return redirectRoute('agendamentos');

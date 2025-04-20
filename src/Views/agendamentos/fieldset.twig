@@ -43,7 +43,8 @@
         <div id="anexos-salvos">
             {% for anexo in agendamento.anexos ?? [] %}
             <p>
-                <label>
+                <label aria-disabled="{{ hasPermission('inserir_anexos') ? 'false' : 'true' }}">
+                    <input type="checkbox" name="anexos_salvos[]" value="{{ anexo.id }}" />
                     <span>{{ anexo.nome_original }}</span>
                 </label>
             </p>

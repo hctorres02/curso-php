@@ -32,7 +32,7 @@ class Agendamento extends Model
         'data' => 'date',
     ];
 
-    public static function rules(): array
+    public static function rules(?self $agendamento = null): array
     {
         return [
             'atividade_id' => Validator::intVal()->callback(Atividade::exists(...)),
@@ -52,6 +52,15 @@ class Agendamento extends Model
                             && $file->getSize() <= UploadedFile::getMaxFilesize();
                     })
                 )
+            ),
+            'anexos_salvos' => Validator::nullable(
+                Validator::arrayType()->callback(function (array $anexos_salvos) use ($agendamento) {
+                    if (! $agendamento) {
+                        return true;
+                    }
+
+                    return $agendamento->anexos()->whereIn('id', $anexos_salvos)->count() === count($anexos_salvos);
+                })
             ),
         ];
     }
