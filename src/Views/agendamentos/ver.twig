@@ -31,4 +31,19 @@
     </nav>
 </section>
 <section>{{ agendamento.conteudo|markdown_to_html }}</section>
+{% if agendamento.anexos.count() %}
+<section>
+    <p><strong>Anexos:</strong></p>
+    <ul>
+        {% for anexo in agendamento.anexos %}
+        <li>
+            <a href="{{ route('ver_anexo', anexo.id) }}" target="_blank">
+                {{ anexo.nome_original }}
+            </a>
+            ({{ anexo.tamanho }})
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}
 {% endblock %}

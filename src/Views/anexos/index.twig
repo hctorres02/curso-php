@@ -1,0 +1,59 @@
+{% extends "base.twig" %}
+{% from "macros.twig" import input, pagination, select %}
+
+{% block main %}
+<section>
+    <nav>
+        <ul>
+            <li>
+                <hgroup role="heading">
+                    <h3>Anexos</h3>
+                    <p>Todo o material de aula</p>
+                </hgroup>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <form role="search">
+                    {{ select('Período', 'periodo_id', periodos, periodo_id) }}
+                    {{ select('Disciplina', 'disciplina_id', disciplinas, disciplina_id) }}
+                    <input type="submit" value="Filtrar" />
+                </form>
+            </li>
+        </ul>
+    </nav>
+</section>
+<table>
+    <thead>
+        <tr>
+            <th>Anexo</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for anexo in data %}
+        {% set agendamento = anexo.agendamento %}
+        {% set disciplina = agendamento.disciplina %}
+        {% set periodo = disciplina.periodo %}
+        <tr>
+            <td>
+                {% if anexo.caminho %}
+                <a href="{{ route('ver_anexo', anexo.id) }}" target="_blank">{{ anexo.nome_original }}</a>
+                {% else %}
+                <del title="Este arquivo não existe">{{ anexo.nome_original }}</del>
+                {% endif %}
+                <br />
+                <small>
+                    {{ disciplina.nome }} ({{ periodo.ano }}.{{ periodo.semestre }})
+                    &mdash; {{ anexo.tamanho }}
+                </small>
+            </td>
+        </tr>
+        {% else %}
+            <tr>
+                <td>Não há anexos</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{{ pagination(links) }}
+{% endblock %}

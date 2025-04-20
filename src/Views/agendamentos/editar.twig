@@ -23,7 +23,7 @@
         </ul>
     </nav>
 </section>
-<form action="{{ route('atualizar_agendamento', agendamento.id) }}" method="post">
+<form action="{{ route('atualizar_agendamento', agendamento.id) }}" method="post" enctype="multipart/form-data">
     {% include "agendamentos/fieldset.twig" %}
     <input type="hidden" name="_method" value="put">
     <input type="hidden" name="_csrf_token" value="{{ CSRF_TOKEN }}" />
@@ -38,4 +38,7 @@
 {% block scripts %}
 <script src="https://cdn.jsdelivr.net/npm/simplemde@1/dist/simplemde.min.js"></script>
 <script src="{{ asset('/js/simplemde.js') }}"></script>
+{% if hasPermission('inserir_anexos') %}
+<script src="{{ asset('/js/inserir-anexos.js') }}"></script>
+{% endif %}
 {% endblock %}

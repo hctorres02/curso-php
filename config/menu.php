@@ -33,6 +33,7 @@ return array_map(fn (Menu $menu) => ! $menu->count() ? null : $menu
         ->if($isAuthenticated, fn (Menu $menu) => $menu
             ->wrap('nav', ['class' => 'container'])
             ->link(route('agendamentos'), 'Agendamentos')
+            ->link(route('anexos'), 'Anexos')
             ->linkIf($usuario->hasPermission(Permission::VER_PERIODOS), route('periodos'), 'Períodos')
             ->linkIf($usuario->hasPermission(Permission::VER_DISCIPLINAS), route('disciplinas'), 'Disciplinas')
             ->linkIf($usuario->hasPermission(Permission::VER_ATIVIDADES), route('atividades'), 'Atividades')

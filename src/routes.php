@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\AgendamentoController;
+use App\Controllers\AnexoController;
 use App\Controllers\AtividadeController;
 use App\Controllers\AuthController;
 use App\Controllers\CadastroController;
@@ -13,6 +14,7 @@ use App\Controllers\UsuarioController;
 use App\Enums\Permission;
 use App\Http\Router;
 use App\Middlewares\AcessoRestrito;
+use App\Middlewares\AnexoExiste;
 use App\Middlewares\ForcarLogout;
 use App\Middlewares\NaoPodeEditarAdminOuSiMesmo;
 use App\Middlewares\NaoPodeExecutarJobsExecutados;
@@ -241,6 +243,26 @@ Router::delete(
     middlewares: [
         AcessoRestrito::class,
         Permission::EXCLUIR_AGENDAMENTOS,
+    ]
+);
+
+// anexos
+Router::get(
+    name: 'anexos',
+    uri: '/anexos',
+    action: [AnexoController::class, 'index'],
+    middlewares: [
+        AcessoRestrito::class,
+    ]
+);
+
+Router::get(
+    name: 'ver_anexo',
+    uri: '/anexos/{anexo}',
+    action: [AnexoController::class, 'ver'],
+    middlewares: [
+        AcessoRestrito::class,
+        AnexoExiste::class,
     ]
 );
 
