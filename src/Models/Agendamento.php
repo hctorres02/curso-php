@@ -96,6 +96,7 @@ class Agendamento extends Model
                 str_starts_with($tipo, 'application/') ||
                 str_starts_with($tipo, 'text/') => 'documentos',
                 str_starts_with($tipo, 'image/') => 'imagens',
+                str_starts_with($tipo, 'audio/') => 'audios',
                 str_starts_with($tipo, 'video/') => 'videos',
                 default => 'outros'
             };
