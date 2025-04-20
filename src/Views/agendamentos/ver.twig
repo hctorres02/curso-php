@@ -37,7 +37,10 @@
     <ul>
         {% for anexo in agendamento.anexos %}
         <li>
-            {{ anexo.nome_original }} ({{ anexo.tamanho }})
+            <a href="{{ route('ver_anexo', anexo.id) }}" target="_blank">
+                {{ anexo.nome_original }}
+            </a>
+            ({{ anexo.tamanho }})
         </li>
         {% endfor %}
     </ul>
