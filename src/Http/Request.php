@@ -74,9 +74,7 @@ class Request
         foreach ($rules as $field => $rule) {
             try {
                 // Obtém o tipo do campo
-                if (str_contains($field, ':')) {
-                    [$field, $bag] = array_pad(explode(':', $field), 2, null);
-                }
+                [$field, $bag] = array_pad(explode(':', $field, 2), 2, null);
 
                 // Obtém o valor do campo da requisição usando o método get.
                 $value = $bag ? $this->{$bag}->get($field) : $this->get($field);

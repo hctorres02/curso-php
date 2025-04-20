@@ -20,3 +20,38 @@
         {{ textarea('Conteúdo', 'conteudo', agendamento.conteudo ?? '') }}
     </label>
 </fieldset>
+<fieldset>
+    <legend>Anexos</legend>
+    <div id="anexos" class="like-input" style="max-height: 290px; overflow-y: auto;">
+        {% if hasPermission('inserir_anexos') %}
+        <div id="anexos-pendentes">
+            <p>
+                <a href="javascript:;" id="btn-selecionar">&#128206; Selecionar</a>
+                <input type="file" name="anexos[]" accept="{{ extensoes_permitidas }}" multiple style="display: none;" />
+            </p>
+            <div></div>
+            <template>
+                <p>
+                    <label>
+                        <input type="checkbox" checked>
+                        <ins></ins>
+                    </label>
+                </p>
+            </template>
+        </div>
+        {% endif %}
+        <div id="anexos-salvos">
+            {% for anexo in agendamento.anexos ?? [] %}
+            <p>
+                <label>
+                    <span>{{ anexo.nome_original }}</span>
+                </label>
+            </p>
+            {% else %}
+            <p style="color: var(--pico-muted-color)">
+                <span>Nenhum anexo</span>
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+</fieldset>

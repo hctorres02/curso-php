@@ -2,8 +2,10 @@
 
 namespace App\Controllers;
 
+use App\Enums\Permission;
 use App\Http\Request;
 use App\Models\Agendamento;
+use App\Models\Anexo;
 use App\Models\Atividade;
 use App\Models\Disciplina;
 use App\Models\Usuario;
@@ -29,8 +31,9 @@ class AgendamentoController
     {
         $atividades = Atividade::toOptGroup();
         $disciplinas = Disciplina::toOptGroup();
+        $extensoes_permitidas = Anexo::allowedExtensions(true);
 
-        return response('agendamentos/cadastrar.twig', compact('atividades', 'disciplinas'));
+        return response('agendamentos/cadastrar.twig', compact('atividades', 'disciplinas', 'extensoes_permitidas'));
     }
 
     public function salvar(Request $request): RedirectResponse
@@ -41,6 +44,10 @@ class AgendamentoController
 
         $agendamento = Agendamento::create($request->validated);
 
+        if (hasPermission(Permission::INSERIR_ANEXOS)) {
+            $agendamento->inserirAnexos($request->validated['anexos']);
+        }
+
         notifyMany(Usuario::pluck('id')->toArray(), AgendamentoCadastrado::class, [
             'agendamento' => $agendamento->id,
         ]);
@@ -50,6 +57,8 @@ class AgendamentoController
 
     public function ver(Agendamento $agendamento): Response
     {
+        $agendamento->load('anexos');
+
         return response('agendamentos/ver.twig', compact('agendamento'));
     }
 
@@ -57,8 +66,9 @@ class AgendamentoController
     {
         $atividades = Atividade::toOptGroup();
         $disciplinas = Disciplina::toOptGroup();
+        $extensoes_permitidas = Anexo::allowedExtensions(true);
 
-        return response('agendamentos/editar.twig', compact('atividades', 'disciplinas', 'agendamento'));
+        return response('agendamentos/editar.twig', compact('atividades', 'disciplinas', 'agendamento', 'extensoes_permitidas'));
     }
 
     public function atualizar(Request $request, Agendamento $agendamento): RedirectResponse
@@ -69,6 +79,9 @@ class AgendamentoController
 
         $agendamento->update($request->validated);
 
+        if (hasPermission(Permission::INSERIR_ANEXOS)) {
+            $agendamento->inserirAnexos($request->validated['anexos']);
+        }
 
         notifyMany(Usuario::pluck('id')->toArray(), AgendamentoAtualizado::class, [
             'agendamento' => $agendamento->id,
