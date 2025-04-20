@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', function () {
     const container = document.getElementById('anexos')
     const anexosPendentes = container.querySelector('#anexos-pendentes')
+    const anexosSalvos = container.querySelector('#anexos-salvos')
     const btnSelecionar = document.querySelector('#btn-selecionar')
     const input = document.querySelector('input[type="file"]')
 
@@ -28,5 +29,20 @@ window.addEventListener('DOMContentLoaded', function () {
         })
 
         target.appendChild(p)
+    })
+
+    anexosSalvos.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+        checkbox.addEventListener('change', function () {
+            const label = this.parentElement
+            const oldTag = this.checked ? 'span' : 'del'
+            const newTag = this.checked ? 'del' : 'span'
+            const oldElement = label.querySelector(oldTag)
+            const newElement = Object.assign(document.createElement(newTag), {
+                textContent: oldElement.textContent,
+                title: this.checked ? 'Este anexo será removido' : ''
+            })
+
+            oldElement.replaceWith(newElement)
+        })
     })
 })
